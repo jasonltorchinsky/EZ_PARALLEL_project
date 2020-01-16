@@ -1,0 +1,34 @@
+TO DO:
+- Update the serial heat equation code to do stochastic heat equation, and clean
+it up.
+- Clean up the serial QG equation code.
+- Parallelize the heat equation code and the QG code.
+- Run the stochastic heat equation code on a varying number of processors with a
+varying grid size. (Login to math servers?) Record performance statistics (grid 
+size, number of processors, simulation time, etc.).
+- Run the QG equation code on a varying number of processors with a varying grid
+size (refining the resolution, not increasing the simulation space). Record
+performance statistics (grid size, number of processors, simulation time, etc.)
+and recreating plots from Di Qi's paper (time series of heat flux and 
+statistical energy).
+- Finish writing documentation for the code and write the paper to be submitted.
+
+FUTURE WORK: 
+- Utilize a COMMON block in the EZ_PARALLEL library to store commonly used values, e.g., the number of processors, the dimensions of the grid, the grid indices of the sub-grids.
+
+Subroutine List:
+CFFT2DB                             - Unit Test Complete
+CFFT2DF                             - Unit Test Complete
+DECOMP_GRID                         - Unit Test Complete
+FIN_MPI                             - Unit Test Complete
+GET_ID                              - Unit Test Complete
+IDENTIFY_REF_POINT                  - Unit Test Complete
+INIT_MPI                            - Unit Test Complete
+MAXVAL                              - Unit Test Complete
+MINVAL                              - Unit Test Complete
+RFFT2DB                             - Unit Test Complete
+RFFT2DF                             - Unit Test Complete
+SHARE_SUBGRID_BOUNDARIES_DBLE_CMPLX - Unit Test Complete
+SHARE_SUBGRID_BOUNDARIES_DBLE_REAL  - Unit Test Complete
+SPECTRAL_DIM1_DERIVATIVE            - Unit Test Complete
+SPECTRAL_DIM2_DERIVATIVE            - Unit Test Complete

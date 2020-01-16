@@ -1,0 +1,5 @@
+&test_params
+dim1_len = 5
+dim2_len = 13
+overlap = 1
+/

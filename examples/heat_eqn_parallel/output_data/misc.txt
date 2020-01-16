@@ -1,0 +1,1 @@
+This file is included in order to have the output_data directory on the GitHub repository, since the code outputs .dat files to this directory be default.

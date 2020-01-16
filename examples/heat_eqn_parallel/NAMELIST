@@ -1,0 +1,14 @@
+&model
+x_len = 8
+y_len = 15
+dx = 0.001
+dy = 0.001
+dt = 0.000001
+x_diffus = 0.1
+y_diffus = 0.2
+x_ref = 0.0
+y_ref = 0.0
+init_time = 0.0
+fin_time = 0.0001
+output_freq = 1
+/
