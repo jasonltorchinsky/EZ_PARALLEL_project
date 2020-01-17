@@ -28,3 +28,5 @@ All code should include a variety of error checks, and ERROR STOP messages shoul
 Each code file should include a description (what it does and how), the author, when the file was most recently editted, and a list of variable descriptions.
 
 Each subroutine in EZ_PARALLEL should have an associated unit test.
+
+If continuing on the next line inside of parentheses for an equation, indent the next line.

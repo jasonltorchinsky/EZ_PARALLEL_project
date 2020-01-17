@@ -1,0 +1,19 @@
+&model
+x_len = 100
+y_len = 100
+dx = 5.0
+dy = 5.0
+dt = 0.001
+x_diffus = 750.0
+y_diffus = 750.0
+deter_force = -0.000000125
+damp_coeff = 96.0
+stoch_mag = 0.50
+relax_trgt = 65.0
+dir_bdy_val = 65.0
+x_ref = 0.0
+y_ref = 0.0
+init_time = 0.0
+fin_time = 0.5
+output_freq = 1
+/
