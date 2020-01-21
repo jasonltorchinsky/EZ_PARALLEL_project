@@ -31,7 +31,7 @@ while k <= file_count
     h = pcolor(all_data(:,:,k));
     set(h, 'EdgeColor', 'none');
     colorbar;
-    caxis([-2 2]);
+    %caxis([-2 2]);
     title(int2str(k-1));
     pause(.1);
     k = k + 1;

@@ -108,13 +108,13 @@ END SUBROUTINE INITIALIZE_PARAMETERS
 ! Allocate memory and fills in the initial condition for temp_grid.
 !
 ! STRUCTURE: 1) Allocates memory to temp_grid.
-! 2) Sets the initial condition on the temp_grid.
+! 2) Sets the initial condition on temp_grid.
 ! 3) Sets a homogeneous Dirichlet boundary conition.
 !
 ! VARIABLES: - i, j: Counting indices for DO loops (INTEGER(qb)).
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SUBROUTINE INITIALIZE_GRID
-!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 IMPLICIT NONE
 
 INTEGER(qb) :: i, &

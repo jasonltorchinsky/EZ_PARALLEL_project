@@ -97,7 +97,7 @@ CALL CFFT2DF(x_len, y_len, freq_pot_vort_grid(:,:,2))
 ! Set up hyperviscosity for time-stepping.
 CALL SPECTRAL_X_DERIVATIVE(x_len, y_len, spec_x_deriv, 2_qb * biharm_order)
 CALL SPECTRAL_Y_DERIVATIVE(x_len, y_len, spec_y_deriv, 2_qb * biharm_order)
-spec_biharm(:,:,1) = (-1.0_dp, 0.0_dp)**(REAL(biharm_order, dp)) &
+spec_biharm(:,:,1) = (-1.0_dp, 0.0_dp)**(REAL(biharm_order + 1_qb, dp)) &
 & * biharm_visc_coeff * (spec_x_deriv + spec_y_deriv)
 spec_biharm(:,:,2) = spec_biharm(:,:,1)
 

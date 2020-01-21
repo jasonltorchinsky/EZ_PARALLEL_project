@@ -1,4 +1,4 @@
-function stat_energ_trop_data = avg_stat_energ_plot
+function STAT_ENERG_TROP_DATA = AVG_STAT_ENERGY_PLOT
 % Generates a plot of the time-averaged statistical energy versus wavelength, as shown in
 % Figure 5 of Di Qi's paper. Given the disturbance potential voriticity
 % in the barotropic and baroclinic modes, denoted pot_vort_trop and
@@ -76,7 +76,7 @@ end
 stat_energ_trop = 0.5*stat_energ_trop/(grid_size^4 * num_files);
 stat_energ_clin = 0.5*stat_energ_clin/(grid_size^4 * num_files);
 
-stat_energ_trop_data = stat_energ_trop(2:129);
+STAT_ENERG_TROP_DATA = stat_energ_trop(2:129);
 stat_energ_clin_data = stat_energ_clin(2:129);
 
 
@@ -89,7 +89,7 @@ stat_energ_clin_data = stat_energ_clin(2:129);
 plot_wavenums = linspace(1,128,128)';
 interp_wavenums = linspace(1,128,500)';
   % Interpolate, smooth, then plot.
-intperp_trop = interp1(log(plot_wavenums),log(stat_energ_trop_data),log(interp_wavenums));
+intperp_trop = interp1(log(plot_wavenums),log(STAT_ENERG_TROP_DATA),log(interp_wavenums));
 smth_trop = smooth(intperp_trop);
 for i = 1:20
     smth_trop = smooth(smth_trop);
@@ -99,7 +99,7 @@ trop_energ = loglog(interp_wavenums, exp(smth_trop),'k-','DisplayName','Barotrop
 hold on
   % Plot linear best fit for wavenumbers 10 - 100.
 best_x = plot_wavenums(10:100);
-poly_trop = polyfit(log(best_x),log(stat_energ_trop_data(10:100)),1);
+poly_trop = polyfit(log(best_x),log(STAT_ENERG_TROP_DATA(10:100)),1);
 best_y_trop = polyval(poly_trop, log(best_x));
 loglog(best_x,exp(1).*exp(best_y_trop),'k--');
 disp(["Barotropic Best-Fit Slope" poly_trop(1)]);
@@ -120,7 +120,7 @@ loglog(best_x,exp(1).*exp(best_y_clin),'k--');
 disp(["Baroclinic Best-Fit Slope" poly_clin(1)]);
 
 % Label the plot.
-title("Statistical Energy (Ocean)")
+title("Statistical Energy (Atmosphere, Mid-Latitude)")
 xlabel("Wavenumber |k|")
 legend([trop_energ clin_energ])
 
@@ -128,11 +128,3 @@ legend([trop_energ clin_energ])
 xlim([1,200])
 ylim([10^(-6), 4])
 hold off
-
-
-
-% Compute the radial average power spectrum of each statistical energy matrix.
-%[Zr_trop,R_trop] = radialavg(stat_energ_trop,grid_size/4,0,0);
-%figure;loglog(R_trop,Zr_trop,'.-');
-
-%raPsd2d(stat_energ_trop,0.0078125);

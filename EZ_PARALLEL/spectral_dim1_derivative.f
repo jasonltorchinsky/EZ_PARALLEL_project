@@ -64,11 +64,11 @@ CONTAINS
 ! VARIABLES: - dim1_len, dim2_len: The shape of the sub-grid (INTEGER).
 ! - overlap: The overlap required for the numerical scheme (INTEGER).
 ! - spec_dim1_deriv: The array that will store the matrix used in calculating
-! the derivative of the numerical solution along the second dimension of the
+! the derivative of the numerical solution along the first dimension of the
 ! grid (DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len)).
 ! - order: The order of the derviate desired (INTEGER).
 ! - i: Counting index used in DO loops (INTEGER).
-! - dim1_wavenums: Array used to store the dim2 wavenumbers (DOUBLE PRECISION,
+! - dim1_wavenums: Array used to store the dim1 wavenumbers (DOUBLE PRECISION,
 ! DIMENSION(dim1_len)).
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SUBROUTINE SERIAL(dim1_len, dim2_len, overlap, spec_dim1_deriv, order)
@@ -83,7 +83,7 @@ INTEGER :: dim1_len, &
 & overlap, &
 & order, &
 & i
-DOUBLE PRECISION, DIMENSION(dim1_len) :: dim1_wavenums(dim1_len)
+DOUBLE PRECISION, DIMENSION(dim1_len) :: dim1_wavenums
 DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: spec_dim1_deriv
 
 ! Calculate dim1 wavenumbers.
@@ -118,11 +118,11 @@ END SUBROUTINE SERIAL
 ! VARIABLES: - dim1_len, dim2_len: The shape of the sub-grid (INTEGER).
 ! - overlap: The overlap required for the numerical scheme (INTEGER).
 ! - spec_dim1_deriv: The array that will store the matrix used in calculating
-! the derivative of the numerical solution along the second dimension of the
+! the derivative of the numerical solution along the first dimension of the
 ! grid (DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len)).
 ! - order: The order of the derviate desired (INTEGER).
 ! - i: Counting index used in DO loops (INTEGER).
-! - dim1_wavenums: Array used to store the dim2 wavenumbers (DOUBLE PRECISION,
+! - dim1_wavenums: Array used to store the dim1 wavenumbers (DOUBLE PRECISION,
 ! DIMENSION(dim1_len)).
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SUBROUTINE PARALLEL(dim1_len, dim2_len, overlap, spec_dim1_deriv, order)
@@ -137,7 +137,7 @@ INTEGER :: dim1_len, &
 & overlap, &
 & order, &
 & i
-DOUBLE PRECISION, DIMENSION(dim1_len) :: dim1_wavenums(dim1_len)
+DOUBLE PRECISION, DIMENSION(dim1_len) :: dim1_wavenums
 DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: spec_dim1_deriv
 
 ! Calculate dim1 wavenumbers.

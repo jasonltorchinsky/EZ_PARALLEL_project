@@ -1,7 +1,8 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-! WRITE_OUTPUT. Contains the output subroutine. For general output management.
+! OUTPUT. Contains the output subroutine. For general output management.
 !
-! VARIABLES: - WRITE_OUTPUT: The subroutine which writes temp_grid to file.
+! VARIABLES: - WRITE_OUTPUT: The subroutine which writes temp_grid to file
+! (PUBLIC).
 !
 ! Written By: Jason Turner
 ! Last Updated: January 17, 2020

@@ -72,7 +72,8 @@ CONTAINS
 ! the Jacobian, and transform back into frequency space to return the final
 ! result.
 !
-! VARIABLES: - x_len_sub, y_len_sub: The size of the grid for simulation (INTEGER(qb)).
+! VARIABLES: - x_len_sub, y_len_sub: The size of the grid for simulation
+! (INTEGER(qb)).
 ! - scaled_x_len, scaled_y_len: The size of the scaled-up grid used for
 ! de-aliasing the Jacobian (INTEGER(qb)).
 ! - i: Counting index used in DO loops (INTEGER(qb)).
@@ -218,16 +219,16 @@ jacobian_ekman_shear_grid = (0.0_dp, 0.0_dp)
   ! Set layer 1.
 jacobian_ekman_shear_grid(:,:,1) = CMPLX((-1.0_dp), 0.0_dp, dp) &
 & * CMPLX(vert_shear_sub, 0.0_dp, dp) * spec_x_deriv(:,:,1) &
-& * freq_pot_vort_grid(:,:,1) - CMPLX((rotat_wavenum_sub**(2.0_dp) + vert_shear_sub &
-  & * deform_wavenum_sub**(2.0_dp)), 0.0_dp, dp) * spec_x_deriv(:,:,1) &
-& * freq_strmfunc(:,:,1)
+& * freq_pot_vort_grid(:,:,1) - CMPLX((rotat_wavenum_sub**(2.0_dp) &
+  & + vert_shear_sub * deform_wavenum_sub**(2.0_dp)), 0.0_dp, dp) &
+& * spec_x_deriv(:,:,1) * freq_strmfunc(:,:,1)
   ! Set layer 2.
 jacobian_ekman_shear_grid(:,:,2) = CMPLX((1.0_dp), 0.0_dp, dp) &
 & * CMPLX(vert_shear_sub, 0.0_dp, dp) * spec_x_deriv(:,:,1) &
-& * freq_pot_vort_grid(:,:,2) - CMPLX((rotat_wavenum_sub**(2.0_dp) - vert_shear_sub &
-  & * deform_wavenum_sub**(2.0_dp)), 0.0_dp, dp) * spec_x_deriv(:,:,1) &
-& * freq_strmfunc(:,:,2) - CMPLX(ekman_fric_coeff_sub, 0.0_dp, dp) &
-& * spec_laplacian * freq_strmfunc(:,:,2)
+& * freq_pot_vort_grid(:,:,2) - CMPLX((rotat_wavenum_sub**(2.0_dp) &
+  & - vert_shear_sub * deform_wavenum_sub**(2.0_dp)), 0.0_dp, dp) &
+&* spec_x_deriv(:,:,1) * freq_strmfunc(:,:,2) - CMPLX(ekman_fric_coeff_sub, &
+  & 0.0_dp, dp) * spec_laplacian * freq_strmfunc(:,:,2)
 
 ! Must rescale the potential vort and the streamfunction grids to dealias the
 ! Jacobian, see Orszag, S. "On the Elimination of Aliasing in Finite-Difference 
@@ -240,11 +241,14 @@ scaled_freq_pot_vort_grid = (0.0_dp, 0.0_dp)
 scaled_freq_pot_vort_grid(1:x_len_sub/2+1, 1:y_len_sub/2+1, :) = &
 & (2.25_dp, 0.0_dp) * freq_pot_vort_grid(1:x_len_sub/2+1, 1:y_len_sub/2+1, :)
 scaled_freq_pot_vort_grid(1:x_len_sub/2+1, y_len_sub+2:scaled_y_len, :) = &
-& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(1:x_len_sub/2+1, y_len_sub/2+2:y_len_sub, :)
+& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(1:x_len_sub/2+1, &
+  & y_len_sub/2+2:y_len_sub, :)
 scaled_freq_pot_vort_grid(x_len_sub+2:scaled_x_len, 1:y_len_sub/2+1, :) = &
-& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(x_len_sub/2+2:x_len_sub, 1:y_len_sub/2+1, :)
-scaled_freq_pot_vort_grid(x_len_sub+2:scaled_x_len, y_len_sub+2:scaled_y_len, :) = &
-& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(x_len_sub/2+2:x_len_sub, y_len_sub/2+2:y_len_sub, :)
+& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(x_len_sub/2+2:x_len_sub, &
+  & 1:y_len_sub/2+1, :)
+scaled_freq_pot_vort_grid(x_len_sub+2:scaled_x_len, &
+  & y_len_sub+2:scaled_y_len, :) = (2.25_dp, 0.0_dp) &
+& * freq_pot_vort_grid(x_len_sub/2+2:x_len_sub, y_len_sub/2+2:y_len_sub, :)
   ! Rescale the potential vorticity streamfunction.
 ALLOCATE(scaled_freq_strmfunc(scaled_x_len, scaled_y_len, 2))
 scaled_freq_strmfunc = (0.0_dp, 0.0_dp)
@@ -255,7 +259,8 @@ scaled_freq_strmfunc(1:x_len_sub/2+1, y_len_sub+2:scaled_y_len, :) = &
 scaled_freq_strmfunc(x_len_sub+2:scaled_x_len, 1:y_len_sub/2+1, :) = &
 & (2.25_dp, 0.0_dp) * freq_strmfunc(x_len_sub/2+2:x_len_sub, 1:y_len_sub/2+1,:)
 scaled_freq_strmfunc(x_len_sub+2:scaled_x_len, y_len_sub+2:scaled_y_len, :) = &
-& (2.25_dp, 0.0_dp) * freq_strmfunc(x_len_sub/2+2:x_len_sub, y_len_sub/2+2:y_len_sub, :)
+& (2.25_dp, 0.0_dp) * freq_strmfunc(x_len_sub/2+2:x_len_sub, &
+  & y_len_sub/2+2:y_len_sub, :)
 
 ! To avoid convolution, we will calculate the Jacobian in physical space, and
 ! then transform it back to freq space. We want

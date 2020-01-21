@@ -3,7 +3,7 @@
 ! forward in time.
 !
 ! VARIABLES: - TIME_STEP: The subroutine which drives the model's time
-! integration.
+! integration (PUBLIC).
 !
 ! Written By: Jason Turner
 ! Last Updated: January 17, 2020
