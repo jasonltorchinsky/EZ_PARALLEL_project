@@ -1,4 +1,4 @@
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #    This is a makefile that will give instructions on how to link the other
 #    files in this folder.
 #    Please see http://genius2k.is-programmer.com/posts/40301.html for a 
@@ -9,75 +9,91 @@
 #
 #    The -c commands compile without linking every source file. The -o commands
 #    link all of the object files.
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Objects, modules, and compiler.
+# Path to EZ_PARALLEL library.
+EZPPTH = ..\..\EZ_PARALLEL
 
-# Options for Linux, Mac with mpifort installed.
-# Compiler.
-#FC = mpifort
-# Compiler flags.
-#FCFLAGS =
-# Include file search path, e.g., -I/usr/include/
-#INPTHS = -I./EZ_PARALLEL
-# Library search path, e.g., -L./mpi_int_comm.
-#INLIBS = -L./EZ_PARALLEL
-# Link with specific libraries (.a or .so files), e.g. -lgfortran, -lnetcdff.
-#LKLIBS = -lEZ_PARALLEL
+# Command-Line System Options: Linux, Windows.
+CMD = Linux
+# FC options: mpifort, gfortran (with msmpi).
+FC = mpifort
 
-# Options for Windows with msmpi installed.
-# Compiler.
-FC = gfortran
-# Compiler flags.
-FCFLAGS = -O1
-# Include file search path, e.g., -I\usr\include\.
-INCLDPTHS = .\EZ_PARALLEL C:\lib\mpi\include
-INPTHS = $(addprefix -I,$(INCLDPTHS))
-# Library search path, e.g., -L.\mpi_int_comm.
-INCLDLIBS = .\EZ_PARALLEL C:\lib\mpi\lib 
-INLIBS = $(addprefix -L,$(INCLDLIBS))
-# Link with specific libraries (.a or .so files), e.g. -lgfortran, -lnetcdff.
-LIBNAMES = EZ_PARALLEL msmpi
-LKLIBS = $(addprefix -l,$(LIBNAMES))
+# Executable name.
+TRGT = two_layer_qg_solver_parallel.exe
+# .f files.
+SRCS = $(wildcard *.f)
+# .o files.
+OBJS = $(patsubst %.f, %.o, $(SRCS))
+# .mod files.
+MODS = $(patsubst %.f, %.mod, $(SRCS))
 
-TRGT = parallel_two_layer_qg_eqn_solver.exe        # Executable name.
-SRCS = $(wildcard *.f90)                        # Source files.
-OBJS = $(patsubst %.f90, %.o, $(SRCS))           # Object files.
-MODS = $(patsubst %.f90, %.mod, $(SRCS))         # Module files.
+# Set the compiler flags, dependent on the compiler.
+ifeq ($(FC), gfortran)
+  # Path to msmpi include.
+  MPIPTHINC = C:\lib\mpi\include
+  # Path to msmpi lib.
+  MPIPTHLIB = C:\lib\mpi\lib 
+  # Compiler flags.
+  FCFLAGS = -ffree-form
+  # Include file search path, e.g., C:\lib\mpi\include.
+  INCPTHS = $(EZPPTH) $(MPIPTHINC)
+  # Library search path, e.g., C:\lib\mpi\lib.
+  INCLIBS = $(EZPPTH) $(MPIPTHLIB) 
+  # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
+  LIBNAMES = EZ_PARALLEL msmpi
+  
+else ifeq ($(FC), mpifort)
+  # Compiler flags.
+  FCFLAGS = -ffree-form
+  # Include file search paths, e.g., \usr\include\.
+  INCPTHS = $(EZPPTH)
+  # Library search path, e.g., ..\..\EZ_PARALLEL.
+  INCLIBS = $(EZPPTH) 
+  # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
+  LIBNAMES = EZ_PARALLEL
+endif
 
-# Makefile.
+# Add appropriate prefixes to include file search paths, library search paths,
+# and include libraries.
+INCFLAGS = $(addprefix -I,$(INCPTHS))
+INCLIBFLAGS = $(addprefix -L,$(INCLIBS))
+LKLIBFLAGS = $(addprefix -l,$(LIBNAMES))
 
 # Makes the executable.
 $(TRGT): $(OBJS)                # Make executable.
-	$(FC) $(FCFLAGS) $(OBJS) -o $(TRGT) $(INPTHS) $(INLIBS) $(LKLIBS)
+	$(FC) $< -o $(TRGT) $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
-# Make main.o.
+# Compile main.o.
 main.o: main.f90 time_stepper.o initialize.o
-	$(FC) $(FCFLAGS) -c $< $(INPTHS) $(INLIBS) $(LKLIBS)
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
-# Make time_stepper.o.
+# Compile time_stepper.o.
 time_stepper.o: time_stepper.f90 output.o initialize.o jacobian_ekman_shear_solve.o
-	$(FC) $(FCFLAGS) -c $< $(INPTHS) $(INLIBS) $(LKLIBS)
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
-# Make output.o.
+# Compile output.o.
 output.o: output.f90 initialize.o
-	$(FC) $(FCFLAGS) -c $< $(INPTHS) $(INLIBS) $(LKLIBS)
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
-# Make all files without dependencies.
-%.o: %.f90
-	$(FC) $(FCFLAGS) -c $< $(INPTHS) $(INLIBS) $(LKLIBS)
+# Compile all .f files that do not have dependencies. 
+%.o: %.f
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 
-.PHONY : clean
+.PHONY : clean tidy
+# Clean deletes everything besides source code.
 clean:
-# Linux
-#	rm -rf *.o *.mod *.exe
-# Windows
-	del *.mod *.o *.exe
+ifeq ($(CMD), Windows)
+	del *.o *.mod *.exe
+else ifeq ($(CMD), Linux)
+	rm -rf *.o *.mod *.exe
+endif
 
-.PHONY : tidy
+# Tidy deletes all .o and .mod files, keeping the executable.
 tidy:
-# Linux
-#	rm -rf *.o *.mod
-# Windows
-	del *.mod *.o
+ifeq ($(CMD), Windows)
+	del *.o *.mod
+else ifeq ($(CMD), Linux)
+	rm -rf *.o *.mod
+endif

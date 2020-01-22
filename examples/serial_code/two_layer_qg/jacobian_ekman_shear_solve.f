@@ -198,14 +198,10 @@ barotropic_pot_vort = 0.5_dp * (freq_pot_vort_grid(:,:,1) &
 baroclinic_pot_vort = 0.5_dp * (freq_pot_vort_grid(:,:,1) &
 & - freq_pot_vort_grid(:,:,2))
 
-
-
 ! Calculate the streamfunctions for the spectral baroclinic and barotropic
 ! potential vorticities.
 barotropic_pot_vort_strmfunc = spec_inv_barotropic * barotropic_pot_vort
 baroclinic_pot_vort_strmfunc = spec_inv_baroclinic * baroclinic_pot_vort
-
-! EVERYTHING IS FINE UP TO HERE.
 
 ! Calculate the strmfunction for the spectral potential vort.
 freq_strmfunc(:,:,1) = barotropic_pot_vort_strmfunc &

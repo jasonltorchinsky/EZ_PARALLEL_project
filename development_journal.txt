@@ -1,7 +1,9 @@
+CUURENT WORK:
+- Implementing a parallel version of the 3/2-rule for FFTs.
+
 TO DO:
 - Update the serial heat equation code to do stochastic heat equation, and clean
 it up.
-- Clean up the serial QG equation code.
 - Parallelize the heat equation code and the QG code.
 - Run the stochastic heat equation code on a varying number of processors with a
 varying grid size. (Login to math servers?) Record performance statistics (grid 

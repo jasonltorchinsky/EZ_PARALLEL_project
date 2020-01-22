@@ -17,21 +17,21 @@
 LIB = EZ_PARALLEL
 
 # Command-Line System options: Linux, Windows.
-CMD = Windows
+CMD = Linux
 # FC options: mpifort, gfortran (with msmpi).
-FC = gfortran
+FC = mpifort
 
 # Set the compiler flags, dependent on the compiler.
 ifeq ($(FC), gfortran)
   # Path to msmpi include.
-  MPIPTHINC = C:\lib\mpi\include
+  MPIPTHINC = C:/lib/mpi/include
   # Path to msmpi lib.
-  MPIPTHLIB = C:\lib\mpi\lib 
+  MPIPTHLIB = C:/lib/mpi/lib 
   # Compiler flags.
   FCFLAGS = -ffree-form
-  # Include file search path, e.g., C:\lib\mpi\include.
+  # Include file search path, e.g., C:/lib/mpi/include.
   INCPTHS = $(MPIPTHINC)
-  # Library search path, e.g., C:\lib\mpi\lib.
+  # Library search path, e.g., C:/lib/mpi/lib.
   INCLIBS = $(MPIPTHLIB) 
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
   LIBNAMES = msmpi
@@ -39,9 +39,9 @@ ifeq ($(FC), gfortran)
 else ifeq ($(FC), mpifort)
   # Compiler flags.
   FCFLAGS = -ffree-form
-  # Include file search paths, e.g., \usr\include\.
+  # Include file search paths, e.g., /usr/include/.
   INCPTHS = 
-  # Library search path, e.g., ..\..\EZ_PARALLEL.
+  # Library search path, e.g., ../../EZ_PARALLEL.
   INCLIBS =  
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
   LIBNAMES = 
@@ -69,7 +69,8 @@ rfft2db\
 maxval\
 minval\
 spectral_dim1_derivative\
-spectral_dim2_derivative
+spectral_dim2_derivative\
+zero_padding_dble_real
 
 # EZ_PARALLEL source file names.
 EZPARSRCS = $(addsuffix .f,$(basename $(EZPARNMS)))
@@ -131,7 +132,7 @@ dsinti
 # DFFTPACK source file names.
 DFFTPACKSRCS = $(addsuffix .f,$(basename $(DFFTPACKNMS)))
 # EZ_PARALLEL object file names.
-DFFTPACKPTH = ./dfftpack/
+DFFTPACKPTH = ./DFFTPACK/
 DFFTPACKOBJS = $(addprefix $(DFFTPACKPTH), \
 $(addsuffix .o,$(basename $(DFFTPACKNMS))))
 

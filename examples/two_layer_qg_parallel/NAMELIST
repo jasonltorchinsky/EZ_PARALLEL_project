@@ -1,15 +1,15 @@
 &model
-x_len = 4
-y_len = 4
+x_len = 256
+y_len = 256
 dx = 0.0078125
 dy = 0.0078125
-num_timesteps = 2
+num_timesteps = 1000
 init_dt = 0.0005
-pot_vorticity_bound = 150000.0
-deform_wavenumber = 4.0
-rotat_wavenumber = 1.58113883008
-vertical_shear = 0.2
-ekman_friction_coeff = 0.05
+pot_vort_bound = 150000.0
+deform_wavenum = 4.0
+rotat_wavenum = 1.58113883008
+vert_shear = 0.2
+ekman_fric_coeff = 0.05
 biharm_visc_coeff = 0.000000000000005
 biharm_order = 4
 x_ref = 0.0
