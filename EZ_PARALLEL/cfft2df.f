@@ -16,7 +16,7 @@
 !      https://www.netlib.org/fftpack/dp.tgz
 !
 ! Written By: Jason Turner
-! Last Updated: January 15, 2020
+! Last Updated: January 23, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,9 +152,9 @@ END SUBROUTINE SERIAL
 ! - dim2_len_total: dim2 length of the grid (INTEGER).
 ! - dim2_len_dim1_slice_list: List of all dim2_len for all dim1_slice's
 ! (INTEGER, DIMENSION(proc_count)).
-! - dim2_low_index_dim1_slice: Lesser global dim2 index for the portion of
+! - dim1_low_index_dim1_slice: Lesser global dim2 index for the portion of
 ! dim1_slice to be put into dim2_slice (INTEGER).
-! - dim2_high_index_dim1_slice: Greater global dim2 index for the portion of
+! - dim1_high_index_dim1_slice: Greater global dim2 index for the portion of
 ! dim1_slice to be put into dim2_slice (INTEGER).
 ! - dim2_low_index_dim2_slice: Lesser global dim2 index for the portion of
 ! dim2_slice to be filled in by dim1_slice (INTEGER).
@@ -184,8 +184,8 @@ INTEGER :: dim1_len, &
 & dim2_len_dim2_slice, &
 & fill_in_proc_trgt, &
 & dim2_len_total, &
-& dim2_low_index_dim1_slice, &
-& dim2_high_index_dim1_slice, &
+& dim1_low_index_dim1_slice, &
+& dim1_high_index_dim1_slice, &
 & dim2_low_index_dim2_slice, &
 & dim2_high_index_dim2_slice
 INTEGER, DIMENSION(proc_count) :: dim1_len_dim2_slice_list, &
@@ -277,9 +277,9 @@ END DO
 ! Fill in dim2_slice using sections of the dim1_slice's.
 DO ii = 1, proc_count
   fill_in_proc_trgt = MOD(proc_count - proc_id + ii, proc_count)
-  dim2_high_index_dim1_slice = &
+  dim1_high_index_dim1_slice = &
   & SUM(dim1_len_dim2_slice_list(1:fill_in_proc_trgt+1))
-  dim2_low_index_dim1_slice = dim2_high_index_dim1_slice &
+  dim1_low_index_dim1_slice = dim1_high_index_dim1_slice &
   & - dim1_len_dim2_slice_list(fill_in_proc_trgt+1) + 1
   dim2_high_index_dim2_slice = &
   & SUM(dim2_len_dim1_slice_list(1:fill_in_proc_trgt+1))
@@ -296,15 +296,15 @@ DO ii = 1, proc_count
     & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
 
     CALL MPI_SEND( &
-    & dim1_slice(dim2_low_index_dim1_slice:dim2_high_index_dim1_slice,:), &
-    dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
+    & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
     & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
 
   ! If fill_in_proc_trgt > proc_id, SEND then RECV.
   ELSE IF (fill_in_proc_trgt .GT. proc_id) THEN
     CALL MPI_SEND( &
-    & dim1_slice(dim2_low_index_dim1_slice:dim2_high_index_dim1_slice,:), &
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
     & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
     & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
@@ -319,7 +319,7 @@ DO ii = 1, proc_count
   ! dim1_slice.
   ELSE
     dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice) = &
-    & dim1_slice(dim2_low_index_dim1_slice:dim2_high_index_dim1_slice,:)
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:)
   END IF
 END DO
 
@@ -350,9 +350,9 @@ dim2_slice = TRANSPOSE(dim2_slice_tr)
 ! Fill in dim1_slice using sections of the dim2_slice's.
 DO ii = 1, proc_count
   fill_in_proc_trgt = MOD(proc_count - proc_id + ii, proc_count)
-  dim2_high_index_dim1_slice = &
+  dim1_high_index_dim1_slice = &
   & SUM(dim1_len_dim2_slice_list(1:fill_in_proc_trgt+1))
-  dim2_low_index_dim1_slice = dim2_high_index_dim1_slice &
+  dim1_low_index_dim1_slice = dim1_high_index_dim1_slice &
   & - dim1_len_dim2_slice_list(fill_in_proc_trgt+1) + 1
   dim2_high_index_dim2_slice = &
   & SUM(dim2_len_dim1_slice_list(1:fill_in_proc_trgt+1))
@@ -362,7 +362,7 @@ DO ii = 1, proc_count
   ! If fill_in_proc_trgt < proc_id, RECV then SEND.
   IF (fill_in_proc_trgt .LT. proc_id) THEN
     CALL MPI_RECV( &
-    & dim1_slice(dim2_low_index_dim1_slice:dim2_high_index_dim1_slice,:), &
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
     & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
     & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
@@ -382,7 +382,7 @@ DO ii = 1, proc_count
     & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
 
     CALL MPI_RECV( &
-    & dim1_slice(dim2_low_index_dim1_slice:dim2_high_index_dim1_slice,:), &
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
     & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
     & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
@@ -390,7 +390,7 @@ DO ii = 1, proc_count
   ! If fill_in_proc_trgt = proc_id, then fill in dim2_slice from your
   ! dim1_slice.
   ELSE
-    dim1_slice(dim2_low_index_dim1_slice:dim2_high_index_dim1_slice,:) = &
+    dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:) = &
     & dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice)
   END IF
 END DO
@@ -405,7 +405,7 @@ ELSE IF (proc_id .EQ. proc_count-1) THEN
 ELSE
   ! Middle processor, fill in all but first and last part along dimension 2 of
   ! matrix.
-   matrix(:, 1+overlap:dim2_len-overlap) = dim1_slice
+  matrix(:, 1+overlap:dim2_len-overlap) = dim1_slice
 END IF
 
 CALL SHARE_SUBGRID_BOUNDARIES_DBLE_CMPLX_EZP(dim1_len, dim2_len, overlap, &

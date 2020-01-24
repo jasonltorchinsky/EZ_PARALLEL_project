@@ -70,6 +70,7 @@ maxval\
 minval\
 spectral_dim1_derivative\
 spectral_dim2_derivative\
+zero_padding_get_shape\
 zero_padding_dble_real
 
 # EZ_PARALLEL source file names.

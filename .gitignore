@@ -1,0 +1,11 @@
+# Compiled sources, executables, archives
+*.o
+*.mod
+*.exe
+*.a
+
+# Data files
+*.csv
+*.dat
+*.txt
+

@@ -1,9 +1,9 @@
 &test_params
 dim1_len = 5
-dim2_len = 13
-overlap = 2
+dim2_len = 8
+overlap = 1
 dim1_ref = 0.0
 dim2_ref = 0.0
-dim1_spc = 0.25
-dim2_spc = 0.25
+dim1_spc = 1.0
+dim2_spc = 1.0
 /

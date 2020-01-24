@@ -155,7 +155,7 @@ IF ((MOD(dim1_len, 2) .EQ. 0) .AND. (MOD(order, 2) .EQ. 1)) THEN
 END IF
 
 DO i = 1, dim2_len
-  spec_dim1_deriv(:,i) = (DCMPLX(0.0, dim1_wavenums(:)))**(DBLE(order))
+    spec_dim1_deriv(:,i) = (DCMPLX(0.0, dim1_wavenums(:)))**(DBLE(order))
 END DO
 
 END SUBROUTINE PARALLEL
