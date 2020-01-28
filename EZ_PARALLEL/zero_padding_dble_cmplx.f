@@ -1,12 +1,12 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-! ZERO_PADDING_DBLE_REAL. Scales the input matrix by padding zeros (the
+! ZERO_PADDING_DBLE_CMPLX. Scales the input matrix by padding zeros (the
 ! 3/2-rule) for de-aliasing FFTs.
 !
 ! ARGUMENTS: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
-! - matrix: The matrix to be scaled (DOUBLE PRECISION,
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
 ! DIMENSION(dim1_len, dim2_len)).
 ! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
-! - scaled_matrix: The resulting scaled matrix (DOUBLE PRECISION,
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
 ! DIMENSION(scl_dim1_len, scl_dim2_len)).
 ! - overlap: The overlap required for the numerical scheme (INTEGER).
 !
@@ -19,7 +19,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SUBROUTINE ZERO_PADDING_DBLE_REAL_EZP(dim1_len, dim2_len, matrix, &
+SUBROUTINE ZERO_PADDING_DBLE_CMPLX_EZP(dim1_len, dim2_len, matrix, &
 & scl_dim1_len, scl_dim2_len, scaled_matrix, overlap)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -35,8 +35,8 @@ INTEGER :: dim1_len, &
 & proc_id, &
 & proc_count, &
 & ierror
-DOUBLE PRECISION, DIMENSION(dim1_len, dim2_len) :: matrix
-DOUBLE PRECISION, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
 
 CALL MPI_COMM_RANK(MPI_COMM_WORLD, proc_id, ierror)
 CALL MPI_COMM_SIZE(MPI_COMM_WORLD, proc_count, ierror)
@@ -66,10 +66,10 @@ CONTAINS
 ! wavenumbers of the original matrix) with the entries of the original matrix.
 !
 ! VARIABLES: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
-! - matrix: The matrix to be scaled (DOUBLE PRECISION,
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
 ! DIMENSION(dim1_len, dim2_len)).
 ! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
-! - scaled_matrix: The resulting scaled matrix (DOUBLE PRECISION,
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
 ! DIMENSION(scl_dim1_len, scl_dim2_len)).
 ! - scaled_dim1_neg_wavenum_low_index, scaled_dim2_neg_wavenum_low_index: The
 ! lower index of the largest negative wavenumber in scaled_matrix (INTEGER).
@@ -88,8 +88,8 @@ INTEGER :: dim1_len, &
 & scl_dim2_len, &
 & scaled_dim1_neg_wavenum_low_index, &
 & scaled_dim2_neg_wavenum_low_index
-DOUBLE PRECISION, DIMENSION(dim1_len, dim2_len) :: matrix
-DOUBLE PRECISION, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
 
 scaled_matrix = 0.0
 IF (MOD(dim1_len, 2) .EQ. 0) THEN
@@ -135,10 +135,10 @@ END SUBROUTINE SERIAL
 !
 !
 ! VARIABLES: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
-! - matrix: The matrix to be scaled (DOUBLE PRECISION,
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
 ! DIMENSION(dim1_len, dim2_len)).
 ! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
-! - scaled_matrix: The resulting scaled matrix (DOUBLE PRECISION,
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
 ! DIMENSION(scl_dim1_len, scl_dim2_len)).
 ! - overlap: The overlap required for the numerical scheme (INTEGER).
 ! - proc_id: Processor ID (INTEGER).
@@ -171,7 +171,7 @@ END SUBROUTINE SERIAL
 ! lengths for the dim1/dim2 slices (INTEGER, DIMENSION(proc_count)).
 ! - dim1_slice, dim2_slice, scl_dim1_slice, scl_dim2_slice: The slices of the
 ! global matrix and scaled matrix in each dimension (dim1 is a slice whose dim1
-! length matches that of the global grid) (DOUBLE PRECISION, DIMENSION(:,:),
+! length matches that of the global grid) (DOUBLE COMPLEX, DIMENSION(:,:),
 ! ALLOCATABLE).
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SUBROUTINE PARALLEL(dim1_len, dim2_len, matrix, scl_dim1_len, scl_dim2_len, &
@@ -216,12 +216,12 @@ INTEGER :: dim1_len, &
 & dim2_high_index_dim2_slice
 INTEGER, DIMENSION(proc_count) :: dim1_len_dim2_slice_list, &
 & dim2_len_dim1_slice_list
-DOUBLE PRECISION, DIMENSION(dim1_len,dim2_len) :: matrix
-DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: dim1_slice, &
+DOUBLE COMPLEX, DIMENSION(dim1_len,dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(:,:), ALLOCATABLE :: dim1_slice, &
 & dim2_slice, &
 & scl_dim1_slice, &
 & scl_dim2_slice
-DOUBLE PRECISION, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
 
 scaled_matrix = 0.0
 ! Obtain the size of the dim1_slice (excluding overlap).
@@ -325,13 +325,13 @@ DO i = 1, proc_count
     CALL MPI_RECV( &
     & dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
     & dim1_len_dim2_slice_list(proc_id+1) &
-    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
 
     CALL MPI_SEND( &
     & scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
     & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
-    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
 
   ! If fill_in_proc_trgt > proc_id, SEND then RECV.
@@ -339,13 +339,13 @@ DO i = 1, proc_count
     CALL MPI_SEND( &
     & scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
     & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
-    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
 
     CALL MPI_RECV( &
     & dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
     & dim1_len_dim2_slice_list(proc_id+1) &
-    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
 
   ! If fill_in_proc_trgt = proc_id, then fill in dim2_slice from your
@@ -418,13 +418,13 @@ DO i = 1, proc_count
     CALL MPI_RECV( &
     & scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
     & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
-    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
 
     CALL MPI_SEND( &
     & scl_dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
     & dim1_len_dim2_slice_list(proc_id+1) &
-    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
 
   ! If fill_in_proc_trgt > proc_id, SEND then RECV.
@@ -432,13 +432,13 @@ DO i = 1, proc_count
     CALL MPI_SEND( &
     & scl_dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
     & dim1_len_dim2_slice_list(proc_id+1) &
-    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
 
     CALL MPI_RECV( &
     & scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
     & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
-    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
 
   ! If fill_in_proc_trgt = proc_id, then fill in dim2_slice from your
@@ -463,7 +463,7 @@ ELSE
 END IF
 
 
-CALL SHARE_SUBGRID_BOUNDARIES_DBLE_REAL_EZP(scl_dim1_len, scl_dim2_len, &
+CALL SHARE_SUBGRID_BOUNDARIES_DBLE_CMPLX_EZP(scl_dim1_len, scl_dim2_len, &
   & overlap, scaled_matrix)
 
 END SUBROUTINE PARALLEL
@@ -518,5 +518,5 @@ CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
 END SUBROUTINE ERROR_HANDLING
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-END SUBROUTINE ZERO_PADDING_DBLE_REAL_EZP
+END SUBROUTINE ZERO_PADDING_DBLE_CMPLX_EZP
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

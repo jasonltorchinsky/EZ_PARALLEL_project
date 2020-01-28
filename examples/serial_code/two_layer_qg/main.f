@@ -10,7 +10,7 @@
 ! file using this indexing results in dim1 being written as a row.
 !
 ! Written By: Jason Turner
-! Last Updated: January 17, 2020
+! Last Updated: January 28, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PROGRAM TWO_LAYER_QG_SOLVER_SERIAL

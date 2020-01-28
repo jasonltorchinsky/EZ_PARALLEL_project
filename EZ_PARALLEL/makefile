@@ -11,7 +11,7 @@
 # to other directories to be used with other programs.
 #
 # Created by - Jason Turner
-# Last Edited - January 10th, 2020
+# Last Edited - January 24th, 2020
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 LIB = EZ_PARALLEL
@@ -53,103 +53,31 @@ INCFLAGS = $(addprefix -I,$(INCPTHS))
 INCLIBFLAGS = $(addprefix -L,$(INCLIBS))
 LKLIBFLAGS = $(addprefix -l,$(LIBNAMES))
 
-# EZ_PARALLEL file names.
-EZPARNMS = \
-init_mpi\
-fin_mpi\
-decomp_grid\
-identify_ref_point\
-share_subgrid_boundaries_dble_real\
-share_subgrid_boundaries_dble_cmplx\
-get_id\
-cfft2df\
-cfft2db\
-rfft2df\
-rfft2db\
-maxval\
-minval\
-spectral_dim1_derivative\
-spectral_dim2_derivative\
-zero_padding_get_shape\
-zero_padding_dble_real
-
 # EZ_PARALLEL source file names.
-EZPARSRCS = $(addsuffix .f,$(basename $(EZPARNMS)))
+EZPARSRCS = $(wildcard *.f)
 # EZ_PARALLEL object file names.
-EZPAROBJS = $(addsuffix .o,$(basename $(EZPARNMS)))
-
-# dfftpack file names.
-DFFTPACKNMS = \
-zfftb\
-cfftb1\
-zfftf\
-cfftf1\
-zffti\
-cffti1\
-dcosqb\
-cosqb1\
-dcosqf\
-cosqf1\
-dcosqi\
-dcost\
-dcosti\
-ezfft1\
-dzfftb\
-dzfftf\
-dzffti\
-passb\
-passb2\
-passb3\
-passb4\
-passb5\
-passf\
-passf2\
-passf3\
-passf4\
-passf5\
-radb2\
-radb3\
-radb4\
-radb5\
-radbg\
-radf2\
-radf3\
-radf4\
-radf5\
-radfg\
-dfftb\
-rfftb1\
-dfftf\
-rfftf1\
-dffti\
-rffti1\
-dsinqb\
-dsinqf\
-dsinqi\
-dsint\
-sint1\
-dsinti
+EZPAROBJS = $(patsubst %.f, %.o, $(EZPARSRCS))
 
 # DFFTPACK source file names.
-DFFTPACKSRCS = $(addsuffix .f,$(basename $(DFFTPACKNMS)))
+DFFTPACKSRCS = $(wildcard ./DFFTPACK/*.f)
 # EZ_PARALLEL object file names.
-DFFTPACKPTH = ./DFFTPACK/
-DFFTPACKOBJS = $(addprefix $(DFFTPACKPTH), \
-$(addsuffix .o,$(basename $(DFFTPACKNMS))))
+DFFTPACKOBJS = $(patsubst %.f, %.o, $(DFFTPACKSRCS))
+
+# The build directory to hold all .o files.
+OBJS = $(EZPAROBJS) $(DFFTPACKOBJS)
 
 # Compilation rules.
-# Archive all ,.o files to library.
-lib$(LIB).a: $(EZPAROBJS) $(DFFTPACKOBJS)
-	ar crv lib$(LIB).a $(EZPAROBJS) $(DFFTPACKOBJS)
+# Archive all .o files to library.
+lib$(LIB).a: $(OBJS)
+	ar crv lib$(LIB).a $(OBJS)
 
 # Compile all DFFTPACK source code.
-DFFTPACK/%.o: %.f
-	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
+%.o: DFFTPACK/%.f
+	$(FC) -c $< 
 
 # Compile all EZ_PARALLEL source code
-%.o: %.f
+%.o: ./%.f
 	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
-	
 	
 .PHONY : clean tidy
 # Clean deletes everything besides source code.

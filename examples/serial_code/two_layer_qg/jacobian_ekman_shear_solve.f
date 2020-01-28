@@ -223,7 +223,7 @@ jacobian_ekman_shear_grid(:,:,2) = CMPLX((1.0_dp), 0.0_dp, dp) &
 & * CMPLX(vert_shear_sub, 0.0_dp, dp) * spec_x_deriv(:,:,1) &
 & * freq_pot_vort_grid(:,:,2) - CMPLX((rotat_wavenum_sub**(2.0_dp) &
   & - vert_shear_sub * deform_wavenum_sub**(2.0_dp)), 0.0_dp, dp) &
-&* spec_x_deriv(:,:,1) * freq_strmfunc(:,:,2) - CMPLX(ekman_fric_coeff_sub, &
+& * spec_x_deriv(:,:,1) * freq_strmfunc(:,:,2) - CMPLX(ekman_fric_coeff_sub, &
   & 0.0_dp, dp) * spec_laplacian * freq_strmfunc(:,:,2)
 
 ! Must rescale the potential vort and the streamfunction grids to dealias the
@@ -234,29 +234,20 @@ scaled_y_len = 3_qb * y_len_sub/2_qb
   ! Rescale the frequency potential vorticity.
 ALLOCATE(scaled_freq_pot_vort_grid(scaled_x_len, scaled_y_len, 2))
 scaled_freq_pot_vort_grid = (0.0_dp, 0.0_dp)
-scaled_freq_pot_vort_grid(1:x_len_sub/2+1, 1:y_len_sub/2+1, :) = &
-& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(1:x_len_sub/2+1, 1:y_len_sub/2+1, :)
-scaled_freq_pot_vort_grid(1:x_len_sub/2+1, y_len_sub+2:scaled_y_len, :) = &
-& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(1:x_len_sub/2+1, &
-  & y_len_sub/2+2:y_len_sub, :)
-scaled_freq_pot_vort_grid(x_len_sub+2:scaled_x_len, 1:y_len_sub/2+1, :) = &
-& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(x_len_sub/2+2:x_len_sub, &
-  & 1:y_len_sub/2+1, :)
-scaled_freq_pot_vort_grid(x_len_sub+2:scaled_x_len, &
-  & y_len_sub+2:scaled_y_len, :) = (2.25_dp, 0.0_dp) &
-& * freq_pot_vort_grid(x_len_sub/2+2:x_len_sub, y_len_sub/2+2:y_len_sub, :)
+CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_pot_vort_grid(:,:,1), &
+  & scaled_x_len, scaled_y_len, scaled_freq_pot_vort_grid(:,:,1))
+CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_pot_vort_grid(:,:,2), &
+  & scaled_x_len, scaled_y_len, scaled_freq_pot_vort_grid(:,:,2))
+scaled_freq_pot_vort_grid = (2.25_dp, 0.0_dp) * scaled_freq_pot_vort_grid
   ! Rescale the potential vorticity streamfunction.
 ALLOCATE(scaled_freq_strmfunc(scaled_x_len, scaled_y_len, 2))
 scaled_freq_strmfunc = (0.0_dp, 0.0_dp)
-scaled_freq_strmfunc(1:x_len_sub/2+1, 1:y_len_sub/2+1, :) = &
-& (2.25_dp, 0.0_dp) * freq_strmfunc(1:x_len_sub/2+1, 1:y_len_sub/2+1, :)
-scaled_freq_strmfunc(1:x_len_sub/2+1, y_len_sub+2:scaled_y_len, :) = &
-& (2.25_dp, 0.0_dp) * freq_strmfunc(1:x_len_sub/2+1, y_len_sub/2+2:y_len_sub, :)
-scaled_freq_strmfunc(x_len_sub+2:scaled_x_len, 1:y_len_sub/2+1, :) = &
-& (2.25_dp, 0.0_dp) * freq_strmfunc(x_len_sub/2+2:x_len_sub, 1:y_len_sub/2+1,:)
-scaled_freq_strmfunc(x_len_sub+2:scaled_x_len, y_len_sub+2:scaled_y_len, :) = &
-& (2.25_dp, 0.0_dp) * freq_strmfunc(x_len_sub/2+2:x_len_sub, &
-  & y_len_sub/2+2:y_len_sub, :)
+
+CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_strmfunc(:,:,1), scaled_x_len, &
+  & scaled_y_len, scaled_freq_strmfunc(:,:,1))
+CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_strmfunc(:,:,2), scaled_x_len, &
+  & scaled_y_len, scaled_freq_strmfunc(:,:,2))
+scaled_freq_strmfunc = (2.25_dp, 0.0_dp) * scaled_freq_strmfunc
 
 ! To avoid convolution, we will calculate the Jacobian in physical space, and
 ! then transform it back to freq space. We want
@@ -269,7 +260,6 @@ CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_strmfunc_x_deriv(:,:,2))
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_strmfunc_x_deriv = REAL(scaled_strmfunc_x_deriv)
-
   ! Calculate y-derivative of the streamfunction.
 ALLOCATE(scaled_strmfunc_y_deriv(scaled_x_len, scaled_y_len, 2))
 scaled_strmfunc_y_deriv = scaled_spec_y_deriv * scaled_freq_strmfunc
@@ -278,7 +268,6 @@ CALL CFFT2DB(scaled_y_len, scaled_y_len, scaled_strmfunc_y_deriv(:,:,2))
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_strmfunc_y_deriv = REAL(scaled_strmfunc_y_deriv)
-
   ! Calculate x-derivative of the streamfunction.
 ALLOCATE(scaled_pot_vort_x_deriv(scaled_x_len, scaled_y_len, 2))
 scaled_pot_vort_x_deriv = scaled_spec_x_deriv * scaled_freq_pot_vort_grid
@@ -287,7 +276,6 @@ CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_x_deriv(:,:,2))
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_pot_vort_x_deriv = REAL(scaled_pot_vort_x_deriv)
-
   ! Calculate y-derivative of the potential vorticity.
 ALLOCATE(scaled_pot_vort_y_deriv(scaled_x_len, scaled_y_len, 2))
 scaled_pot_vort_y_deriv = scaled_spec_y_deriv * scaled_freq_pot_vort_grid
@@ -296,7 +284,6 @@ CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_y_deriv(:,:,2))
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_pot_vort_y_deriv = REAL(scaled_pot_vort_y_deriv)
-
   ! Calculate the actual Jacobian.
 ALLOCATE(scaled_freq_jacobian(scaled_x_len, scaled_y_len, 2))
 scaled_freq_jacobian = scaled_strmfunc_x_deriv * scaled_pot_vort_y_deriv &
@@ -307,16 +294,11 @@ CALL CFFT2DF(scaled_x_len, scaled_y_len, scaled_freq_jacobian(:,:,2))
 ! larger than they should be, so we must correct that.
 scaled_freq_jacobian = CMPLX((4.0_dp/9.0_dp), 0.0_dp, dp) * scaled_freq_jacobian
 
-
 ! Reduce the Jacobian to the original grid size.
-freq_jacobian(1:x_len_sub/2+1, 1:y_len_sub/2+1, :) = &
-scaled_freq_jacobian(1:x_len_sub/2+1, 1:y_len_sub/2+1, :)
-freq_jacobian(1:x_len_sub/2+1, y_len_sub/2+2:y_len_sub, :) = &
-scaled_freq_jacobian(1:x_len_sub/2+1, y_len_sub+2:scaled_y_len, :)
-freq_jacobian(x_len_sub/2+2:x_len_sub, 1:y_len_sub/2+1, :) = &
-scaled_freq_jacobian(x_len_sub+2:scaled_x_len, 1:y_len_sub/2+1, :)
-freq_jacobian(x_len_sub/2+2:x_len_sub, y_len_sub/2+2:y_len_sub, :) = &
-scaled_freq_jacobian(x_len_sub+2:scaled_x_len, y_len_sub+2:scaled_y_len, :)
+CALL ZERO_PADDING_INV(x_len_sub, y_len_sub, freq_jacobian(:,:,1), &
+  & scaled_x_len, scaled_y_len, scaled_freq_jacobian(:,:,1))
+CALL ZERO_PADDING_INV(x_len_sub, y_len_sub, freq_jacobian(:,:,2), &
+  & scaled_x_len, scaled_y_len, scaled_freq_jacobian(:,:,2))
 
 ! Deallocate all scaled arrays.
 DEALLOCATE(scaled_freq_pot_vort_grid)
@@ -431,6 +413,135 @@ DO i = 1, x_len_sub
 END DO
 
 END SUBROUTINE SPECTRAL_Y_DERIVATIVE
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+! Scales a matrix up by 3/2 in each dimension, for use in zero-padding for FFTs.
+!
+! STRUCTURE: 1) Calculates the size of the scaled matrix, and the index in the
+! scaled matrix of the largest negative wavenumber in both dim1 and dim2.
+! 2) Fills in the non-zero entries of the scaled matrix (which correspond to the
+! wavenumbers of the original matrix) with the entries of the original matrix.
+!
+! VARIABLES: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
+! DIMENSION(dim1_len, dim2_len)).
+! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
+! DIMENSION(scl_dim1_len, scl_dim2_len)).
+! - scaled_dim1_neg_wavenum_low_index, scaled_dim2_neg_wavenum_low_index: The
+! lower index of the largest negative wavenumber in scaled_matrix (INTEGER).
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SUBROUTINE ZERO_PADDING(dim1_len, dim2_len, matrix, scl_dim1_len, &
+  & scl_dim2_len, scaled_matrix)
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+IMPLICIT NONE
+
+INTEGER :: dim1_len, &
+& dim2_len,  &
+& scl_dim1_len, &
+& scl_dim2_len, &
+& scaled_dim1_neg_wavenum_low_index, &
+& scaled_dim2_neg_wavenum_low_index
+DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+
+scaled_matrix = 0.0
+IF (MOD(dim1_len, 2) .EQ. 0) THEN
+  scaled_dim1_neg_wavenum_low_index = dim1_len + 2
+ELSE IF (MOD(dim1_len, 2) .EQ. 1) THEN
+  scaled_dim1_neg_wavenum_low_index = dim1_len + 1
+END IF
+
+IF (MOD(dim2_len, 2) .EQ. 0) THEN
+  scaled_dim2_neg_wavenum_low_index = dim2_len + 2
+ELSE IF (MOD(dim2_len, 2) .EQ. 1) THEN
+  scaled_dim2_neg_wavenum_low_index = dim2_len + 1
+END IF
+
+! This matrix is scale by 3/2 in each dimension, with the indices corresponding
+! to the largest wavenumbers (in magnitude) zeroed out.
+scaled_matrix(1:dim1_len/2+1, 1:dim2_len/2+1) = &
+& matrix(1:dim1_len/2+1, 1:dim2_len/2+1)
+scaled_matrix(1:dim1_len/2+1, &
+  & scaled_dim2_neg_wavenum_low_index:scl_dim2_len) = &
+& matrix(1:dim1_len/2+1, dim2_len/2+2:dim2_len)
+scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & 1:dim2_len/2+1) = &
+& matrix(dim1_len/2+2:dim1_len, 1:dim2_len/2+1)
+scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & scaled_dim2_neg_wavenum_low_index:scl_dim2_len) = &
+& matrix(dim1_len/2+2:dim1_len, dim2_len/2+2:dim2_len)
+
+END SUBROUTINE ZERO_PADDING
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+! Scales down the scaled matrix by padding zeros (the 3/2-rule) for
+! de-aliasing FFTs, i.e., reverses the zero-padding.
+!
+! STRUCTURE: 1) Calculates the size of the scaled matrix, and the index in the
+! scaled matrix of the largest negative wavenumber in both dim1 and dim2.
+! 2) Fills in the non-zero entries of the scaled matrix (which correspond to the
+! wavenumbers of the original matrix) with the entries of the original matrix.
+!
+! VARIABLES: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
+! DIMENSION(dim1_len, dim2_len)).
+! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
+! DIMENSION(scl_dim1_len, scl_dim2_len)).
+! - scaled_dim1_neg_wavenum_low_index, scaled_dim2_neg_wavenum_low_index: The
+! lower index of the largest negative wavenumber in scaled_matrix (INTEGER).
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SUBROUTINE ZERO_PADDING_INV(dim1_len, dim2_len, matrix, scl_dim1_len, &
+  & scl_dim2_len, scaled_matrix)
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+IMPLICIT NONE
+
+INTEGER :: dim1_len, &
+& dim2_len,  &
+& scl_dim1_len, &
+& scl_dim2_len, &
+& scaled_dim1_neg_wavenum_low_index, &
+& scaled_dim2_neg_wavenum_low_index
+DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+
+matrix = 0.0
+IF (MOD(dim1_len, 2) .EQ. 0) THEN
+  scaled_dim1_neg_wavenum_low_index = dim1_len + 2
+ELSE IF (MOD(dim1_len, 2) .EQ. 1) THEN
+  scaled_dim1_neg_wavenum_low_index = dim1_len + 1
+END IF
+
+IF (MOD(dim2_len, 2) .EQ. 0) THEN
+  scaled_dim2_neg_wavenum_low_index = dim2_len + 2
+ELSE IF (MOD(dim2_len, 2) .EQ. 1) THEN
+  scaled_dim2_neg_wavenum_low_index = dim2_len + 1
+END IF
+
+
+
+! This matrix is scale by 3/2 in each dimension, with the indices corresponding
+! to the largest wavenumbers (in magnitude) zeroed out.
+matrix(1:dim1_len/2+1, 1:dim2_len/2+1) = &
+& scaled_matrix(1:dim1_len/2+1, 1:dim2_len/2+1)
+
+matrix(1:dim1_len/2+1, dim2_len/2+2:dim2_len) = &
+& scaled_matrix(1:dim1_len/2+1, scaled_dim2_neg_wavenum_low_index:scl_dim2_len)
+
+matrix(dim1_len/2+2:dim1_len, 1:dim2_len/2+1) = &
+& scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & 1:dim2_len/2+1)
+
+matrix(dim1_len/2+2:dim1_len, dim2_len/2+2:dim2_len) = &
+& scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & scaled_dim2_neg_wavenum_low_index:scl_dim2_len)
+
+END SUBROUTINE ZERO_PADDING_INV
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 END MODULE

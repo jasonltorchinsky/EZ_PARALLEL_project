@@ -9,3 +9,8 @@
 *.dat
 *.txt
 
+# Eclipse files.
+.cproject
+.project
+.settings
+

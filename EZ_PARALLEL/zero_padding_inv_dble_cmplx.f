@@ -1,12 +1,12 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-! ZERO_PADDING_DBLE_REAL. Scales the input matrix by padding zeros (the
-! 3/2-rule) for de-aliasing FFTs.
+! ZERO_PADDING_INV_DBLE_CMPLX. Scales down the scaled matrix by padding zeros
+! (the 3/2-rule) for de-aliasing FFTs, i.e., reverses the zero-padding.
 !
 ! ARGUMENTS: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
-! - matrix: The matrix to be scaled (DOUBLE PRECISION,
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
 ! DIMENSION(dim1_len, dim2_len)).
 ! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
-! - scaled_matrix: The resulting scaled matrix (DOUBLE PRECISION,
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
 ! DIMENSION(scl_dim1_len, scl_dim2_len)).
 ! - overlap: The overlap required for the numerical scheme (INTEGER).
 !
@@ -19,7 +19,7 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-SUBROUTINE ZERO_PADDING_DBLE_REAL_EZP(dim1_len, dim2_len, matrix, &
+SUBROUTINE ZERO_PADDING_INV_DBLE_CMPLX_EZP(dim1_len, dim2_len, matrix, &
 & scl_dim1_len, scl_dim2_len, scaled_matrix, overlap)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -35,8 +35,8 @@ INTEGER :: dim1_len, &
 & proc_id, &
 & proc_count, &
 & ierror
-DOUBLE PRECISION, DIMENSION(dim1_len, dim2_len) :: matrix
-DOUBLE PRECISION, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
 
 CALL MPI_COMM_RANK(MPI_COMM_WORLD, proc_id, ierror)
 CALL MPI_COMM_SIZE(MPI_COMM_WORLD, proc_count, ierror)
@@ -66,10 +66,10 @@ CONTAINS
 ! wavenumbers of the original matrix) with the entries of the original matrix.
 !
 ! VARIABLES: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
-! - matrix: The matrix to be scaled (DOUBLE PRECISION,
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
 ! DIMENSION(dim1_len, dim2_len)).
 ! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
-! - scaled_matrix: The resulting scaled matrix (DOUBLE PRECISION,
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
 ! DIMENSION(scl_dim1_len, scl_dim2_len)).
 ! - scaled_dim1_neg_wavenum_low_index, scaled_dim2_neg_wavenum_low_index: The
 ! lower index of the largest negative wavenumber in scaled_matrix (INTEGER).
@@ -88,10 +88,10 @@ INTEGER :: dim1_len, &
 & scl_dim2_len, &
 & scaled_dim1_neg_wavenum_low_index, &
 & scaled_dim2_neg_wavenum_low_index
-DOUBLE PRECISION, DIMENSION(dim1_len, dim2_len) :: matrix
-DOUBLE PRECISION, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
 
-scaled_matrix = 0.0
+matrix = 0.0
 IF (MOD(dim1_len, 2) .EQ. 0) THEN
   scaled_dim1_neg_wavenum_low_index = dim1_len + 2
 ELSE IF (MOD(dim1_len, 2) .EQ. 1) THEN
@@ -106,17 +106,19 @@ END IF
 
 ! This matrix is scale by 3/2 in each dimension, with the indices corresponding
 ! to the largest wavenumbers (in magnitude) zeroed out.
-scaled_matrix(1:dim1_len/2+1, 1:dim2_len/2+1) = &
-& matrix(1:dim1_len/2+1, 1:dim2_len/2+1)
-scaled_matrix(1:dim1_len/2+1, &
-  & scaled_dim2_neg_wavenum_low_index:scl_dim2_len) = &
-& matrix(1:dim1_len/2+1, dim2_len/2+2:dim2_len)
-scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
-  & 1:dim2_len/2+1) = &
-& matrix(dim1_len/2+2:dim1_len, 1:dim2_len/2+1)
-scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
-  & scaled_dim2_neg_wavenum_low_index:scl_dim2_len) = &
-& matrix(dim1_len/2+2:dim1_len, dim2_len/2+2:dim2_len)
+matrix(1:dim1_len/2+1, 1:dim2_len/2+1) = &
+& scaled_matrix(1:dim1_len/2+1, 1:dim2_len/2+1)
+
+matrix(1:dim1_len/2+1, dim2_len/2+2:dim2_len) = &
+& scaled_matrix(1:dim1_len/2+1, scaled_dim2_neg_wavenum_low_index:scl_dim2_len)
+
+matrix(dim1_len/2+2:dim1_len, 1:dim2_len/2+1) = &
+& scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & 1:dim2_len/2+1)
+
+matrix(dim1_len/2+2:dim1_len, dim2_len/2+2:dim2_len) = &
+& scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & scaled_dim2_neg_wavenum_low_index:scl_dim2_len)
 
 END SUBROUTINE SERIAL
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -135,10 +137,10 @@ END SUBROUTINE SERIAL
 !
 !
 ! VARIABLES: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
-! - matrix: The matrix to be scaled (DOUBLE PRECISION,
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
 ! DIMENSION(dim1_len, dim2_len)).
 ! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
-! - scaled_matrix: The resulting scaled matrix (DOUBLE PRECISION,
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
 ! DIMENSION(scl_dim1_len, scl_dim2_len)).
 ! - overlap: The overlap required for the numerical scheme (INTEGER).
 ! - proc_id: Processor ID (INTEGER).
@@ -171,13 +173,13 @@ END SUBROUTINE SERIAL
 ! lengths for the dim1/dim2 slices (INTEGER, DIMENSION(proc_count)).
 ! - dim1_slice, dim2_slice, scl_dim1_slice, scl_dim2_slice: The slices of the
 ! global matrix and scaled matrix in each dimension (dim1 is a slice whose dim1
-! length matches that of the global grid) (DOUBLE PRECISION, DIMENSION(:,:),
+! length matches that of the global grid) (DOUBLE COMPLEX, DIMENSION(:,:),
 ! ALLOCATABLE).
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SUBROUTINE PARALLEL(dim1_len, dim2_len, matrix, scl_dim1_len, scl_dim2_len, &
   & scaled_matrix, overlap, proc_id, proc_count)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-! FIX THIS UP FOR USE WITH INPUTTING THE SCALED MATIRX DIMENSIONS.
+
 USE MPI
 
 IMPLICIT NONE
@@ -194,10 +196,10 @@ INTEGER :: dim1_len, &
 & dim2_len_dim1_slice, &
 & dim1_len_dim2_slice, &
 & dim2_len_dim2_slice, &
-& scl_dim1_len_dim1_slice, &
-& scl_dim2_len_dim1_slice, &
-& scl_dim1_len_dim2_slice, &
-& scl_dim2_len_dim2_slice, &
+& dim1_len_scl_dim1_slice, &
+& dim2_len_scl_dim1_slice, &
+& dim1_len_scl_dim2_slice, &
+& dim2_len_scl_dim2_slice, &
 & scl_dim1_slice_pos_wvnm_low_ind, &
 & scl_dim1_slice_pos_wvnm_high_ind, &
 & scl_dim1_slice_neg_wvnm_low_ind, &
@@ -214,18 +216,142 @@ INTEGER :: dim1_len, &
 & dim1_high_index_dim1_slice, &
 & dim2_low_index_dim2_slice, &
 & dim2_high_index_dim2_slice
-INTEGER, DIMENSION(proc_count) :: dim1_len_dim2_slice_list, &
+INTEGER, DIMENSION(proc_count) :: dim1_len_scl_dim2_slice_list, &
+& dim1_len_dim2_slice_list, &
 & dim2_len_dim1_slice_list
-DOUBLE PRECISION, DIMENSION(dim1_len,dim2_len) :: matrix
-DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE :: dim1_slice, &
+DOUBLE COMPLEX, DIMENSION(dim1_len,dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(:,:), ALLOCATABLE :: dim1_slice, &
 & dim2_slice, &
 & scl_dim1_slice, &
 & scl_dim2_slice
-DOUBLE PRECISION, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
 
-scaled_matrix = 0.0
-! Obtain the size of the dim1_slice (excluding overlap).
+matrix = 0.0
+! Obtain the size of the scl_dim1_slice (excluding overlap).
+dim1_len_scl_dim1_slice = scl_dim1_len
+! Middle processor.
+IF (MOD(proc_id, proc_count-1) .NE. 0) THEN
+  dim2_len_scl_dim1_slice = scl_dim2_len - 2 * overlap
+! Processor 0 or proc_count-1.
+ELSE
+  dim2_len_scl_dim1_slice = scl_dim2_len - overlap
+END IF
+! Obtain the scl_dim1_slice entries.
+ALLOCATE(scl_dim1_slice(dim1_len_scl_dim1_slice, dim2_len_scl_dim1_slice))
+scl_dim1_slice = 0.0
+! Processor 0, doesn't need last parts of dim2.
+IF (proc_id .EQ. 0) THEN
+  scl_dim1_slice = scaled_matrix(:,1:scl_dim2_len-overlap)
+! Last processor, doesn't need first part of dim2.
+ELSE IF (proc_id .EQ. proc_count-1) THEN
+  scl_dim1_slice = scaled_matrix(:,overlap+1:scl_dim2_len)
+! Middle processor, doesn't need first or last part of dim2.
+ELSE
+  scl_dim1_slice = scaled_matrix(:,overlap+1:scl_dim2_len-overlap)
+END IF
+
+! Scale in the dim1 direction.
 dim1_len_dim1_slice = dim1_len
+dim2_len_dim1_slice = dim2_len_scl_dim1_slice
+ALLOCATE(dim1_slice(dim1_len_dim1_slice, dim2_len_dim1_slice))
+dim1_slice = 0.0
+! Determine the indices of scl_dim1_slice that dim1_slice entires go into.
+scl_dim1_slice_pos_wvnm_low_ind = 1
+scl_dim1_slice_pos_wvnm_high_ind = dim1_len_dim1_slice/2 + 1
+scl_dim1_slice_neg_wvnm_high_ind = dim1_len_scl_dim1_slice
+IF (MOD(dim1_len_dim1_slice, 2) .EQ. 0) THEN
+  scl_dim1_slice_neg_wvnm_low_ind = dim1_len_dim1_slice + 2
+ELSE IF (MOD(dim1_len_dim1_slice, 2) .EQ. 1) THEN
+  scl_dim1_slice_neg_wvnm_low_ind = dim1_len_dim1_slice + 1
+END IF
+
+! Fill in dim1_slice.
+dim1_slice(1:dim1_len_dim1_slice/2 + 1,:) = scl_dim1_slice( &
+  & scl_dim1_slice_pos_wvnm_low_ind:scl_dim1_slice_pos_wvnm_high_ind,:)
+dim1_slice(dim1_len_dim1_slice/2 + 2:dim1_len_dim1_slice,:) = scl_dim1_slice( &
+  & scl_dim1_slice_neg_wvnm_low_ind:scl_dim1_slice_neg_wvnm_high_ind,:)
+
+! At this point, we've scaled down in dim1. Now we must do the same for dim2.
+! Obtain the size of scl_dim2_slice.
+  ! Divide scl_dim1_len as evenly as possible.
+dim1_len_scl_dim2_slice = dim1_len/proc_count
+DO i = 1, proc_count
+  IF ((i - 1) .LT. MOD(dim1_len, proc_count)) THEN
+    dim1_len_scl_dim2_slice_list(i) = dim1_len_scl_dim2_slice + 1
+  ELSE
+    dim1_len_scl_dim2_slice_list(i) = dim1_len_scl_dim2_slice
+  END IF
+END DO
+dim1_len_scl_dim2_slice = dim1_len_scl_dim2_slice_list(proc_id + 1)
+CALL MPI_ALLREDUCE(dim2_len_scl_dim1_slice, dim2_len_scl_dim2_slice, 1, &
+& MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD, ierror)
+ALLOCATE(scl_dim2_slice(dim1_len_scl_dim2_slice, dim2_len_scl_dim2_slice))
+scl_dim2_slice = 0.0
+
+! Obtain dim2_len_dim1_slice_list for use in filling in scl_dim2_slices.
+dim2_len_dim1_slice = dim2_len_scl_dim2_slice/proc_count
+DO i = 1, proc_count
+  IF ((i - 1) .LT. MOD(dim2_len_scl_dim2_slice, proc_count)) THEN
+    dim2_len_dim1_slice_list(i) = dim2_len_dim1_slice + 1
+  ELSE
+    dim2_len_dim1_slice_list(i) = dim2_len_dim1_slice
+  END IF
+END DO
+dim2_len_dim1_slice = dim2_len_dim1_slice_list(proc_id + 1)
+
+! Fill in scl_dim2_slice using sections from the dim1_slices.
+DO i = 1, proc_count
+  fill_in_proc_trgt = MOD(proc_count - proc_id + i, proc_count)
+  dim1_high_index_dim1_slice = &
+  & SUM(dim1_len_scl_dim2_slice_list(1:fill_in_proc_trgt+1))
+  dim1_low_index_dim1_slice = dim1_high_index_dim1_slice &
+  & - dim1_len_scl_dim2_slice_list(fill_in_proc_trgt+1) + 1
+  dim2_high_index_dim2_slice = &
+  & SUM(dim2_len_dim1_slice_list(1:fill_in_proc_trgt+1))
+  dim2_low_index_dim2_slice = dim2_high_index_dim2_slice &
+  & - dim2_len_dim1_slice_list(fill_in_proc_trgt+1) + 1
+
+  ! If fill_in_proc_trgt < proc_id, RECV then SEND.
+  IF (fill_in_proc_trgt .LT. proc_id) THEN
+
+    CALL MPI_RECV( &
+    & scl_dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
+    & dim1_len_scl_dim2_slice_list(proc_id+1) &
+    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_COMPLEX, &
+    & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
+
+    CALL MPI_SEND( &
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
+    & dim1_len_scl_dim2_slice_list(fill_in_proc_trgt+1) &
+    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
+    & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
+
+  ! If fill_in_proc_trgt > proc_id, SEND then RECV.
+  ELSE IF (fill_in_proc_trgt .GT. proc_id) THEN
+    CALL MPI_SEND( &
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
+    & dim1_len_scl_dim2_slice_list(fill_in_proc_trgt+1) &
+    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
+    & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
+
+    CALL MPI_RECV( &
+    & scl_dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
+    & dim1_len_scl_dim2_slice_list(proc_id+1) &
+    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_COMPLEX, &
+    & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
+
+  ! If fill_in_proc_trgt = proc_id, then fill in dim2_slice from your
+  ! dim1_slice.
+  ELSE
+    scl_dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice) = &
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:)
+  END IF
+END DO
+
+! Scale the dim2 slice.
+dim1_len_dim2_slice = dim1_len_scl_dim2_slice
+! Obtain the size of the dim1_slice (excluding overlap).
+dim2_len_dim1_slice = dim2_len
 ! Middle processor.
 IF (MOD(proc_id, proc_count-1) .NE. 0) THEN
   dim2_len_dim1_slice = dim2_len - 2 * overlap
@@ -233,70 +359,35 @@ IF (MOD(proc_id, proc_count-1) .NE. 0) THEN
 ELSE
   dim2_len_dim1_slice = dim2_len - overlap
 END IF
-! Obtain the dim1_slice entries.
-ALLOCATE(dim1_slice(dim1_len_dim1_slice, dim2_len_dim1_slice))
-! Processor 0, doesn't need last parts of dim2.
-IF (proc_id .EQ. 0) THEN
-  dim1_slice = matrix(:,1:dim2_len-overlap)
-! Last processor, doesn't need first part of dim2.
-ELSE IF (proc_id .EQ. proc_count-1) THEN
-  dim1_slice = matrix(:,overlap+1:dim2_len)
-! Middle processor, doesn't need first or last part of dim2.
-ELSE
-  dim1_slice = matrix(:,overlap+1:dim2_len-overlap)
-END IF
-
-! Obtain the size of the scaled dim1 slice.
-scl_dim1_len_dim1_slice = scl_dim1_len
-scl_dim2_len_dim1_slice = dim2_len_dim1_slice
-
-! Scale the dim1_slice.
-ALLOCATE(scl_dim1_slice(scl_dim1_len_dim1_slice, scl_dim2_len_dim1_slice))
-scl_dim1_slice = 0.0
-! Determine the indices of scl_dim1_slice that dim1_slice entires go into.
-scl_dim1_slice_pos_wvnm_low_ind = 1
-scl_dim1_slice_pos_wvnm_high_ind = dim1_len_dim1_slice/2 + 1
-scl_dim1_slice_neg_wvnm_high_ind = scl_dim1_len_dim1_slice
-IF (MOD(dim1_len_dim1_slice, 2) .EQ. 0) THEN
-  scl_dim1_slice_neg_wvnm_low_ind = dim1_len_dim1_slice + 2
-ELSE IF (MOD(dim1_len_dim1_slice, 2) .EQ. 1) THEN
-  scl_dim1_slice_neg_wvnm_low_ind = dim1_len_dim1_slice + 1
-END IF
-
-! Fill in the scaled dim1_slice.
-scl_dim1_slice( &
-  & scl_dim1_slice_pos_wvnm_low_ind:scl_dim1_slice_pos_wvnm_high_ind,:) = &
-& dim1_slice(1:dim1_len_dim1_slice/2 + 1,:)
-scl_dim1_slice( &
-  & scl_dim1_slice_neg_wvnm_low_ind:scl_dim1_slice_neg_wvnm_high_ind,:) = &
-& dim1_slice(dim1_len_dim1_slice/2 + 2:dim1_len_dim1_slice,:)
-
-! At this point, we've scaled up in dim1. Now we must do the same for dim2.
-
-! Obtain the size of the dim2 slice.
-  ! Divide dim1_len of matrix as evenly as possible.
-dim1_len_dim2_slice = scl_dim1_len/proc_count
-  ! Now check if dim2_slice of a given processor needs to take additional row,
-  ! i.e., dim1_len % proc_count != 0.
-DO i = 1, proc_count
-  IF ((i-1) .LT. MODULO(scl_dim1_len, proc_count)) THEN
-    dim1_len_dim2_slice_list(i) = dim1_len_dim2_slice + 1
-    ! The indexing is weird here since processors start at index 0 but arrays
-    ! start at index 1. Thus, entry ii of this corresponds to processor (ii-1).
-  ELSE
-    dim1_len_dim2_slice_list(i) = dim1_len_dim2_slice
-  END IF
-END DO
-dim1_len_dim2_slice = dim1_len_dim2_slice_list(proc_id + 1)
-CALL MPI_ALLREDUCE(dim2_len_dim1_slice, dim2_len_dim2_slice, 1, MPI_INTEGER, &
-& MPI_SUM, MPI_COMM_WORLD, ierror)
+CALL MPI_ALLREDUCE(dim2_len_dim1_slice, dim2_len_dim2_slice, 1, &
+& MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD, ierror)
 ALLOCATE(dim2_slice(dim1_len_dim2_slice, dim2_len_dim2_slice))
+dim2_slice = 0.0
 
-! For later use, obtain a list of all of the dim2_len_dim1_slice's.
-  ! Divide dim2_len_dim2_slice of matrix as evenly as possible.
+! Determine the indices of scl_dim2_slice that go ino dim2_slice entires.
+scl_dim2_slice_pos_wvnm_low_ind = 1
+scl_dim2_slice_pos_wvnm_high_ind = dim2_len_dim2_slice/2 + 1
+scl_dim2_slice_neg_wvnm_high_ind = dim2_len_scl_dim2_slice
+IF (MOD(dim2_len_dim2_slice, 2) .EQ. 0) THEN
+  scl_dim2_slice_neg_wvnm_low_ind = dim2_len_dim2_slice + 2
+ELSE IF (MOD(dim2_len_dim2_slice, 2) .EQ. 1) THEN
+  scl_dim2_slice_neg_wvnm_low_ind = dim2_len_dim2_slice + 1
+END IF
+
+! Fill in dim2_slice.
+dim2_slice(:,1:dim2_len_dim2_slice/2 + 1) = scl_dim2_slice(:, &
+  & scl_dim2_slice_pos_wvnm_low_ind:scl_dim2_slice_pos_wvnm_high_ind)
+dim2_slice(:,dim2_len_dim2_slice/2 + 2:dim2_len_dim2_slice) = &
+& scl_dim2_slice(:, &
+  & scl_dim2_slice_neg_wvnm_low_ind:scl_dim2_slice_neg_wvnm_high_ind)
+
+! We have now scaled down in dim2. Now to construct the dim1 slices and fill in
+! the smaller matix.
+! Reallocate dim1_slice.
+DEALLOCATE(dim1_slice)
+dim1_len_dim1_slice = dim1_len
+! Evenly divide dim2_len of the matrix.
 dim2_len_dim1_slice = dim2_len_dim2_slice/proc_count
-  ! Now check if dim2_slice of a given processor needs to take additional row,
-  ! i.e., dim1_len % proc_count != 0.
 DO i = 1, proc_count
   IF ((i-1) .LT. MODULO(dim2_len_dim2_slice, proc_count)) THEN
     dim2_len_dim1_slice_list(i) = dim2_len_dim1_slice + 1
@@ -307,101 +398,23 @@ DO i = 1, proc_count
   END IF
 END DO
 dim2_len_dim1_slice = dim2_len_dim1_slice_list(proc_id + 1)
+ALLOCATE(dim1_slice(dim1_len_dim1_slice,dim2_len_dim1_slice))
+dim1_slice = 0.0
 
-! Fill in the dim2_slice with sections of the scl_dim1_slice's.
+! Obtain dim1_len_dim2_slice_list for section communication.
+dim1_len_dim2_slice = dim1_len/proc_count
 DO i = 1, proc_count
-  fill_in_proc_trgt = MOD(proc_count - proc_id + i, proc_count)
-  dim1_high_index_dim1_slice = &
-  & SUM(dim1_len_dim2_slice_list(1:fill_in_proc_trgt+1))
-  dim1_low_index_dim1_slice = dim1_high_index_dim1_slice &
-  & - dim1_len_dim2_slice_list(fill_in_proc_trgt+1) + 1
-  dim2_high_index_dim2_slice = &
-  & SUM(dim2_len_dim1_slice_list(1:fill_in_proc_trgt+1))
-  dim2_low_index_dim2_slice = dim2_high_index_dim2_slice &
-  & - dim2_len_dim1_slice_list(fill_in_proc_trgt+1) + 1
-
-  ! If fill_in_proc_trgt < proc_id, RECV then SEND.
-  IF (fill_in_proc_trgt .LT. proc_id) THEN
-    CALL MPI_RECV( &
-    & dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
-    & dim1_len_dim2_slice_list(proc_id+1) &
-    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_PRECISION, &
-    & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
-
-    CALL MPI_SEND( &
-    & scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
-    & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
-    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_PRECISION, &
-    & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
-
-  ! If fill_in_proc_trgt > proc_id, SEND then RECV.
-  ELSE IF (fill_in_proc_trgt .GT. proc_id) THEN
-    CALL MPI_SEND( &
-    & scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
-    & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
-    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_PRECISION, &
-    & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
-
-    CALL MPI_RECV( &
-    & dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
-    & dim1_len_dim2_slice_list(proc_id+1) &
-    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_PRECISION, &
-    & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
-
-  ! If fill_in_proc_trgt = proc_id, then fill in dim2_slice from your
-  ! dim1_slice.
-  ELSE
-    dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice) = &
-    & scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:)
-  END IF
-END DO
-
-! Scale the dim2_slice.
-scl_dim1_len_dim2_slice = dim1_len_dim2_slice
-scl_dim2_len_dim2_slice = (3 * dim2_len_dim2_slice) / 2
-ALLOCATE(scl_dim2_slice(scl_dim1_len_dim2_slice, scl_dim2_len_dim2_slice))
-scl_dim2_slice = 0.0
-! Determine the indices of scl_dim1_slice that dim1_slice entires go into.
-scl_dim2_slice_pos_wvnm_low_ind = 1
-scl_dim2_slice_pos_wvnm_high_ind = dim2_len_dim2_slice/2 + 1
-scl_dim2_slice_neg_wvnm_high_ind = scl_dim2_len_dim2_slice
-IF (MOD(dim2_len_dim2_slice, 2) .EQ. 0) THEN
-  scl_dim2_slice_neg_wvnm_low_ind = dim2_len_dim2_slice + 2
-ELSE IF (MOD(dim2_len_dim2_slice, 2) .EQ. 1) THEN
-  scl_dim2_slice_neg_wvnm_low_ind = dim2_len_dim2_slice + 1
-END IF
-
-! Fill in the scaled dim2_slice.
-scl_dim2_slice(:, &
-  & scl_dim2_slice_pos_wvnm_low_ind:scl_dim2_slice_pos_wvnm_high_ind) = &
-& dim2_slice(:,1:dim2_len_dim2_slice/2 + 1)
-scl_dim2_slice(:, &
-  & scl_dim2_slice_neg_wvnm_low_ind:scl_dim2_slice_neg_wvnm_high_ind) = &
-& dim2_slice(:,dim2_len_dim2_slice/2 + 2:dim2_len_dim2_slice)
-
-! At this point, we have scaled the sub-grids along dimension 2 as well.
-! Reallocate the scl_dim1_slice to be scaled in both dimensions.
-DEALLOCATE(scl_dim1_slice)
-scl_dim1_len_dim1_slice = scl_dim1_len
-
-! Calculate the new dim2_len_dim1_slice_list.
-! Divide dim2_len_dim2_slice of matrix as evenly as possible.
-scl_dim2_len_dim1_slice = scl_dim2_len_dim2_slice/proc_count
-  ! Now check if dim2_slice of a given processor needs to take additional row,
-  ! i.e., dim1_len % proc_count != 0.
-DO i = 1, proc_count
-  IF ((i-1) .LT. MODULO(scl_dim2_len_dim2_slice, proc_count)) THEN
-    dim2_len_dim1_slice_list(i) = scl_dim2_len_dim1_slice + 1
+  IF ((i-1) .LT. MODULO(dim1_len, proc_count)) THEN
+    dim1_len_dim2_slice_list(i) = dim1_len_dim2_slice + 1
     ! The indexing is weird here since processors start at index 0 but arrays
-    ! start at index 1. Thus, entry ii of this corresponds to processor (ii-1).
+    ! start at index 1. Thus, entry i of this corresponds to processor (i-1).
   ELSE
-    dim2_len_dim1_slice_list(i) = scl_dim2_len_dim1_slice
+    dim1_len_dim2_slice_list(i) = dim1_len_dim2_slice
   END IF
 END DO
-scl_dim2_len_dim1_slice = dim2_len_dim1_slice_list(proc_id + 1)
-ALLOCATE(scl_dim1_slice(scl_dim1_len_dim1_slice, scl_dim2_len_dim1_slice))
+dim1_len_dim2_slice = dim1_len_dim2_slice_list(proc_id + 1)
 
-! Fill in the scl_dim1_slice with sections of the scl_dim2_slice's.
+! Fill in dim1_slice using sections from the dim2_slices.
 DO i = 1, proc_count
   fill_in_proc_trgt = MOD(proc_count - proc_id + i, proc_count)
   dim1_high_index_dim1_slice = &
@@ -416,55 +429,57 @@ DO i = 1, proc_count
   ! If fill_in_proc_trgt < proc_id, RECV then SEND.
   IF (fill_in_proc_trgt .LT. proc_id) THEN
     CALL MPI_RECV( &
-    & scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
     & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
-    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
 
     CALL MPI_SEND( &
-    & scl_dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
+    & dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
     & dim1_len_dim2_slice_list(proc_id+1) &
-    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
 
   ! If fill_in_proc_trgt > proc_id, SEND then RECV.
   ELSE IF (fill_in_proc_trgt .GT. proc_id) THEN
     CALL MPI_SEND( &
-    & scl_dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
+    & dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice), &
     & dim1_len_dim2_slice_list(proc_id+1) &
-    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(fill_in_proc_trgt+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, fill_in_proc_trgt, MPI_COMM_WORLD, ierror)
 
     CALL MPI_RECV( &
-    & scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
+    & dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:), &
     & dim1_len_dim2_slice_list(fill_in_proc_trgt+1) &
-    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_PRECISION, &
+    & * dim2_len_dim1_slice_list(proc_id+1), MPI_DOUBLE_COMPLEX, &
     & fill_in_proc_trgt, proc_id, MPI_COMM_WORLD, status, ierror)
 
   ! If fill_in_proc_trgt = proc_id, then fill in dim2_slice from your
   ! dim1_slice.
   ELSE
-    scl_dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:) = &
-    & scl_dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice)
+    dim1_slice(dim1_low_index_dim1_slice:dim1_high_index_dim1_slice,:) = &
+    & dim2_slice(:,dim2_low_index_dim2_slice:dim2_high_index_dim2_slice)
   END IF
 END DO
 
-! Fill in interior of scaled_matrix.
+! Use dim1_slices to file in the interiors of matrix, and then call
+! SHARE_SUBGRID_BOUNDARIES to fill in the boundaries of the sub-grids.
+
+! Fill in interior of matrix.
 IF (proc_id .EQ. 0) THEN
   ! First processor, fill in all except last part along dimension 2 of matrix.
-  scaled_matrix(:, 1:scl_dim2_len-overlap) = scl_dim1_slice
+  matrix(:, 1:dim2_len-overlap) = dim1_slice
 ELSE IF (proc_id .EQ. proc_count-1) THEN
   ! Last processor, fill in all but first part along dimension 2 of matrix.
-  scaled_matrix(:, 1+overlap:scl_dim2_len) = scl_dim1_slice
+  matrix(:, 1+overlap:dim2_len) = dim1_slice
 ELSE
   ! Middle processor, fill in all but first and last part along dimension 2 of
   ! matrix.
-  scaled_matrix(:, 1+overlap:scl_dim2_len-overlap) = scl_dim1_slice
+  matrix(:, 1+overlap:dim2_len-overlap) = dim1_slice
 END IF
 
 
-CALL SHARE_SUBGRID_BOUNDARIES_DBLE_REAL_EZP(scl_dim1_len, scl_dim2_len, &
-  & overlap, scaled_matrix)
+CALL SHARE_SUBGRID_BOUNDARIES_DBLE_CMPLX_EZP(dim1_len, dim2_len, overlap, matrix)
 
 END SUBROUTINE PARALLEL
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -518,5 +533,5 @@ CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
 END SUBROUTINE ERROR_HANDLING
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-END SUBROUTINE ZERO_PADDING_DBLE_REAL_EZP
+END SUBROUTINE ZERO_PADDING_INV_DBLE_CMPLX_EZP
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
