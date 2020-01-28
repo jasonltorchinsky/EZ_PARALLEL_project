@@ -37,7 +37,7 @@
 ! fills in the initial condition (PUBLIC).
 !
 ! Written By: Jason Turner
-! Last Updated: January 21, 2020
+! Last Updated: January 28, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MODULE INITIALIZE
@@ -124,6 +124,8 @@ END SUBROUTINE INITIALIZE_PARAMETERS
 SUBROUTINE INITIALIZE_GRID
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+USE MPI ! ADDED TO PARALLEL
+
 IMPLICIT NONE
 
 INTEGER(qb) :: i, &
@@ -145,6 +147,11 @@ DO j = 1, y_len
       & 0.0_dp, dp)
   END DO
 END DO
+
+CALL SHARE_SUBGRID_BOUNDARIES_DBLE_CMPLX_EZP(x_len, y_len, 0_qb, &
+  & phys_pot_vort_grid(:,:,1_qb)) ! ADDED TO PARALLEL
+CALL SHARE_SUBGRID_BOUNDARIES_DBLE_CMPLX_EZP(x_len, y_len, 0_qb, &
+  & phys_pot_vort_grid(:,:,2_qb)) ! ADDED TO PARALLEL
 
 
 END SUBROUTINE INITIALIZE_GRID
@@ -172,8 +179,7 @@ REAL(dp), INTENT(in) :: x_pos, &
 
 pi_dp = 4.0_dp * ATAN(1.0_dp)
 
-! f(x, y) = sin(x/x_len * 2 * pi)
-output = SIN(x_pos/x_len * 2.0_dp * pi_dp)
+output = SIN(x_pos * pi_dp) * COS(y_pos * pi_dp)
 
 END FUNCTION INITIAL_CONDITION_1
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -200,8 +206,7 @@ REAL(dp), INTENT(in) :: x_pos, &
 
 pi_dp = 4.0_dp * ATAN(1.0_dp)
 
-! f(x, y) = COS(y/y_len * 2 * pi)
-output = COS(y_pos/y_len * 2.0_dp * pi_dp)
+output = COS(x_pos * y_pos * pi_dp)
 
 END FUNCTION INITIAL_CONDITION_2
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

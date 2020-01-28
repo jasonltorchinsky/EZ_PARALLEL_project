@@ -6,7 +6,7 @@
 ! integration (PUBLIC).
 !
 ! Written By: Jason Turner
-! Last Updated: January 21, 2020
+! Last Updated: January 28, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MODULE TIME_STEPPER
@@ -59,6 +59,8 @@ CONTAINS
 SUBROUTINE TIME_STEP
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+USE MPI ! ADDED TO PARALLEL
+
 USE INITIALIZE
 USE JACOBIAN_EKMAN_SHEAR_SOLVE
 USE OUTPUT
@@ -67,7 +69,8 @@ IMPLICIT NONE
 
 INTEGER(qb) :: step, &
 & i, &
-& j
+& j, &
+& proc_id ! ADDED TO PARALLEL
 REAL(dp) :: time, &
 & dt, &
 & error_toler_0
@@ -78,10 +81,22 @@ COMPLEX(dp), DIMENSION(x_len, y_len) :: spec_x_deriv, &
 COMPLEX(dp), DIMENSION(x_len, y_len, 2):: spec_biharm, &
 & freq_pot_vort_grid
 
+CALL GET_ID_EZP(proc_id) ! ADDED TO PARALLEL
+
 ! Abort if output_freq is too big.
-IF (num_timesteps .LT. output_freq) THEN
+!/* CHANGED FOR PARALLEL
+!IF (num_timesteps .LT. output_freq) THEN
+!  ERROR STOP 'Output frequency too large. Please reduce.'
+!END IF
+!*/
+
+!/* ADDED TO PARALLEL
+IF ((proc_id .EQ. 0) .AND. (num_timesteps .LT. output_freq)) THEN
   ERROR STOP 'Output frequency too large. Please reduce.'
+ELSE IF (num_timesteps .LT. output_freq) THEN
+  STOP
 END IF
+!*/
 
 ! Output the initial condition.
 time = init_time
@@ -91,12 +106,27 @@ CALL WRITE_OUTPUT(step, time, dt)
 
 ! FFT the physical potential vorticity to frequency space for timestepping.
 freq_pot_vort_grid = phys_pot_vort_grid
-CALL CFFT2DF(x_len, y_len, freq_pot_vort_grid(:,:,1))
-CALL CFFT2DF(x_len, y_len, freq_pot_vort_grid(:,:,2))
+!/* CHANGED FOR PARALLEL
+!CALL CFFT2DF(x_len, y_len, freq_pot_vort_grid(:,:,1))
+!CALL CFFT2DF(x_len, y_len, freq_pot_vort_grid(:,:,2))
+!/*
+
+CALL CFFT2DF_EZP(x_len, y_len, 0_qb, &
+  & freq_pot_vort_grid(:,:,1)) ! ADDED TO PARALLEL
+CALL CFFT2DF_EZP(x_len, y_len, 0_qb, &
+  & freq_pot_vort_grid(:,:,2)) ! ADDED TO PARALLEL
 
 ! Set up hyperviscosity for time-stepping.
-CALL SPECTRAL_X_DERIVATIVE(x_len, y_len, spec_x_deriv, 2_qb * biharm_order)
-CALL SPECTRAL_Y_DERIVATIVE(x_len, y_len, spec_y_deriv, 2_qb * biharm_order)
+!/* CHANGED FOR PARALLEL
+!CALL SPECTRAL_X_DERIVATIVE(x_len, y_len, spec_x_deriv, 2_qb * biharm_order)
+!CALL SPECTRAL_Y_DERIVATIVE(x_len, y_len, spec_y_deriv, 2_qb * biharm_order)
+!*/
+
+CALL SPECTRAL_DIM1_DERIVATIVE_EZP(x_len, y_len, 0_qb, spec_x_deriv, &
+  & 2_qb * biharm_order) ! ADDED TO PARALLEL
+CALL SPECTRAL_DIM2_DERIVATIVE_EZP(x_len, y_len, 0_qb, spec_y_deriv, &
+  & 2_qb * biharm_order) ! ADDED TO PARALLEL
+
 spec_biharm(:,:,1) = (-1.0_dp, 0.0_dp)**(REAL(biharm_order + 1_qb, dp)) &
 & * biharm_visc_coeff * (spec_x_deriv + spec_y_deriv)
 spec_biharm(:,:,2) = spec_biharm(:,:,1)
@@ -170,11 +200,14 @@ RECURSIVE SUBROUTINE TIME_STEP_SCHEME(freq_pot_vort_grid, spec_biharm, time, &
 & error_toler_0, dt, erk_coeff, esdirk_coeff)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+USE MPI ! ADDED TO PARALLEL
+
 USE INITIALIZE
 USE JACOBIAN_EKMAN_SHEAR_SOLVE
 
 IMPLICIT NONE
 
+INTEGER(qb) :: proc_id ! ADDED TO PARALLEL
 REAL(dp) :: time, &
 & dt, &
 & error_toler_0, &
@@ -212,7 +245,6 @@ stage_coeff = 1.0_dp/(1.0_dp - 0.25_dp*dt*spec_biharm)
   ! at this stage.
 jacobian_ekman_shear_0 = (0.0_dp, 0.0_dp)
 biharm_visc_0 = (0.0_dp, 0.0_dp)
-! GETTING NaN FROM JACOBIAN_EKMAN_SHEAR.
 CALL JACOBIAN_EKMAN_SHEAR(freq_pot_vort_grid, x_len, y_len, dt, &
   & deform_wavenum, rotat_wavenum, vert_shear, ekman_fric_coeff, &
   & jacobian_ekman_shear_0)
@@ -324,25 +356,48 @@ error_control = erk_coeff(1,6) * (jacobian_ekman_shear_0 + biharm_visc_0) &
 
 ! If the one-step error exceeds the tolerated value, decrease dt by 3/4 and
 ! try again.
-CALL CFFT2DB(x_len, y_len, error_control(:,:,1))
-CALL CFFT2DB(x_len, y_len, error_control(:,:,2))
-error_toler_1 = dt * MAXVAL(ABS(error_control))
+!/* CHANGED FOR PARALLEL
+!CALL CFFT2DB(x_len, y_len, error_control(:,:,1))
+!CALL CFFT2DB(x_len, y_len, error_control(:,:,2))
+!error_toler_1 = dt * MAXVAL(ABS(error_control))
+!*/
+!*/ ADDED TO PARALLEL
+CALL CFFT2DB_EZP(x_len, y_len, 0_qb, error_control(:,:,1))
+CALL CFFT2DB_EZP(x_len, y_len, 0_qb, error_control(:,:,2))
+CALL MAXVAL_EZP(x_len, y_len, ABS(error_control), error_toler_1)
+error_toler_1 = dt * error_toler_1
+!*/
 
+CALL GET_ID_EZP(proc_id) ! ADDED TO PARALLEL
 IF (error_toler_1 .GT. error_toler) THEN
   dt = 0.75_dp * dt
-  PRINT *, 'Step error too large, retrying...'
+  !/* CHANGED FOR PARALLEL
+  !PRINT *, 'Step error too large, retrying...'
+  !*/
+  !/* ADDDED TO PARALLEL
+  IF (proc_id .EQ. 0_qb) THEN
+    PRINT *, 'Step error too large, retrying...'
+  END IF
+  !*/
   CALL TIME_STEP_SCHEME(freq_pot_vort_grid, spec_biharm, time, &
   & error_toler_0, dt, erk_coeff, esdirk_coeff)
+
 END IF
 
 ! Successful step, proceed to evaluation.
 time = time + dt
-PRINT *, 'Time at current step: ', time, '.'
-PRINT *, 'dt at current step: ', dt, '.'
-PRINT *, 'Error at current step: ', error_toler_1, '.'
-
-! Store RK coefficients for calculating the next time step. Since the ERK and
-! ESDIRK coefficients match, we only need to store the ERK ones
+!/* CHANGED FOR PARALLEL
+!PRINT *, 'Time at current step: ', time, '.'
+!PRINT *, 'dt at current step: ', dt, '.'
+!PRINT *, 'Error at current step: ', error_toler_1, '.'
+!*/
+!*/ ADDED TO PARALLEL
+IF (proc_id .EQ. 0_qb) THEN
+  PRINT *, 'Time at current step: ', time, '.'
+  PRINT *, 'dt at current step: ', dt, '.'
+  PRINT *, 'Error at current step: ', error_toler_1, '.'
+END IF
+!*/
 
 freq_pot_vort_grid = freq_pot_vort_grid + CMPLX(dt, 0.0_dp, dp) &
 & * (erk_coeff(1,7) * (jacobian_ekman_shear_0 + biharm_visc_0) &
@@ -354,28 +409,56 @@ freq_pot_vort_grid = freq_pot_vort_grid + CMPLX(dt, 0.0_dp, dp) &
 ! Tranform solution to physical space to check against upper bound of physical
 ! potential vorticity.
 phys_pot_vort_grid = freq_pot_vort_grid
-CALL CFFT2DB(x_len, y_len, phys_pot_vort_grid(:,:,1))
-CALL CFFT2DB(x_len, y_len, phys_pot_vort_grid(:,:,2))
-
+!/* CHANGED FOR PARALLEL
+!CALL CFFT2DB(x_len, y_len, phys_pot_vort_grid(:,:,1))
+!CALL CFFT2DB(x_len, y_len, phys_pot_vort_grid(:,:,2))
+!*/
+CALL CFFT2DB_EZP(x_len, y_len, 0_qb, &
+  & phys_pot_vort_grid(:,:,1)) ! ADDED TO PARALLEL
+CALL CFFT2DB_EZP(x_len, y_len, 0_qb, &
+  & phys_pot_vort_grid(:,:,2)) ! ADDED TO PARALLEL
 ! Zero-out complex part artifacts leftover from inverse FFT.
 phys_pot_vort_grid = REAL(phys_pot_vort_grid)
   ! Transform back to frequency space now that complex artifacts are gone.
 freq_pot_vort_grid = phys_pot_vort_grid
-CALL CFFT2DF(x_len, y_len, freq_pot_vort_grid(:,:,1))
-CALL CFFT2DF(x_len, y_len, freq_pot_vort_grid(:,:,2))
-
+!/* CHANGED FOR PARALLEL
+!CALL CFFT2DF(x_len, y_len, freq_pot_vort_grid(:,:,1))
+!CALL CFFT2DF(x_len, y_len, freq_pot_vort_grid(:,:,2))
+!*/
+CALL CFFT2DF_EZP(x_len, y_len, 0_qb, &
+  & freq_pot_vort_grid(:,:,1)) ! ADDED TO PARALLEL
+CALL CFFT2DF_EZP(x_len, y_len, 0_qb, &
+  & freq_pot_vort_grid(:,:,2)) ! ADDED TO PARALLEL
 ! Step size adjustment: EPS, PI.3.4.
 dt = ((0.75_dp * error_toler)/error_toler_1)**(0.075_dp) &
 * (error_toler_0/error_toler_1)**(0.1_dp) * dt
 error_toler_0 = error_toler_1
-PRINT *, 'dt for next step: ', dt, '.'
+!/* CHANGED FOR PARALLEL
+!PRINT *, 'dt for next step: ', dt, '.'
+!*/
+!*/ ADDED TO PARALLEL
+IF (proc_id .EQ. 0_qb) THEN
+  PRINT *, 'dt for next step: ', dt, '.'
+END IF
+!*/
 
 max_pot_vort = MAXVAL(REAL(ABS(phys_pot_vort_grid), dp))
-IF (max_pot_vort .GT. pot_vort_bound) THEN
+!/* CHANGED FOR PARALLEL
+!IF (max_pot_vort .GT. pot_vort_bound) THEN
+!  WRITE(*,'(A,F10.3,A,F10.3,A)') 'ERROR: Max phys_pot_vort_grid = ', &
+!    & max_pot_vort, ' exceeds pot_vort_bound = ', pot_vort_bound, '.'
+!  ERROR STOP
+!END IF
+!*/
+!/* ADDED TO PARALLEL
+IF ((proc_id .EQ. 0_qb) .AND. (max_pot_vort .GT. pot_vort_bound)) THEN
   WRITE(*,'(A,F10.3,A,F10.3,A)') 'ERROR: Max phys_pot_vort_grid = ', &
     & max_pot_vort, ' exceeds pot_vort_bound = ', pot_vort_bound, '.'
   ERROR STOP
+ELSE IF (max_pot_vort .GT. pot_vort_bound) THEN
+  STOP
 END IF
+!*/
 
 END SUBROUTINE TIME_STEP_SCHEME
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -11,7 +11,7 @@
 # to other directories to be used with other programs.
 #
 # Created by - Jason Turner
-# Last Edited - January 24th, 2020
+# Last Edited - January 28th, 2020
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 LIB = EZ_PARALLEL
@@ -53,7 +53,7 @@ INCFLAGS = $(addprefix -I,$(INCPTHS))
 INCLIBFLAGS = $(addprefix -L,$(INCLIBS))
 LKLIBFLAGS = $(addprefix -l,$(LIBNAMES))
 
-# EZ_PARALLEL source file names.
+# Souce file names.
 EZPARSRCS = $(wildcard *.f)
 # EZ_PARALLEL object file names.
 EZPAROBJS = $(patsubst %.f, %.o, $(EZPARSRCS))
@@ -64,7 +64,7 @@ DFFTPACKSRCS = $(wildcard ./DFFTPACK/*.f)
 DFFTPACKOBJS = $(patsubst %.f, %.o, $(DFFTPACKSRCS))
 
 # The build directory to hold all .o files.
-OBJS = $(EZPAROBJS) $(DFFTPACKOBJS)
+OBJS = $(DFFTPACKOBJS) $(EZPAROBJS)
 
 # Compilation rules.
 # Archive all .o files to library.
@@ -72,12 +72,13 @@ lib$(LIB).a: $(OBJS)
 	ar crv lib$(LIB).a $(OBJS)
 
 # Compile all DFFTPACK source code.
-%.o: DFFTPACK/%.f
-	$(FC) -c $< 
+./DFFTPACK/%.o: ./DFFTPACK/%.f 
+	$(FC) -c $< -w -o $@
 
 # Compile all EZ_PARALLEL source code
-%.o: ./%.f
-	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
+%.o: %.f
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS) 
+
 	
 .PHONY : clean tidy
 # Clean deletes everything besides source code.

@@ -3,14 +3,14 @@
 ! quasi-geostrophic equations.
 !
 ! NOTES: - All output files are written as .csv files to the output_data
-! subdirectory, and there is one output file for each subgrid.
+! subdirectory.
 ! - For this simulation, we consider the first dimension (dim1) of the grid to
 ! be in the x-direction (despite Fortran being a comlumn-major language). This
 ! is because the dim1 is faster to index through, and thus writing the grid to
 ! file using this indexing results in dim1 being written as a row.
 !
 ! Written By: Jason Turner
-! Last Updated: January 22, 2020
+! Last Updated: January 28, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PROGRAM TWO_LAYER_QG_SOLVER_PARALLEL
@@ -44,22 +44,25 @@ CONTAINS
 SUBROUTINE MAIN
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-USE MPI ! ADDED TO SERIAL
+USE MPI ! ADDED TO PARALLEL.
+
 USE INITIALIZE
 USE TIME_STEPPER
 
 IMPLICIT NONE
 
-CALL INIT_MPI_EZP ! ADDED TO SERIAL
+CALL INIT_MPI_EZP ! ADDED TO PARALLEL
 
 CALL INITIALIZE_PARAMETERS
 
-CALL DECOMP_GRID_EZP(y_len, 0) ! ADDED TO SERIAL
-CALL IDENTIFY_REF_POINT(y_len, y_ref, dy, 0) ! ADDED TO SERIAL
+CALL DECOMP_GRID_EZP(y_len, 0_qb) ! ADDED TO PARALLEL
+CALL IDENTIFY_REF_POINT_EZP(y_len, y_ref, dy, 0_qb) ! ADDED TO PARALLEL
 
 CALL INITIALIZE_GRID
 
 CALL TIME_STEP
+
+CALL FIN_MPI_EZP ! ADDED TO PARALLEL
 
 RETURN
 

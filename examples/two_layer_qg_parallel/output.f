@@ -5,7 +5,7 @@
 ! file (PUBLIC).
 !
 ! Written By: Jason Turner
-! Last Updated: January 21, 2020
+! Last Updated: January 28, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MODULE OUTPUT
@@ -41,23 +41,30 @@ CONTAINS
 SUBROUTINE WRITE_OUTPUT(step, time, dt)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+USE MPI ! ADDED TO PARALLEL
+
 USE INITIALIZE
 
 IMPLICIT NONE
 
 INTEGER(qb) :: step, &
 & i, &
-& j
+& j, &
+& proc_id ! ADDED TO PARALLEL
 REAL(dp) :: time, &
 & dt
-CHARACTER(LEN = 33) :: layer1_file_name, &
+CHARACTER(LEN = 38) :: layer1_file_name, & ! CHANGED FOR PARALLEL
 & layer2_file_name
-CHARACTER(LEN = 39) :: timestep_info_file_name
+CHARACTER(LEN = 44) :: timestep_info_file_name ! CHANGED FOR PARALLEL
 
-WRITE(layer1_file_name,'(A,I0.8,A)') './output_data/layer1_', step, '.csv'
-WRITE(layer2_file_name,'(A,I0.8,A)') './output_data/layer2_', step, '.csv'
-WRITE(timestep_info_file_name,'(A,I0.8,A)') './output_data/out_', step, &
-& '_info.txt'
+CALL GET_ID_EZP(proc_id)
+
+WRITE(layer1_file_name,'(A,I0.8,A,I0.4,A)') './output_data/layer1_', step, &
+& '_', proc_id, '.csv' ! CHANGED FOR PARALLEL
+WRITE(layer2_file_name,'(A,I0.8,A,I0.4,A)') './output_data/layer2_', step, &
+& '_', proc_id, '.csv' ! CHANGED FOR PARALLEL
+WRITE(timestep_info_file_name,'(A,I0.8,A,I0.4,A)') './output_data/out_', step, &
+& '_', proc_id, '_info.txt' ! CHANGED FOR PARALLEL
 
 OPEN(1001, file = layer1_file_name, form = 'formatted')
 OPEN(1002, file = layer2_file_name, form = 'formatted')

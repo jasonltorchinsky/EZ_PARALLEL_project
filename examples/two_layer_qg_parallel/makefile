@@ -12,7 +12,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Path to EZ_PARALLEL library.
-EZPPTH = ..\..\EZ_PARALLEL
+EZPPTH = ../../EZ_PARALLEL
 
 # Command-Line System Options: Linux, Windows.
 CMD = Linux
@@ -31,14 +31,14 @@ MODS = $(patsubst %.f, %.mod, $(SRCS))
 # Set the compiler flags, dependent on the compiler.
 ifeq ($(FC), gfortran)
   # Path to msmpi include.
-  MPIPTHINC = C:\lib\mpi\include
+  MPIPTHINC = C:/lib/mpi/include
   # Path to msmpi lib.
-  MPIPTHLIB = C:\lib\mpi\lib 
+  MPIPTHLIB = C:/lib/mpi/lib 
   # Compiler flags.
   FCFLAGS = -ffree-form
-  # Include file search path, e.g., C:\lib\mpi\include.
+  # Include file search path, e.g., C:/lib/mpi/include.
   INCPTHS = $(EZPPTH) $(MPIPTHINC)
-  # Library search path, e.g., C:\lib\mpi\lib.
+  # Library search path, e.g., C:/lib/mpi/lib.
   INCLIBS = $(EZPPTH) $(MPIPTHLIB) 
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
   LIBNAMES = EZ_PARALLEL msmpi
@@ -46,9 +46,9 @@ ifeq ($(FC), gfortran)
 else ifeq ($(FC), mpifort)
   # Compiler flags.
   FCFLAGS = -ffree-form
-  # Include file search paths, e.g., \usr\include\.
+  # Include file search paths, e.g., /usr/include/.
   INCPTHS = $(EZPPTH)
-  # Library search path, e.g., ..\..\EZ_PARALLEL.
+  # Library search path, e.g., ../../EZ_PARALLEL.
   INCLIBS = $(EZPPTH) 
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
   LIBNAMES = EZ_PARALLEL
@@ -62,18 +62,23 @@ LKLIBFLAGS = $(addprefix -l,$(LIBNAMES))
 
 # Makes the executable.
 $(TRGT): $(OBJS)                # Make executable.
-	$(FC) $< -o $(TRGT) $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
+	$(FC) $^ -o $(TRGT) $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 # Compile main.o.
-main.o: main.f90 time_stepper.o initialize.o
+main.o: main.f time_stepper.o initialize.o
 	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 # Compile time_stepper.o.
-time_stepper.o: time_stepper.f90 output.o initialize.o jacobian_ekman_shear_solve.o
+time_stepper.o: time_stepper.f output.o initialize.o \
+jacobian_ekman_shear_solve.o
 	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 # Compile output.o.
-output.o: output.f90 initialize.o
+output.o: output.f initialize.o
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
+	
+# Compile jacobian_ekman_shear_solve.o.
+jacobian_ekman_shear_solve.o: jacobian_ekman_shear_solve.f initialize.o
 	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 # Compile all .f files that do not have dependencies. 

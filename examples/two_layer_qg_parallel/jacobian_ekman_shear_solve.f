@@ -28,7 +28,7 @@
 ! is assumed in Fortran integer division.
 !
 ! Written By: Jason Turner
-! Last Updated: January 21, 2020
+! Last Updated: January 28, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MODULE JACOBIAN_EKMAN_SHEAR_SOLVE
@@ -76,18 +76,17 @@ CONTAINS
 ! (INTEGER(qb)).
 ! - scaled_x_len, scaled_y_len: The size of the scaled-up grid used for
 ! de-aliasing the Jacobian (INTEGER(qb)).
-! - i, j: Counting index used in DO loops (INTEGER(qb)).
+! - i: Counting index used in DO loops (INTEGER(qb)).
 ! - dt: The current timestep size, adapted throughout simulation (REAL(dp)).
 ! - deform_wavenum_sub: The baroclinic deformation wavenumber corrseponding
-! to the Rossby radius of deformation (REAL(dp)).
+! to the Rossby radius of deformation (REAL(dp), PUBLIC).
 ! - rotat_wavenum_sub: The wavenumber corresponding to the rotation
-! coefficient, which controls the advection of streamfunctions (REAL(dp)).
+! coefficient, which controls the advection of streamfunctions (REAL(dp),
+! PUBLIC).
 ! - vert_shear_sub: Large-scale vertical shear, opposite in each direction in
-! background to induce baroclinic instability (REAL(dp)).
+! background to induce baroclinic instability (REAL(dp), PUBLIC).
 ! - ekman_fric_coeff_sub: The coefficient for Ekman friction in layer 2
-! (REAL(dp)).
-! - infinity (ADDED TO PARALLEL): A very large number to check if 1.0/0.0 has
-! ocurred (REAL(dp)).
+! (REAL(dp), PUBLIC).
 ! - barotropic_pot_vort, baroclinic_pot_vort: The brotropic, baroclinic modes of
 ! potential vorticity (COMPLEX(dp), DIMENSION(x_len_sub, y_len_sub)).
 ! - barotropic_pot_vort_strmfunc, baroclinic_pot_vort_strmfunc: The
@@ -123,6 +122,8 @@ SUBROUTINE JACOBIAN_EKMAN_SHEAR(freq_pot_vort_grid, x_len_sub, y_len_sub, dt, &
 & jacobian_ekman_shear_grid)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+USE MPI ! ADDED TO PARALLEL
+
 USE INITIALIZE
 
 IMPLICIT NONE
@@ -131,14 +132,12 @@ INTEGER(qb) :: x_len_sub, &
 & y_len_sub, &
 & scaled_x_len, &
 & scaled_y_len, &
-& i, &
-& j ! ADDED TO PARALLEL
+& i
 REAL(dp) :: dt, &
 & deform_wavenum_sub, &
 & rotat_wavenum_sub, &
 & vert_shear_sub, &
-& ekman_fric_coeff_sub, &
-& infinity ! ADDED TO PARALLEL
+& ekman_fric_coeff_sub
 COMPLEX(dp), DIMENSION(x_len_sub, y_len_sub) :: barotropic_pot_vort, &
 & baroclinic_pot_vort, &
 & barotropic_pot_vort_strmfunc, &
@@ -160,14 +159,14 @@ IF (.NOT. ran) THEN
   ! Get the spectral Laplacian operator.
   ALLOCATE(spec_x_deriv(x_len_sub, y_len_sub, 1))
   ALLOCATE(spec_y_deriv(x_len_sub, y_len_sub, 1))
+  !/* CHANGED FOR PARALLEL
   !CALL SPECTRAL_X_DERIVATIVE(x_len_sub, y_len_sub, spec_x_deriv, 2_qb)
-    ! CHANGED FOR PARALLEL.
   !CALL SPECTRAL_Y_DERIVATIVE(x_len_sub, y_len_sub, spec_y_deriv, 2_qb)
-    ! CHANGED FOR PARALLEL.
-  CALL SPECTRAL_DIM1_DERIVATIVE_EZP(x_len_sub, y_len_sub, 0, spec_x_deriv, &
-    & 2_qb) ! ADDED TO SERIAL
-  CALL SPECTRAL_DIM2_DERIVATIVE_EZP(x_len_sub, y_len_sub, 0, spec_y_deriv, &
-    & 2_qb) ! ADDED TO SERIAL
+  !*/
+  CALL SPECTRAL_DIM1_DERIVATIVE_EZP(x_len_sub, y_len_sub, 0_qb, spec_x_deriv, &
+    &  2_qb) ! ADDED TO PARALLEL
+  CALL SPECTRAL_DIM2_DERIVATIVE_EZP(x_len_sub, y_len_sub, 0_qb, spec_y_deriv, &
+    &  2_qb) ! ADDED TO PARALLEL
   ALLOCATE(spec_laplacian(x_len_sub, y_len_sub))
   spec_laplacian = spec_x_deriv(:,:,1) + spec_y_deriv(:,:,1)
   DEALLOCATE(spec_x_deriv)
@@ -177,48 +176,40 @@ IF (.NOT. ran) THEN
   ALLOCATE(spec_inv_barotropic(x_len_sub, y_len_sub))
   ALLOCATE(spec_inv_baroclinic(x_len_sub, y_len_sub))
   spec_inv_barotropic = 1.0_dp/spec_laplacian
-  !spec_inv_barotropic(1,1) = 0.0_dp ! CHANGED FOR PARALLEL
+  spec_inv_barotropic(1,1) = 0.0_dp
   spec_inv_baroclinic = 1.0_dp/(spec_laplacian - deform_wavenum_sub**(2.0_dp))
-  !spec_inv_baroclinic(1,1) = 0.0_dp ! CHANGED FOR PARALLEL
-  !~~ ADDED BLOCK TO PARALLEL
-  infinity = HUGE(infinity)
-  DO j = 1_qb, y_len_sub
-    DO i = 1_qb, x_len_sub
-      IF (ABS(spec_inv_barotropic(i,j)) .GT. infinity) THEN
-        spec_inv_barotropic(i,j) = 0.0_dp
-      END IF
-      IF (ABS(spec_inv_baroclinic(i,j)) .GT. infinity) THEN
-        spec_inv_baroclinic(i,j) = 0.0_dp
-      END IF
-    END DO
-  END DO
-  !~~
+  spec_inv_baroclinic(1,1) = 0.0_dp
 
   ! Get the first-order differential operators.
   ALLOCATE(spec_x_deriv(x_len_sub, y_len_sub, 2))
   ALLOCATE(spec_y_deriv(x_len_sub, y_len_sub, 2))
+  !/* CHANGED FOR PARALLEL
   !CALL SPECTRAL_X_DERIVATIVE(x_len_sub, y_len_sub, spec_x_deriv(:,:,1), 1_qb)
-    ! CHANGED FOR PARALLEL
-  CALL SPECTRAL_DIM1_DERIVATIVE_EZP(x_len_sub, y_len_sub, 0_qb, spec_x_deriv, &
-    & 1_qb) ! ADDED TO SERIAL
-  spec_x_deriv(:,:,2) = spec_x_deriv(:,:,1)
+  !*/
   !CALL SPECTRAL_Y_DERIVATIVE(x_len_sub, y_len_sub, spec_y_deriv(:,:,1), 1_qb)
-    ! CHANGED FOR PARALLEL
-  CALL SPECTRAL_DIM2_DERIVATIVE_EZP(x_len_sub, y_len_sub, 0_qb, spec_y_deriv, &
-    & 1_qb) ! ADDED TO SERIAL
+  CALL SPECTRAL_DIM1_DERIVATIVE_EZP(x_len_sub, y_len_sub, 0_qb, &
+    & spec_x_deriv(:,:,1_qb), 1_qb) ! ADDED TO PARALLEL
+  CALL SPECTRAL_DIM2_DERIVATIVE_EZP(x_len_sub, y_len_sub, 0_qb, &
+    & spec_y_deriv(:,:,1_qb), 1_qb) ! ADDED TO PARALLEL
+  spec_x_deriv(:,:,2) = spec_x_deriv(:,:,1)
   spec_y_deriv(:,:,2) = spec_y_deriv(:,:,1)
+
 
   ALLOCATE(scaled_spec_x_deriv(3_qb * x_len_sub/2_qb, 3_qb * y_len_sub/2_qb, 2))
   ALLOCATE(scaled_spec_y_deriv(3_qb * x_len_sub/2_qb, 3_qb * y_len_sub/2_qb, 2))
+  !/* CHANGED FOR PARALLEL
   !CALL SPECTRAL_X_DERIVATIVE(3_qb * x_len_sub/2_qb, 3_qb * y_len_sub/2_qb, &
-  !  & scaled_spec_x_deriv(:,:,1), 1_qb) ! CHANGED FOR PARALLEL
-  CALL SPECTRAL_DIM1_DERIVATIVE_EZP(3_qb * x_len_sub/2_qb, &
-    & 3_qb * y_len_sub/2_qb, 0_qb, scaled_spec_x_deriv, 1_qb) ! ADDED TO SERIAL
-  scaled_spec_x_deriv(:,:,2) = scaled_spec_x_deriv(:,:,1)
+  !  & scaled_spec_x_deriv(:,:,1), 1_qb)
   !CALL SPECTRAL_Y_DERIVATIVE(3_qb * x_len_sub/2_qb, 3_qb * y_len_sub/2_qb, &
-  !  & scaled_spec_y_deriv(:,:,1), 1_qb) ! CHANGED FOR PARALLEL
+  !  & scaled_spec_y_deriv(:,:,1), 1_qb)
+  !*/
+  CALL SPECTRAL_DIM1_DERIVATIVE_EZP(3_qb * x_len_sub/2_qb, &
+    & 3_qb * y_len_sub/2_qb, 0_qb, scaled_spec_x_deriv(:,:,1), &
+    & 1_qb) ! ADDED TO PARALLEL
   CALL SPECTRAL_DIM2_DERIVATIVE_EZP(3_qb * x_len_sub/2_qb, &
-    & 3_qb * y_len_sub/2_qb, 0_qb, scaled_spec_y_deriv, 1_qb) ! ADDED TO SERIAL
+    & 3_qb * y_len_sub/2_qb, 0_qb, scaled_spec_y_deriv(:,:,1), &
+    & 1_qb) ! ADDED TO PARALLEL
+  scaled_spec_x_deriv(:,:,2) = scaled_spec_x_deriv(:,:,1)
   scaled_spec_y_deriv(:,:,2) = scaled_spec_y_deriv(:,:,1)
 
   ran = .TRUE.
@@ -255,42 +246,52 @@ jacobian_ekman_shear_grid(:,:,2) = CMPLX((1.0_dp), 0.0_dp, dp) &
 & * CMPLX(vert_shear_sub, 0.0_dp, dp) * spec_x_deriv(:,:,1) &
 & * freq_pot_vort_grid(:,:,2) - CMPLX((rotat_wavenum_sub**(2.0_dp) &
   & - vert_shear_sub * deform_wavenum_sub**(2.0_dp)), 0.0_dp, dp) &
-&* spec_x_deriv(:,:,1) * freq_strmfunc(:,:,2) - CMPLX(ekman_fric_coeff_sub, &
+& * spec_x_deriv(:,:,1) * freq_strmfunc(:,:,2) - CMPLX(ekman_fric_coeff_sub, &
   & 0.0_dp, dp) * spec_laplacian * freq_strmfunc(:,:,2)
-
-! UH OH, SCALING CONTINUE WORKING FROM HERE.
 
 ! Must rescale the potential vort and the streamfunction grids to dealias the
 ! Jacobian, see Orszag, S. "On the Elimination of Aliasing in Finite-Difference 
 ! Schemes by Filtering High-Wavenumber Components" (1971).
-scaled_x_len = 3_qb * x_len_sub/2_qb
-scaled_y_len = 3_qb * y_len_sub/2_qb
+
+!/* CHANGED FOR PARALLEL
+!scaled_x_len = 3_qb * x_len_sub/2_qb
+!scaled_y_len = 3_qb * y_len_sub/2_qb
+!*/
+CALL ZERO_PADDING_GET_SHAPE_EZP(x_len_sub, y_len_sub, 0_qb, scaled_x_len, &
+  & scaled_y_len)
+
   ! Rescale the frequency potential vorticity.
 ALLOCATE(scaled_freq_pot_vort_grid(scaled_x_len, scaled_y_len, 2))
 scaled_freq_pot_vort_grid = (0.0_dp, 0.0_dp)
-scaled_freq_pot_vort_grid(1:x_len_sub/2+1, 1:y_len_sub/2+1, :) = &
-& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(1:x_len_sub/2+1, 1:y_len_sub/2+1, :)
-scaled_freq_pot_vort_grid(1:x_len_sub/2+1, y_len_sub+2:scaled_y_len, :) = &
-& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(1:x_len_sub/2+1, &
-  & y_len_sub/2+2:y_len_sub, :)
-scaled_freq_pot_vort_grid(x_len_sub+2:scaled_x_len, 1:y_len_sub/2+1, :) = &
-& (2.25_dp, 0.0_dp) * freq_pot_vort_grid(x_len_sub/2+2:x_len_sub, &
-  & 1:y_len_sub/2+1, :)
-scaled_freq_pot_vort_grid(x_len_sub+2:scaled_x_len, &
-  & y_len_sub+2:scaled_y_len, :) = (2.25_dp, 0.0_dp) &
-& * freq_pot_vort_grid(x_len_sub/2+2:x_len_sub, y_len_sub/2+2:y_len_sub, :)
+!*/ CHANGED FOR PARALLEL
+!CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_pot_vort_grid(:,:,1), &
+!  & scaled_x_len, scaled_y_len, scaled_freq_pot_vort_grid(:,:,1))
+!CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_pot_vort_grid(:,:,2), &
+!  & scaled_x_len, scaled_y_len, scaled_freq_pot_vort_grid(:,:,2))
+!*/
+CALL ZERO_PADDING_DBLE_CMPLX_EZP(x_len_sub, y_len_sub, &
+  & freq_pot_vort_grid(:,:,1), scaled_x_len, scaled_y_len, &
+  & scaled_freq_pot_vort_grid(:,:,1), 0) ! ADDED TO PARALLEL
+CALL ZERO_PADDING_DBLE_CMPLX_EZP(x_len_sub, y_len_sub, &
+  & freq_pot_vort_grid(:,:,2), scaled_x_len, scaled_y_len, &
+  & scaled_freq_pot_vort_grid(:,:,2), 0) ! ADDED TO PARALLEL
+scaled_freq_pot_vort_grid = (2.25_dp, 0.0_dp) * scaled_freq_pot_vort_grid
   ! Rescale the potential vorticity streamfunction.
 ALLOCATE(scaled_freq_strmfunc(scaled_x_len, scaled_y_len, 2))
 scaled_freq_strmfunc = (0.0_dp, 0.0_dp)
-scaled_freq_strmfunc(1:x_len_sub/2+1, 1:y_len_sub/2+1, :) = &
-& (2.25_dp, 0.0_dp) * freq_strmfunc(1:x_len_sub/2+1, 1:y_len_sub/2+1, :)
-scaled_freq_strmfunc(1:x_len_sub/2+1, y_len_sub+2:scaled_y_len, :) = &
-& (2.25_dp, 0.0_dp) * freq_strmfunc(1:x_len_sub/2+1, y_len_sub/2+2:y_len_sub, :)
-scaled_freq_strmfunc(x_len_sub+2:scaled_x_len, 1:y_len_sub/2+1, :) = &
-& (2.25_dp, 0.0_dp) * freq_strmfunc(x_len_sub/2+2:x_len_sub, 1:y_len_sub/2+1,:)
-scaled_freq_strmfunc(x_len_sub+2:scaled_x_len, y_len_sub+2:scaled_y_len, :) = &
-& (2.25_dp, 0.0_dp) * freq_strmfunc(x_len_sub/2+2:x_len_sub, &
-  & y_len_sub/2+2:y_len_sub, :)
+!/* CHANGED FOR PARALLEL
+!CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_strmfunc(:,:,1), scaled_x_len, &
+!  & scaled_y_len, scaled_freq_strmfunc(:,:,1))
+!CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_strmfunc(:,:,2), scaled_x_len, &
+!  & scaled_y_len, scaled_freq_strmfunc(:,:,2))
+!*/
+CALL ZERO_PADDING_DBLE_CMPLX_EZP(x_len_sub, y_len_sub, &
+  & freq_strmfunc(:,:,1), scaled_x_len, scaled_y_len, &
+  & scaled_freq_strmfunc(:,:,1), 0) ! ADDED TO PARALLEL
+CALL ZERO_PADDING_DBLE_CMPLX_EZP(x_len_sub, y_len_sub, &
+  & freq_strmfunc(:,:,2), scaled_x_len, scaled_y_len, &
+  & scaled_freq_strmfunc(:,:,2), 0) ! ADDED TO PARALLEL
+scaled_freq_strmfunc = (2.25_dp, 0.0_dp) * scaled_freq_strmfunc
 
 ! To avoid convolution, we will calculate the Jacobian in physical space, and
 ! then transform it back to freq space. We want
@@ -298,59 +299,89 @@ scaled_freq_strmfunc(x_len_sub+2:scaled_x_len, y_len_sub+2:scaled_y_len, :) = &
   ! Calculate x-derivative of the potential vorticity.
 ALLOCATE(scaled_strmfunc_x_deriv(scaled_x_len, scaled_y_len, 2))
 scaled_strmfunc_x_deriv = scaled_spec_x_deriv * scaled_freq_strmfunc
-CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_strmfunc_x_deriv(:,:,1))
-CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_strmfunc_x_deriv(:,:,2))
+!/* CHANGED FOR PARALLEL
+!CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_strmfunc_x_deriv(:,:,1))
+!CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_strmfunc_x_deriv(:,:,2))
+!*/
+CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_strmfunc_x_deriv(:,:,1)) ! ADDED TO PARALLEL
+CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_strmfunc_x_deriv(:,:,2)) ! ADDED TO PARALLEL
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_strmfunc_x_deriv = REAL(scaled_strmfunc_x_deriv)
-
   ! Calculate y-derivative of the streamfunction.
 ALLOCATE(scaled_strmfunc_y_deriv(scaled_x_len, scaled_y_len, 2))
 scaled_strmfunc_y_deriv = scaled_spec_y_deriv * scaled_freq_strmfunc
-CALL CFFT2DB(scaled_x_len, scaled_x_len, scaled_strmfunc_y_deriv(:,:,1))
-CALL CFFT2DB(scaled_y_len, scaled_y_len, scaled_strmfunc_y_deriv(:,:,2))
+!/* CHANGED FOR PARALLEL
+!CALL CFFT2DB(scaled_x_len, scaled_x_len, scaled_strmfunc_y_deriv(:,:,1))
+!CALL CFFT2DB(scaled_y_len, scaled_y_len, scaled_strmfunc_y_deriv(:,:,2))
+!*/
+CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_strmfunc_y_deriv(:,:,1)) ! ADDED TO PARALLEL
+CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_strmfunc_y_deriv(:,:,2)) ! ADDED TO PARALLEL
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_strmfunc_y_deriv = REAL(scaled_strmfunc_y_deriv)
-
   ! Calculate x-derivative of the streamfunction.
 ALLOCATE(scaled_pot_vort_x_deriv(scaled_x_len, scaled_y_len, 2))
 scaled_pot_vort_x_deriv = scaled_spec_x_deriv * scaled_freq_pot_vort_grid
-CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_x_deriv(:,:,1))
-CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_x_deriv(:,:,2))
+!/* CHANGED FOR PARALLEL
+!CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_x_deriv(:,:,1))
+!CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_x_deriv(:,:,2))
+!*/
+CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_pot_vort_x_deriv(:,:,1)) ! ADDED TO PARALLEL
+CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_pot_vort_x_deriv(:,:,2)) ! ADDED TO PARALLEL
+
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_pot_vort_x_deriv = REAL(scaled_pot_vort_x_deriv)
-
   ! Calculate y-derivative of the potential vorticity.
 ALLOCATE(scaled_pot_vort_y_deriv(scaled_x_len, scaled_y_len, 2))
 scaled_pot_vort_y_deriv = scaled_spec_y_deriv * scaled_freq_pot_vort_grid
-CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_y_deriv(:,:,1))
-CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_y_deriv(:,:,2))
+!/* CHANGED FOR PARALLEL
+!CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_y_deriv(:,:,1))
+!CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_pot_vort_y_deriv(:,:,2))
+!*/
+CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_pot_vort_y_deriv(:,:,1)) ! ADDED TO PARALLEL
+CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_pot_vort_y_deriv(:,:,2)) ! ADDED TO PARALLEL
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_pot_vort_y_deriv = REAL(scaled_pot_vort_y_deriv)
-
   ! Calculate the actual Jacobian.
 ALLOCATE(scaled_freq_jacobian(scaled_x_len, scaled_y_len, 2))
 scaled_freq_jacobian = scaled_strmfunc_x_deriv * scaled_pot_vort_y_deriv &
 & - scaled_strmfunc_y_deriv * scaled_pot_vort_x_deriv
-CALL CFFT2DF(scaled_x_len, scaled_y_len, scaled_freq_jacobian(:,:,1))
-CALL CFFT2DF(scaled_x_len, scaled_y_len, scaled_freq_jacobian(:,:,2))
+!/* CHANGED FOR PARALLEL
+!CALL CFFT2DF(scaled_x_len, scaled_y_len, scaled_freq_jacobian(:,:,1))
+!CALL CFFT2DF(scaled_x_len, scaled_y_len, scaled_freq_jacobian(:,:,2))
+!*/
+CALL CFFT2DF_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_freq_jacobian(:,:,1)) ! ADDED TO PARALLEL
+CALL CFFT2DF_EZP(scaled_x_len, scaled_y_len, 0_qb, &
+  & scaled_freq_jacobian(:,:,2)) ! ADDED TO PARALLEL
 ! The larger grid size means the entries of the scaled Jacobian are 9/4 times
 ! larger than they should be, so we must correct that.
 scaled_freq_jacobian = CMPLX((4.0_dp/9.0_dp), 0.0_dp, dp) * scaled_freq_jacobian
 
-
 ! Reduce the Jacobian to the original grid size.
-freq_jacobian(1:x_len_sub/2+1, 1:y_len_sub/2+1, :) = &
-scaled_freq_jacobian(1:x_len_sub/2+1, 1:y_len_sub/2+1, :)
-freq_jacobian(1:x_len_sub/2+1, y_len_sub/2+2:y_len_sub, :) = &
-scaled_freq_jacobian(1:x_len_sub/2+1, y_len_sub+2:scaled_y_len, :)
-freq_jacobian(x_len_sub/2+2:x_len_sub, 1:y_len_sub/2+1, :) = &
-scaled_freq_jacobian(x_len_sub+2:scaled_x_len, 1:y_len_sub/2+1, :)
-freq_jacobian(x_len_sub/2+2:x_len_sub, y_len_sub/2+2:y_len_sub, :) = &
-scaled_freq_jacobian(x_len_sub+2:scaled_x_len, y_len_sub+2:scaled_y_len, :)
+!/* CHANGED FOR PARALLEL
+!CALL ZERO_PADDING_INV(x_len_sub, y_len_sub, freq_jacobian(:,:,1), &
+!  & scaled_x_len, scaled_y_len, scaled_freq_jacobian(:,:,1))
+!CALL ZERO_PADDING_INV(x_len_sub, y_len_sub, freq_jacobian(:,:,2), &
+!  & scaled_x_len, scaled_y_len, scaled_freq_jacobian(:,:,2))
+!*/
+CALL ZERO_PADDING_INV_DBLE_CMPLX_EZP(x_len_sub, y_len_sub, &
+  & freq_jacobian(:,:,1), scaled_x_len, scaled_y_len, &
+  & scaled_freq_jacobian(:,:,1), 0) ! ADDED TO PARALLEL.
+CALL ZERO_PADDING_INV_DBLE_CMPLX_EZP(x_len_sub, y_len_sub, &
+  & freq_jacobian(:,:,2), scaled_x_len, scaled_y_len, &
+  & scaled_freq_jacobian(:,:,2), 0_qb) ! ADDED TO PARALLEL.
 
 ! Deallocate all scaled arrays.
 DEALLOCATE(scaled_freq_pot_vort_grid)
@@ -465,6 +496,135 @@ DO i = 1, x_len_sub
 END DO
 
 END SUBROUTINE SPECTRAL_Y_DERIVATIVE
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+! Scales a matrix up by 3/2 in each dimension, for use in zero-padding for FFTs.
+!
+! STRUCTURE: 1) Calculates the size of the scaled matrix, and the index in the
+! scaled matrix of the largest negative wavenumber in both dim1 and dim2.
+! 2) Fills in the non-zero entries of the scaled matrix (which correspond to the
+! wavenumbers of the original matrix) with the entries of the original matrix.
+!
+! VARIABLES: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
+! DIMENSION(dim1_len, dim2_len)).
+! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
+! DIMENSION(scl_dim1_len, scl_dim2_len)).
+! - scaled_dim1_neg_wavenum_low_index, scaled_dim2_neg_wavenum_low_index: The
+! lower index of the largest negative wavenumber in scaled_matrix (INTEGER).
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SUBROUTINE ZERO_PADDING(dim1_len, dim2_len, matrix, scl_dim1_len, &
+  & scl_dim2_len, scaled_matrix)
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+IMPLICIT NONE
+
+INTEGER :: dim1_len, &
+& dim2_len,  &
+& scl_dim1_len, &
+& scl_dim2_len, &
+& scaled_dim1_neg_wavenum_low_index, &
+& scaled_dim2_neg_wavenum_low_index
+DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+
+scaled_matrix = 0.0
+IF (MOD(dim1_len, 2) .EQ. 0) THEN
+  scaled_dim1_neg_wavenum_low_index = dim1_len + 2
+ELSE IF (MOD(dim1_len, 2) .EQ. 1) THEN
+  scaled_dim1_neg_wavenum_low_index = dim1_len + 1
+END IF
+
+IF (MOD(dim2_len, 2) .EQ. 0) THEN
+  scaled_dim2_neg_wavenum_low_index = dim2_len + 2
+ELSE IF (MOD(dim2_len, 2) .EQ. 1) THEN
+  scaled_dim2_neg_wavenum_low_index = dim2_len + 1
+END IF
+
+! This matrix is scale by 3/2 in each dimension, with the indices corresponding
+! to the largest wavenumbers (in magnitude) zeroed out.
+scaled_matrix(1:dim1_len/2+1, 1:dim2_len/2+1) = &
+& matrix(1:dim1_len/2+1, 1:dim2_len/2+1)
+scaled_matrix(1:dim1_len/2+1, &
+  & scaled_dim2_neg_wavenum_low_index:scl_dim2_len) = &
+& matrix(1:dim1_len/2+1, dim2_len/2+2:dim2_len)
+scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & 1:dim2_len/2+1) = &
+& matrix(dim1_len/2+2:dim1_len, 1:dim2_len/2+1)
+scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & scaled_dim2_neg_wavenum_low_index:scl_dim2_len) = &
+& matrix(dim1_len/2+2:dim1_len, dim2_len/2+2:dim2_len)
+
+END SUBROUTINE ZERO_PADDING
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+! Scales down the scaled matrix by padding zeros (the 3/2-rule) for
+! de-aliasing FFTs, i.e., reverses the zero-padding.
+!
+! STRUCTURE: 1) Calculates the size of the scaled matrix, and the index in the
+! scaled matrix of the largest negative wavenumber in both dim1 and dim2.
+! 2) Fills in the non-zero entries of the scaled matrix (which correspond to the
+! wavenumbers of the original matrix) with the entries of the original matrix.
+!
+! VARIABLES: - dim1_len, dim2_len: The shape of the matrix (INTEGER).
+! - matrix: The matrix to be scaled (DOUBLE COMPLEX,
+! DIMENSION(dim1_len, dim2_len)).
+! - scl_dim1_len, slc_dim2_len: The dimensions of scaled_matrix (INTEGER).
+! - scaled_matrix: The resulting scaled matrix (DOUBLE COMPLEX,
+! DIMENSION(scl_dim1_len, scl_dim2_len)).
+! - scaled_dim1_neg_wavenum_low_index, scaled_dim2_neg_wavenum_low_index: The
+! lower index of the largest negative wavenumber in scaled_matrix (INTEGER).
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SUBROUTINE ZERO_PADDING_INV(dim1_len, dim2_len, matrix, scl_dim1_len, &
+  & scl_dim2_len, scaled_matrix)
+!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+IMPLICIT NONE
+
+INTEGER :: dim1_len, &
+& dim2_len,  &
+& scl_dim1_len, &
+& scl_dim2_len, &
+& scaled_dim1_neg_wavenum_low_index, &
+& scaled_dim2_neg_wavenum_low_index
+DOUBLE COMPLEX, DIMENSION(dim1_len, dim2_len) :: matrix
+DOUBLE COMPLEX, DIMENSION(scl_dim1_len, scl_dim2_len) :: scaled_matrix
+
+matrix = 0.0
+IF (MOD(dim1_len, 2) .EQ. 0) THEN
+  scaled_dim1_neg_wavenum_low_index = dim1_len + 2
+ELSE IF (MOD(dim1_len, 2) .EQ. 1) THEN
+  scaled_dim1_neg_wavenum_low_index = dim1_len + 1
+END IF
+
+IF (MOD(dim2_len, 2) .EQ. 0) THEN
+  scaled_dim2_neg_wavenum_low_index = dim2_len + 2
+ELSE IF (MOD(dim2_len, 2) .EQ. 1) THEN
+  scaled_dim2_neg_wavenum_low_index = dim2_len + 1
+END IF
+
+
+
+! This matrix is scale by 3/2 in each dimension, with the indices corresponding
+! to the largest wavenumbers (in magnitude) zeroed out.
+matrix(1:dim1_len/2+1, 1:dim2_len/2+1) = &
+& scaled_matrix(1:dim1_len/2+1, 1:dim2_len/2+1)
+
+matrix(1:dim1_len/2+1, dim2_len/2+2:dim2_len) = &
+& scaled_matrix(1:dim1_len/2+1, scaled_dim2_neg_wavenum_low_index:scl_dim2_len)
+
+matrix(dim1_len/2+2:dim1_len, 1:dim2_len/2+1) = &
+& scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & 1:dim2_len/2+1)
+
+matrix(dim1_len/2+2:dim1_len, dim2_len/2+2:dim2_len) = &
+& scaled_matrix(scaled_dim1_neg_wavenum_low_index:scl_dim1_len, &
+  & scaled_dim2_neg_wavenum_low_index:scl_dim2_len)
+
+END SUBROUTINE ZERO_PADDING_INV
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 END MODULE
