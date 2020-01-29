@@ -175,6 +175,7 @@ USE JACOBIAN_EKMAN_SHEAR_SOLVE
 
 IMPLICIT NONE
 
+INTEGER(qb) :: j ! ADDED FOR DEBUGGING, REMOVE WHEN DONE
 REAL(dp) :: time, &
 & dt, &
 & error_toler_0, &
@@ -222,6 +223,16 @@ freq_pot_vort_1 = (0.0_dp, 0.0_dp)
 freq_pot_vort_1 = stage_coeff * (freq_pot_vort_grid + CMPLX(dt, 0.0_dp, dp) &
   & * (erk_coeff(1,1) * jacobian_ekman_shear_0 &
     & + esdirk_coeff(1,1) * biharm_visc_0))
+
+!/* ADDED FOR DEBUGGING, REMOVE WHEN DONE.
+!PRINT *, 'freq_pot_vort_1(:,:,1); '
+!DO j = 1, y_len
+!  WRITE(*,'(8F8.4)') freq_pot_vort_1(1:8,j,1)
+!END DO
+!
+!STOP
+!*/
+
 
 ! Second stage of additive RK method.
   ! Calculate Jacobian, Ekman friction, vertical shear, and biharm. viscosity

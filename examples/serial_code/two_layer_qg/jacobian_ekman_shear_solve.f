@@ -130,7 +130,8 @@ INTEGER(qb) :: x_len_sub, &
 & y_len_sub, &
 & scaled_x_len, &
 & scaled_y_len, &
-& i
+& i, &
+& j
 REAL(dp) :: dt, &
 & deform_wavenum_sub, &
 & rotat_wavenum_sub, &
@@ -168,9 +169,17 @@ IF (.NOT. ran) THEN
   ALLOCATE(spec_inv_barotropic(x_len_sub, y_len_sub))
   ALLOCATE(spec_inv_baroclinic(x_len_sub, y_len_sub))
   spec_inv_barotropic = 1.0_dp/spec_laplacian
-  spec_inv_barotropic(1,1) = 0.0_dp
   spec_inv_baroclinic = 1.0_dp/(spec_laplacian - deform_wavenum_sub**(2.0_dp))
-  spec_inv_baroclinic(1,1) = 0.0_dp
+  DO j = 1, y_len
+    DO i = 1, x_len
+      IF (spec_inv_barotropic(i,j) .NE. spec_inv_barotropic(i,j)) THEN
+        spec_inv_barotropic(i,j) = 0.0
+      END IF
+      IF (spec_inv_baroclinic(i,j) .NE. spec_inv_baroclinic(i,j)) THEN
+        spec_inv_baroclinic(i,j) = 0.0
+      END IF
+    END DO
+  END DO
 
   ! Get the first-order differential operators.
   ALLOCATE(spec_x_deriv(x_len_sub, y_len_sub, 2))

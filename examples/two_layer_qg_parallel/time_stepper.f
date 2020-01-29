@@ -97,7 +97,6 @@ ELSE IF (num_timesteps .LT. output_freq) THEN
   STOP
 END IF
 !*/
-
 ! Output the initial condition.
 time = init_time
 dt = init_dt
@@ -126,20 +125,16 @@ CALL SPECTRAL_DIM1_DERIVATIVE_EZP(x_len, y_len, 0_qb, spec_x_deriv, &
   & 2_qb * biharm_order) ! ADDED TO PARALLEL
 CALL SPECTRAL_DIM2_DERIVATIVE_EZP(x_len, y_len, 0_qb, spec_y_deriv, &
   & 2_qb * biharm_order) ! ADDED TO PARALLEL
-
 spec_biharm(:,:,1) = (-1.0_dp, 0.0_dp)**(REAL(biharm_order + 1_qb, dp)) &
 & * biharm_visc_coeff * (spec_x_deriv + spec_y_deriv)
 spec_biharm(:,:,2) = spec_biharm(:,:,1)
-
 ! Calculate the ARK coefficients.
 CALL CALCULATE_ARK_COEFF(erk_coeff, esdirk_coeff)
-
 ! Step simulation forward in time.
 DO step = 1, num_timesteps
   error_toler_0 = 0.8_dp * error_toler
   CALL TIME_STEP_SCHEME(freq_pot_vort_grid, spec_biharm, time, &
   & error_toler_0, dt, erk_coeff, esdirk_coeff)
-
   ! Write output at desired frequency.
   IF (MOD(step, output_freq) .EQ. 0_qb) THEN
     ! Output the current step.
@@ -211,7 +206,12 @@ INTEGER(qb) :: proc_id ! ADDED TO PARALLEL
 REAL(dp) :: time, &
 & dt, &
 & error_toler_0, &
+!& error_toler_1, & ! CHANGED FOR PARALLEL
+!/* ADDED TO PARALLEL
 & error_toler_1, &
+& error_toler_11, &
+& error_toler_12, &
+!*/
 & max_pot_vort
 COMPLEX(dp), DIMENSION(5,5) :: esdirk_coeff
 COMPLEX(dp), DIMENSION(6,7) :: erk_coeff
@@ -236,7 +236,6 @@ COMPLEX(dp), DIMENSION(x_len, y_len, 2) :: freq_pot_vort_grid, &
 & jacobian_ekman_shear_5, &
 & biharm_visc_5, &
 & error_control
-
 
 stage_coeff = 1.0_dp/(1.0_dp - 0.25_dp*dt*spec_biharm)
 
@@ -364,8 +363,9 @@ error_control = erk_coeff(1,6) * (jacobian_ekman_shear_0 + biharm_visc_0) &
 !*/ ADDED TO PARALLEL
 CALL CFFT2DB_EZP(x_len, y_len, 0_qb, error_control(:,:,1))
 CALL CFFT2DB_EZP(x_len, y_len, 0_qb, error_control(:,:,2))
-CALL MAXVAL_EZP(x_len, y_len, ABS(error_control), error_toler_1)
-error_toler_1 = dt * error_toler_1
+CALL MAXVAL_EZP(x_len, y_len, ABS(error_control(:,:,1)), error_toler_11)
+CALL MAXVAL_EZP(x_len, y_len, ABS(error_control(:,:,2)), error_toler_12)
+error_toler_1 = dt * MAXVAL((/ error_toler_11, error_toler_12 /))
 !*/
 
 CALL GET_ID_EZP(proc_id) ! ADDED TO PARALLEL

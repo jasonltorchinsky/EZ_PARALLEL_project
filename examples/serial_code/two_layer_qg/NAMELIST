@@ -3,7 +3,7 @@ x_len = 256
 y_len = 256
 dx = 0.0078125
 dy = 0.0078125
-num_timesteps = 1000
+num_timesteps = 50
 init_dt = 0.0005
 pot_vort_bound = 150000.0
 deform_wavenum = 4.0
@@ -16,6 +16,6 @@ x_ref = 0.0
 y_ref = 0.0
 init_time= 0.0
 error_toler = 0.1
-output_freq = 1
+output_freq = 5
 /
 

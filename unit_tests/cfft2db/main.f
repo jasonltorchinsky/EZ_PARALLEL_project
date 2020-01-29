@@ -5,7 +5,7 @@
 ! Last Updated: January 15, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-PROGRAM CFFT2DF_UNIT_TEST
+PROGRAM CFFT2DB_UNIT_TEST
 
 IMPLICIT NONE
 

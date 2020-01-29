@@ -73,7 +73,7 @@ lib$(LIB).a: $(OBJS)
 
 # Compile all DFFTPACK source code.
 ./DFFTPACK/%.o: ./DFFTPACK/%.f 
-	$(FC) -c $< -w -o $@
+	$(FC) -c $< -w -o $@ -O3
 
 # Compile all EZ_PARALLEL source code
 %.o: %.f
@@ -84,16 +84,16 @@ lib$(LIB).a: $(OBJS)
 # Clean deletes everything besides source code.
 clean:
 ifeq ($(CMD), Windows)
-	del *.o *.a
+	del *.o ./DFFTPACK/*.o *.a
 else ifeq ($(CMD), Linux)
-	rm -rf *.o *.a
+	rm -rf *.o ./DFFTPACK/*.o *.a
 endif
 
 # Tidy deletes all .o files, keeping the .a file.
 tidy:
 ifeq ($(CMD), Windows)
-	del *.o
+	del *.o ./DFFTPACK/*.o
 else ifeq ($(CMD), Linux)
-	rm -rf *.o
+	rm -rf *.o ./DFFTPACK/*.o
 endif
 	

@@ -10,7 +10,7 @@
 ! file using this indexing results in dim1 being written as a row.
 !
 ! Written By: Jason Turner
-! Last Updated: January 28, 2020
+! Last Updated: January 29, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PROGRAM TWO_LAYER_QG_SOLVER_PARALLEL
@@ -50,6 +50,7 @@ USE INITIALIZE
 USE TIME_STEPPER
 
 IMPLICIT NONE
+
 
 CALL INIT_MPI_EZP ! ADDED TO PARALLEL
 

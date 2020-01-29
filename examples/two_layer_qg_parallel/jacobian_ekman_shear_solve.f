@@ -132,7 +132,8 @@ INTEGER(qb) :: x_len_sub, &
 & y_len_sub, &
 & scaled_x_len, &
 & scaled_y_len, &
-& i
+& i, &
+& j
 REAL(dp) :: dt, &
 & deform_wavenum_sub, &
 & rotat_wavenum_sub, &
@@ -169,6 +170,7 @@ IF (.NOT. ran) THEN
     &  2_qb) ! ADDED TO PARALLEL
   ALLOCATE(spec_laplacian(x_len_sub, y_len_sub))
   spec_laplacian = spec_x_deriv(:,:,1) + spec_y_deriv(:,:,1)
+
   DEALLOCATE(spec_x_deriv)
   DEALLOCATE(spec_y_deriv)
 
@@ -176,9 +178,17 @@ IF (.NOT. ran) THEN
   ALLOCATE(spec_inv_barotropic(x_len_sub, y_len_sub))
   ALLOCATE(spec_inv_baroclinic(x_len_sub, y_len_sub))
   spec_inv_barotropic = 1.0_dp/spec_laplacian
-  spec_inv_barotropic(1,1) = 0.0_dp
   spec_inv_baroclinic = 1.0_dp/(spec_laplacian - deform_wavenum_sub**(2.0_dp))
-  spec_inv_baroclinic(1,1) = 0.0_dp
+  DO j = 1, y_len
+    DO i = 1, x_len
+      IF (spec_inv_barotropic(i,j) .NE. spec_inv_barotropic(i,j)) THEN
+        spec_inv_barotropic(i,j) = 0.0
+      END IF
+      IF (spec_inv_baroclinic(i,j) .NE. spec_inv_baroclinic(i,j)) THEN
+        spec_inv_baroclinic(i,j) = 0.0
+      END IF
+    END DO
+  END DO
 
   ! Get the first-order differential operators.
   ALLOCATE(spec_x_deriv(x_len_sub, y_len_sub, 2))
@@ -194,9 +204,18 @@ IF (.NOT. ran) THEN
   spec_x_deriv(:,:,2) = spec_x_deriv(:,:,1)
   spec_y_deriv(:,:,2) = spec_y_deriv(:,:,1)
 
-
-  ALLOCATE(scaled_spec_x_deriv(3_qb * x_len_sub/2_qb, 3_qb * y_len_sub/2_qb, 2))
-  ALLOCATE(scaled_spec_y_deriv(3_qb * x_len_sub/2_qb, 3_qb * y_len_sub/2_qb, 2))
+  !/* CHANGED FOR PARALLEL
+  !ALLOCATE(scaled_spec_x_deriv(3_qb * x_len_sub/2_qb, 3_qb * y_len_sub/2_qb, &
+  !  & 2))
+  !ALLOCATE(scaled_spec_y_deriv(3_qb * x_len_sub/2_qb, 3_qb * y_len_sub/2_qb, &
+  !  & 2))
+  !*/
+  !/* ADDED TO PARALLEL
+  CALL ZERO_PADDING_GET_SHAPE_EZP(x_len_sub, y_len_sub, 0_qb, scaled_x_len, &
+  & scaled_y_len)
+  ALLOCATE(scaled_spec_x_deriv(scaled_x_len, scaled_y_len, 2))
+  ALLOCATE(scaled_spec_y_deriv(scaled_x_len, scaled_y_len, 2))
+  !*/
   !/* CHANGED FOR PARALLEL
   !CALL SPECTRAL_X_DERIVATIVE(3_qb * x_len_sub/2_qb, 3_qb * y_len_sub/2_qb, &
   !  & scaled_spec_x_deriv(:,:,1), 1_qb)
@@ -220,7 +239,6 @@ barotropic_pot_vort = 0.5_dp * (freq_pot_vort_grid(:,:,1) &
 & + freq_pot_vort_grid(:,:,2))
 baroclinic_pot_vort = 0.5_dp * (freq_pot_vort_grid(:,:,1) &
 & - freq_pot_vort_grid(:,:,2))
-
 ! Calculate the streamfunctions for the spectral baroclinic and barotropic
 ! potential vorticities.
 barotropic_pot_vort_strmfunc = spec_inv_barotropic * barotropic_pot_vort
@@ -231,7 +249,6 @@ freq_strmfunc(:,:,1) = barotropic_pot_vort_strmfunc &
 & + baroclinic_pot_vort_strmfunc
 freq_strmfunc(:,:,2) = barotropic_pot_vort_strmfunc &
 & - baroclinic_pot_vort_strmfunc
-
 ! Calculate the contributions from the mean shear, rotation deformation, and
 ! the Ekman friction (the last in layer 2 only).
 jacobian_ekman_shear_grid = (0.0_dp, 0.0_dp)
@@ -248,7 +265,6 @@ jacobian_ekman_shear_grid(:,:,2) = CMPLX((1.0_dp), 0.0_dp, dp) &
   & - vert_shear_sub * deform_wavenum_sub**(2.0_dp)), 0.0_dp, dp) &
 & * spec_x_deriv(:,:,1) * freq_strmfunc(:,:,2) - CMPLX(ekman_fric_coeff_sub, &
   & 0.0_dp, dp) * spec_laplacian * freq_strmfunc(:,:,2)
-
 ! Must rescale the potential vort and the streamfunction grids to dealias the
 ! Jacobian, see Orszag, S. "On the Elimination of Aliasing in Finite-Difference 
 ! Schemes by Filtering High-Wavenumber Components" (1971).
@@ -263,6 +279,7 @@ CALL ZERO_PADDING_GET_SHAPE_EZP(x_len_sub, y_len_sub, 0_qb, scaled_x_len, &
   ! Rescale the frequency potential vorticity.
 ALLOCATE(scaled_freq_pot_vort_grid(scaled_x_len, scaled_y_len, 2))
 scaled_freq_pot_vort_grid = (0.0_dp, 0.0_dp)
+
 !*/ CHANGED FOR PARALLEL
 !CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_pot_vort_grid(:,:,1), &
 !  & scaled_x_len, scaled_y_len, scaled_freq_pot_vort_grid(:,:,1))
@@ -279,6 +296,7 @@ scaled_freq_pot_vort_grid = (2.25_dp, 0.0_dp) * scaled_freq_pot_vort_grid
   ! Rescale the potential vorticity streamfunction.
 ALLOCATE(scaled_freq_strmfunc(scaled_x_len, scaled_y_len, 2))
 scaled_freq_strmfunc = (0.0_dp, 0.0_dp)
+
 !/* CHANGED FOR PARALLEL
 !CALL ZERO_PADDING(x_len_sub, y_len_sub, freq_strmfunc(:,:,1), scaled_x_len, &
 !  & scaled_y_len, scaled_freq_strmfunc(:,:,1))
@@ -298,7 +316,9 @@ scaled_freq_strmfunc = (2.25_dp, 0.0_dp) * scaled_freq_strmfunc
 ! J(streamfunction, potential vorticity).
   ! Calculate x-derivative of the potential vorticity.
 ALLOCATE(scaled_strmfunc_x_deriv(scaled_x_len, scaled_y_len, 2))
+
 scaled_strmfunc_x_deriv = scaled_spec_x_deriv * scaled_freq_strmfunc
+
 !/* CHANGED FOR PARALLEL
 !CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_strmfunc_x_deriv(:,:,1))
 !CALL CFFT2DB(scaled_x_len, scaled_y_len, scaled_strmfunc_x_deriv(:,:,2))
@@ -306,7 +326,7 @@ scaled_strmfunc_x_deriv = scaled_spec_x_deriv * scaled_freq_strmfunc
 CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
   & scaled_strmfunc_x_deriv(:,:,1)) ! ADDED TO PARALLEL
 CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
-  & scaled_strmfunc_x_deriv(:,:,2)) ! ADDED TO PARALLEL
+  & scaled_strmfunc_x_deriv(:,:,2)) ! ADDED TO PARALLEL ! ERROR HERE WITH np = 3, 5
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_strmfunc_x_deriv = REAL(scaled_strmfunc_x_deriv)
@@ -321,6 +341,7 @@ CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
   & scaled_strmfunc_y_deriv(:,:,1)) ! ADDED TO PARALLEL
 CALL CFFT2DB_EZP(scaled_x_len, scaled_y_len, 0_qb, &
   & scaled_strmfunc_y_deriv(:,:,2)) ! ADDED TO PARALLEL
+
   ! Take only the real part to get rid of machine-epsilon errors from the
   ! inverse FFT.
 scaled_strmfunc_y_deriv = REAL(scaled_strmfunc_y_deriv)
@@ -369,6 +390,8 @@ CALL CFFT2DF_EZP(scaled_x_len, scaled_y_len, 0_qb, &
 ! larger than they should be, so we must correct that.
 scaled_freq_jacobian = CMPLX((4.0_dp/9.0_dp), 0.0_dp, dp) * scaled_freq_jacobian
 
+
+
 ! Reduce the Jacobian to the original grid size.
 !/* CHANGED FOR PARALLEL
 !CALL ZERO_PADDING_INV(x_len_sub, y_len_sub, freq_jacobian(:,:,1), &
@@ -378,7 +401,7 @@ scaled_freq_jacobian = CMPLX((4.0_dp/9.0_dp), 0.0_dp, dp) * scaled_freq_jacobian
 !*/
 CALL ZERO_PADDING_INV_DBLE_CMPLX_EZP(x_len_sub, y_len_sub, &
   & freq_jacobian(:,:,1), scaled_x_len, scaled_y_len, &
-  & scaled_freq_jacobian(:,:,1), 0) ! ADDED TO PARALLEL.
+  & scaled_freq_jacobian(:,:,1), 0_qb) ! ADDED TO PARALLEL.
 CALL ZERO_PADDING_INV_DBLE_CMPLX_EZP(x_len_sub, y_len_sub, &
   & freq_jacobian(:,:,2), scaled_x_len, scaled_y_len, &
   & scaled_freq_jacobian(:,:,2), 0_qb) ! ADDED TO PARALLEL.

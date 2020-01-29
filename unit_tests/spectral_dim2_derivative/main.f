@@ -2,7 +2,7 @@
 ! SPECTRAL_DIM2_DERIVATIVE unit test.
 !
 ! Written By: Jason Turner
-! Last Updated: January 12, 2020
+! Last Updated: January 29, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 PROGRAM SPECTRAL_DIM2_DERIVATIVE_UNIT_TEST
@@ -58,7 +58,8 @@ REAL(dp) :: dim1_ref, &
 COMPLEX(dp), DIMENSION(:,:), ALLOCATABLE :: spec_dim2_deriv, &
 & test_grid(:,:)
 REAL(dp), PARAMETER :: pi_dp = 4.0_dp * ATAN(1.0_dp)
-CHARACTER(len=15) :: output_format
+CHARACTER(len=14) :: output_format_1, &
+& output_format_2
 
 NAMELIST /test_params/ dim1_len, dim2_len, overlap, dim1_ref, dim2_ref, &
 & dim1_spc, dim2_spc, order
@@ -67,7 +68,8 @@ READ(1000, nml = test_params)
 CLOSE(1000)
 
 ! Create format string for output grid.
-WRITE(output_format,'(A,I0.8,A)') '(', dim1_len, 'F16.8)'
+WRITE(output_format_1,'(A,I0.8,A)') '(', dim1_len, 'F8.4)'
+WRITE(output_format_2,'(A,I0.8,A)') '(', 2_qb * dim1_len, 'F8.4)'
 
 CALL INIT_MPI_EZP
 CALL GET_ID_EZP(proc_id)
@@ -86,7 +88,9 @@ CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
 ! Fill in the test grid.
 CALL DECOMP_GRID_EZP(dim2_len, overlap)
 ! Each processor prints out its dim2_len.
+CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
 DO i = 0, proc_count-1
+  CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
   IF (proc_id .EQ. i) THEN
     PRINT *, 'proc_id: ', proc_id, ' dim2_len: ', dim2_len
     CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
@@ -98,7 +102,9 @@ CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
 
 CALL IDENTIFY_REF_POINT_EZP(dim2_len, dim2_ref, dim2_spc, overlap)
 ! Each processor prints out its reference point.
+CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
 DO i = 0, proc_count-1
+  CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
   IF (proc_id .EQ. i) THEN
     PRINT *, 'proc_id: ', proc_id, ' dim1_ref: ', dim1_ref, ' dim2_ref: ', &
     & dim2_ref
@@ -117,11 +123,13 @@ DO j = 1, dim2_len
 END DO
 
 ! Each processor prints out its test_grid.
+CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
 DO i = 0, proc_count-1
+  CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
   IF (proc_id .EQ. i) THEN
     PRINT *, 'proc_id: ', proc_id, ' test_grid: '
     DO j = 1, dim2_len
-      WRITE(*, output_format) REAL(test_grid(:,j), dp)
+      WRITE(*, output_format_1) REAL(test_grid(:,j), dp)
     END DO
     CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
   ELSE
@@ -136,6 +144,22 @@ spec_dim2_deriv = (0.0_dp, 0.0_dp)
 CALL SPECTRAL_DIM2_DERIVATIVE_EZP(dim1_len, dim2_len, overlap, spec_dim2_deriv, &
 & order)
 
+! Each processor prints out its spec_dim2_deriv.
+CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
+DO i = 0, proc_count-1
+  CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
+  IF (proc_id .EQ. i) THEN
+    PRINT *, 'proc_id: ', proc_id, ' spec_dim2_deriv: '
+    DO j = 1, dim2_len
+      WRITE(*, output_format_2) spec_dim2_deriv(:,j)
+    END DO
+    CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
+  ELSE
+    CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
+  END IF
+END DO
+CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
+
 ! Differentiate test_grid along dim2.
 CALL CFFT2DF_EZP(dim1_len, dim2_len, overlap, test_grid)
 test_grid = spec_dim2_deriv * test_grid
@@ -149,11 +173,13 @@ DO j = 1, dim2_len
   END DO
 END DO
 ! Each processor prints out its test_grid.
+CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
 DO i = 0, proc_count-1
+  CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
   IF (proc_id .EQ. i) THEN
     PRINT *, 'proc_id: ', proc_id, ' output test_grid: '
     DO j = 1, dim2_len
-      WRITE(*, output_format) REAL(test_grid(:,j), dp)
+      WRITE(*, output_format_1) REAL(test_grid(:,j), dp)
     END DO
     CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
   ELSE

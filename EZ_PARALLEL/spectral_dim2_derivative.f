@@ -213,7 +213,7 @@ END IF
 IF (MOD(dim2_len_total, 2) .EQ. 0) THEN
   DO i = 1, dim2_len
     ! Non-negative wavenumbers.
-    IF (i+dim2_grid_ind_low-1 .LT. dim2_len_total/2+1) THEN
+    IF (i+dim2_grid_ind_low-1 .LE. dim2_len_total/2+1) THEN
       dim2_wavenums(i) = DBLE(i+dim2_grid_ind_low-2)
     ! Negative wavenumbers.
     ELSE IF (i+dim2_grid_ind_low-1 .GT. dim2_len_total/2+1) THEN

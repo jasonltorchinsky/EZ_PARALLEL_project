@@ -45,7 +45,7 @@ ifeq ($(FC), gfortran)
   
 else ifeq ($(FC), mpifort)
   # Compiler flags.
-  FCFLAGS = -ffree-form
+  FCFLAGS = -ffree-form -g
   # Include file search paths, e.g., /usr/include/.
   INCPTHS = $(EZPPTH)
   # Library search path, e.g., ../../EZ_PARALLEL.
