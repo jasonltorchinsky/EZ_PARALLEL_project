@@ -5,7 +5,7 @@
 ! (PUBLIC).
 !
 ! Written By: Jason Turner
-! Last Updated: January 17, 2020
+! Last Updated: January 30, 2020
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MODULE OUTPUT
@@ -31,11 +31,13 @@ CONTAINS
 ! VARIABLES: - step: The current time step number (INTEGER(qb)).
 ! - step_parity: Which index of temp_grid should be output (either (:,:,1) or
 ! (:,:,2)) (INTEGER(qb)).
-! - i, j: Countind indices for DO loops (INTEGER(qb)).
+! - i, j: Counting indices for DO loops (INTEGER(qb)).
 ! - fname: Output file name (CHARACTER(LEN = 30))
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SUBROUTINE WRITE_OUTPUT(step, step_parity)
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+USE MPI ! ADDED TO PARALLEL
 
 USE INITIALIZE
 
@@ -44,10 +46,14 @@ IMPLICIT NONE
 INTEGER(qb) :: step, &
 & step_parity, &
 & i, &
-& j
-CHARACTER(LEN = 30) :: fname
+& j, &
+& proc_id ! ADDED TO PARALLEL
+CHARACTER(LEN = 35) :: fname ! CHANGED FOR PARALLEL
 
-WRITE(fname,'(A,I0.8,A)') './output_data/out_', step, '.csv'
+CALL GET_ID_EZP(proc_id)
+
+WRITE(fname,'(A,I0.8,A,I0.4,A)') './output_data/out_', step, '_', proc_id, &
+& '.csv' ! CHANGED FOR PARALLEL
 
 OPEN(100, file = fname, form = 'formatted')
 
@@ -60,7 +66,8 @@ DO j = 1 , y_len
 END DO
 CLOSE(100)
 
-PRINT *, 'Wrote grid to ', fname, '.'
+PRINT *, 'Processor ', proc_id, ' wrote grid to ', &
+& fname, '.' ! CHANGED FOR PARALLEL
 
 END SUBROUTINE WRITE_OUTPUT
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -93,7 +93,9 @@ WRITE(1005,'(A,E32.16,1x)') 'time = ', time
 WRITE(1005,'(A,E32.16,1x)') 'dt = ', dt
 CLOSE(1005)
 
-WRITE(*,'(A,I0.8,A)') 'Wrote outputs for step ', step, '.'
+PRINT *,  'Processor ', proc_id, ' wrote outputs for step ', &
+& step, '.' ! CHANGED FOR PARALLEL
+
 END SUBROUTINE WRITE_OUTPUT
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -20,7 +20,7 @@ CMD = Linux
 FC = mpifort
 
 # Executable name.
-TRGT = two_layer_qg_solver_parallel.exe
+TRGT = stoch_heat_solver_parallel.exe
 # .f files.
 SRCS = $(wildcard *.f)
 # .o files.
@@ -64,24 +64,19 @@ LKLIBFLAGS = $(addprefix -l,$(LIBNAMES))
 $(TRGT): $(OBJS)                # Make executable.
 	$(FC) $^ -o $(TRGT) $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
-# Compile main.o.
-main.o: main.f time_stepper.o initialize.o
+# Make main.o.
+main.o: main.f time_stepper.o output.o initialize.o
 	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
-# Compile time_stepper.o.
-time_stepper.o: time_stepper.f output.o initialize.o \
-jacobian_ekman_shear_solve.o
+# Make time_stepper.o.
+time_stepper.o: time_stepper.f output.o initialize.o
 	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
-# Compile output.o.
+# Make output.o.
 output.o: output.f initialize.o
 	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
-	
-# Compile jacobian_ekman_shear_solve.o.
-jacobian_ekman_shear_solve.o: jacobian_ekman_shear_solve.f initialize.o
-	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
-# Compile all .f files that do not have dependencies. 
+# Compile all independent .f files. 
 %.o: %.f
 	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
