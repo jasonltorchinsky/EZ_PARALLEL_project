@@ -1,0 +1,814 @@
+\hypertarget{rfft2db_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/rfft2db.f File Reference}
+\label{rfft2db_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/rfft2db.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/rfft2db.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{rfft2db_8f_a351eb3f54424961eb891278a1c0373fe}{rfft2db\+\_\+ezp}} (dim1\+\_\+len, dim2\+\_\+len, overlap, matrix)
+\item 
+subroutine \mbox{\hyperlink{rfft2db_8f_a9a600712547c8b1dde99dfb561d53945}{serial}} (dim1\+\_\+len, dim2\+\_\+len, matrix)
+\item 
+subroutine \mbox{\hyperlink{rfft2db_8f_a50564e0200dfaecab413fe00f3f268ee}{parallel}} (dim1\+\_\+len, dim2\+\_\+len, overlap, matrix, proc\+\_\+id, proc\+\_\+count)
+\item 
+subroutine \mbox{\hyperlink{rfft2db_8f_ad1de6e784c898d77f449fefedc11b70e}{error\+\_\+handling}} (proc\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{rfft2db_8f_ad1de6e784c898d77f449fefedc11b70e}\label{rfft2db_8f_ad1de6e784c898d77f449fefedc11b70e}} 
+\index{rfft2db.f@{rfft2db.f}!error\_handling@{error\_handling}}
+\index{error\_handling@{error\_handling}!rfft2db.f@{rfft2db.f}}
+\doxysubsubsection{\texorpdfstring{error\_handling()}{error\_handling()}}
+{\footnotesize\ttfamily subroutine rfft2db\+\_\+ezp\+::error\+\_\+handling (\begin{DoxyParamCaption}\item[{integer}]{proc\+\_\+id }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{440 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{441 }
+\DoxyCodeLine{442 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{443 }
+\DoxyCodeLine{444 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446 \textcolor{keywordtype}{INTEGER} :: proc\_id}
+\DoxyCodeLine{447 \textcolor{keywordtype}{LOGICAL} :: proc\_err\_flag, \&}
+\DoxyCodeLine{448 \& global\_err\_flag}
+\DoxyCodeLine{449 }
+\DoxyCodeLine{450 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{451 }
+\DoxyCodeLine{452 proc\_err\_flag = .false.}
+\DoxyCodeLine{453 global\_err\_flag = .false.}
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455 \textcolor{comment}{! STOP all processors if any encounter an error.}}
+\DoxyCodeLine{456 \textcolor{keyword}{CALL }mpi\_allreduce(proc\_err\_flag, global\_err\_flag, 1, mpi\_logical, mpi\_lor, \&}
+\DoxyCodeLine{457 \& mpi\_comm\_world, ierror)}
+\DoxyCodeLine{458 }
+\DoxyCodeLine{459 \textcolor{keywordflow}{IF} (global\_err\_flag) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{460   \textcolor{keyword}{CALL }mpi\_finalize(ierror)}
+\DoxyCodeLine{461   stop}
+\DoxyCodeLine{462 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{463 }
+\DoxyCodeLine{464 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{465 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{rfft2db_8f_a50564e0200dfaecab413fe00f3f268ee}\label{rfft2db_8f_a50564e0200dfaecab413fe00f3f268ee}} 
+\index{rfft2db.f@{rfft2db.f}!parallel@{parallel}}
+\index{parallel@{parallel}!rfft2db.f@{rfft2db.f}}
+\doxysubsubsection{\texorpdfstring{parallel()}{parallel()}}
+{\footnotesize\ttfamily subroutine rfft2db\+\_\+ezp\+::parallel (\begin{DoxyParamCaption}\item[{integer}]{dim1\+\_\+len,  }\item[{integer}]{dim2\+\_\+len,  }\item[{integer}]{overlap,  }\item[{double precision, dimension(\mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_acb4b6a591c5ad6fc207ef543dc74d1ae}{dim1\+\_\+len}}, \mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_adef80e51b1bb5916dd9410de399f1319}{dim2\+\_\+len}})}]{matrix,  }\item[{integer}]{proc\+\_\+id,  }\item[{integer}]{proc\+\_\+count }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{180 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{187 \& dim2\_len, \&}
+\DoxyCodeLine{188 \& overlap, \&}
+\DoxyCodeLine{189 \& proc\_id, \&}
+\DoxyCodeLine{190 \& proc\_count, \&}
+\DoxyCodeLine{191 \& ii, \&}
+\DoxyCodeLine{192 \& status(MPI\_STATUS\_SIZE), \&}
+\DoxyCodeLine{193 \& ierror, \&}
+\DoxyCodeLine{194 \& dim2\_len\_dim1\_slice, \&}
+\DoxyCodeLine{195 \& dim1\_len\_dim2\_slice, \&}
+\DoxyCodeLine{196 \& dim2\_len\_dim2\_slice, \&}
+\DoxyCodeLine{197 \& fill\_in\_proc\_trgt, \&}
+\DoxyCodeLine{198 \& dim2\_len\_total, \&}
+\DoxyCodeLine{199 \& dim2\_low\_index\_dim1\_slice, \&}
+\DoxyCodeLine{200 \& dim2\_high\_index\_dim1\_slice, \&}
+\DoxyCodeLine{201 \& dim2\_low\_index\_dim2\_slice, \&}
+\DoxyCodeLine{202 \& dim2\_high\_index\_dim2\_slice}
+\DoxyCodeLine{203 \textcolor{keywordtype}{INTEGER}, \textcolor{keywordtype}{DIMENSION(proc\_count)} :: dim1\_len\_dim2\_slice\_list, \&}
+\DoxyCodeLine{204 \& dim2\_len\_dim1\_slice\_list}
+\DoxyCodeLine{205 \textcolor{keywordtype}{DOUBLE PRECISION} :: norm}
+\DoxyCodeLine{206 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(4*dim1\_len+15)} :: WSAVE1}
+\DoxyCodeLine{207 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: matrix}
+\DoxyCodeLine{208 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(:)}, \textcolor{keywordtype}{ALLOCATABLE} :: WSAVE2}
+\DoxyCodeLine{209 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(:,:)}, \textcolor{keywordtype}{ALLOCATABLE} :: dim1\_slice, \&}
+\DoxyCodeLine{210 \& dim2\_slice, \&}
+\DoxyCodeLine{211 \& dim2\_slice\_tr}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \textcolor{comment}{! Trim the overlap from the input matrix.}}
+\DoxyCodeLine{214 \textcolor{keywordflow}{IF} (proc\_id .EQ. 0) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{215   \textcolor{comment}{! First processor, trim last part along dimension 2 of matrix.}}
+\DoxyCodeLine{216   dim2\_len\_dim1\_slice = dim2\_len -\/ overlap}
+\DoxyCodeLine{217   \textcolor{keyword}{ALLOCATE}(dim1\_slice(dim1\_len, dim2\_len\_dim1\_slice))}
+\DoxyCodeLine{218   dim1\_slice = matrix(:, 1:dim2\_len-\/overlap)}
+\DoxyCodeLine{219 \textcolor{keywordflow}{ELSE} \textcolor{keywordflow}{IF} (proc\_id .EQ. proc\_count-\/1) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{220   \textcolor{comment}{! Last processor, trim first part along dimension 2 of matrix.}}
+\DoxyCodeLine{221   dim2\_len\_dim1\_slice = dim2\_len -\/ overlap}
+\DoxyCodeLine{222   \textcolor{keyword}{ALLOCATE}(dim1\_slice(dim1\_len, dim2\_len\_dim1\_slice))}
+\DoxyCodeLine{223   dim1\_slice = matrix(:, 1+overlap:dim2\_len)}
+\DoxyCodeLine{224 \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{225   \textcolor{comment}{! Middle processor, trim first and last part along dimension 2 of matrix.}}
+\DoxyCodeLine{226   dim2\_len\_dim1\_slice = dim2\_len -\/ 2 * overlap}
+\DoxyCodeLine{227   \textcolor{keyword}{ALLOCATE}(dim1\_slice(dim1\_len, dim2\_len\_dim1\_slice))}
+\DoxyCodeLine{228   dim1\_slice = matrix(:, 1+overlap:dim2\_len-\/overlap)}
+\DoxyCodeLine{229 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 \textcolor{comment}{! Perfom 1D FFT along first dimension of dim1\_slice.}}
+\DoxyCodeLine{232   \textcolor{comment}{! SW real forward 1D FFT (FFFT) initialization, fills WSAVE1.}}
+\DoxyCodeLine{233 wsave1 = 0.0}
+\DoxyCodeLine{234 \textcolor{keyword}{CALL }\mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}}(dim1\_len, wsave1)}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 \textcolor{keywordflow}{DO} ii = 1, dim2\_len\_dim1\_slice}
+\DoxyCodeLine{237   \textcolor{keyword}{CALL }\mbox{\hyperlink{dfftb_8f_a474929892e1520a099a04ff1753cfbd3}{dfftb}}(dim1\_len, dim1\_slice(:,ii), wsave1) \textcolor{comment}{! SW FFFT routine.}}
+\DoxyCodeLine{238 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{240 \textcolor{comment}{! \string~\string~\string~ Up to this point, we have FFT'd the grid along dim1.}}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 \textcolor{comment}{! Now need to FFT along dim2, so we need a dim2\_slice. First, we must}}
+\DoxyCodeLine{243 \textcolor{comment}{! calculate the size of dim2\_slice for all processors.}}
+\DoxyCodeLine{244 \textcolor{comment}{! Calculate dim1\_len for each dim2\_slice.}}
+\DoxyCodeLine{245   \textcolor{comment}{! Divide dim1\_len of total grid as evenly as possible.}}
+\DoxyCodeLine{246 dim1\_len\_dim2\_slice = dim1\_len/proc\_count}
+\DoxyCodeLine{247   \textcolor{comment}{! Now check if dim2\_slice of a given processor needs to take additional row,}}
+\DoxyCodeLine{248   \textcolor{comment}{! i.e., dim1\_len \% proc\_count != 0.}}
+\DoxyCodeLine{249 \textcolor{keywordflow}{DO} ii = 1, proc\_count}
+\DoxyCodeLine{250   \textcolor{keywordflow}{IF} ((ii-\/1) .LT. modulo(dim1\_len, proc\_count)) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{251     dim1\_len\_dim2\_slice\_list(ii) = dim1\_len\_dim2\_slice + 1}
+\DoxyCodeLine{252     \textcolor{comment}{! The indexing is weird here since processors start at index 0 but arrays}}
+\DoxyCodeLine{253     \textcolor{comment}{! start at index 1. Thus, entry ii of this corresponds to processor (ii-\/1).}}
+\DoxyCodeLine{254   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{255     dim1\_len\_dim2\_slice\_list(ii) = dim1\_len\_dim2\_slice}
+\DoxyCodeLine{256 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{257 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259 \textcolor{comment}{! Calculate dim2\_len for all dim2\_slice's by adding up dim2\_len for each}}
+\DoxyCodeLine{260 \textcolor{comment}{! processor's dim1\_slice.}}
+\DoxyCodeLine{261 \textcolor{keyword}{CALL }mpi\_allreduce(dim2\_len\_dim1\_slice, dim2\_len\_dim2\_slice, 1, mpi\_integer, \&}
+\DoxyCodeLine{262 \& mpi\_sum, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264 \textcolor{comment}{! Allocate memory to dim2\_slice and fill it in.}}
+\DoxyCodeLine{265 \textcolor{keyword}{ALLOCATE}(dim2\_slice(dim1\_len\_dim2\_slice\_list(proc\_id + 1), dim2\_len\_dim2\_slice))}
+\DoxyCodeLine{266 dim2\_slice = 0.0}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 \textcolor{comment}{! To fill in dim2\_slice, we need the dim2\_len of all dim1\_slice's.}}
+\DoxyCodeLine{269 \textcolor{keyword}{CALL }mpi\_allreduce(dim2\_len\_dim1\_slice, dim2\_len\_total, 1, mpi\_integer, \&}
+\DoxyCodeLine{270 \& mpi\_sum, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{271 \textcolor{comment}{! Calculate dim2\_len for each dim1\_slice, to avoid communication between}}
+\DoxyCodeLine{272 \textcolor{comment}{! processors.}}
+\DoxyCodeLine{273   \textcolor{comment}{! Divide dim2\_len of total grid as evenly as possible.}}
+\DoxyCodeLine{274 dim2\_len\_dim1\_slice = dim2\_len\_total/proc\_count}
+\DoxyCodeLine{275   \textcolor{comment}{! Now check if dim1\_slice of a given processor needs to take additional row,}}
+\DoxyCodeLine{276   \textcolor{comment}{! i.e., dim2\_len \% proc\_count != 0.}}
+\DoxyCodeLine{277 \textcolor{keywordflow}{DO} ii = 1, proc\_count}
+\DoxyCodeLine{278   \textcolor{keywordflow}{IF} ((ii-\/1) .LT. modulo(dim2\_len\_total, proc\_count)) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{279     dim2\_len\_dim1\_slice\_list(ii) = dim2\_len\_dim1\_slice + 1}
+\DoxyCodeLine{280     \textcolor{comment}{! The indexing is weird here since processors start at index 0 but arrays}}
+\DoxyCodeLine{281     \textcolor{comment}{! start at index 1. Thus, entry ii of this corresponds to processor (ii-\/1).}}
+\DoxyCodeLine{282   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{283     dim2\_len\_dim1\_slice\_list(ii) = dim2\_len\_dim1\_slice}
+\DoxyCodeLine{284 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{285 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 \textcolor{comment}{! Fill in dim2\_slice using sections of the dim1\_slice's.}}
+\DoxyCodeLine{288 \textcolor{keywordflow}{DO} ii = 1, proc\_count}
+\DoxyCodeLine{289   fill\_in\_proc\_trgt = mod(proc\_count -\/ proc\_id + ii, proc\_count)}
+\DoxyCodeLine{290   dim2\_high\_index\_dim1\_slice = \&}
+\DoxyCodeLine{291   \& sum(dim1\_len\_dim2\_slice\_list(1:fill\_in\_proc\_trgt+1))}
+\DoxyCodeLine{292   dim2\_low\_index\_dim1\_slice = dim2\_high\_index\_dim1\_slice \&}
+\DoxyCodeLine{293   \& -\/ dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) + 1}
+\DoxyCodeLine{294   dim2\_high\_index\_dim2\_slice = \&}
+\DoxyCodeLine{295   \& sum(dim2\_len\_dim1\_slice\_list(1:fill\_in\_proc\_trgt+1))}
+\DoxyCodeLine{296   dim2\_low\_index\_dim2\_slice = dim2\_high\_index\_dim2\_slice \&}
+\DoxyCodeLine{297   \& -\/ dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1) + 1}
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299   \textcolor{comment}{! If fill\_in\_proc\_trgt < proc\_id, RECV then SEND.}}
+\DoxyCodeLine{300   \textcolor{keywordflow}{IF} (fill\_in\_proc\_trgt .LT. proc\_id) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{301     \textcolor{keyword}{CALL }mpi\_recv( \&}
+\DoxyCodeLine{302     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice), \&}
+\DoxyCodeLine{303     \& dim1\_len\_dim2\_slice\_list(proc\_id+1) \&}
+\DoxyCodeLine{304     \& * dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{305     \& fill\_in\_proc\_trgt, proc\_id, mpi\_comm\_world, status, ierror)}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307     \textcolor{keyword}{CALL }mpi\_send( \&}
+\DoxyCodeLine{308     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:), \&}
+\DoxyCodeLine{309     \& dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) \&}
+\DoxyCodeLine{310     \& * dim2\_len\_dim1\_slice\_list(proc\_id+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{311     \& fill\_in\_proc\_trgt, fill\_in\_proc\_trgt, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{313   \textcolor{comment}{! If dim2\_slice\_fill\_in\_param > proc\_id, SEND then RECV.}}
+\DoxyCodeLine{314   \textcolor{keywordflow}{ELSE} \textcolor{keywordflow}{IF} (fill\_in\_proc\_trgt .GT. proc\_id) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{315     \textcolor{keyword}{CALL }mpi\_send( \&}
+\DoxyCodeLine{316     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:), \&}
+\DoxyCodeLine{317     \& dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) \&}
+\DoxyCodeLine{318     \& * dim2\_len\_dim1\_slice\_list(proc\_id+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{319     \& fill\_in\_proc\_trgt, fill\_in\_proc\_trgt, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{321     \textcolor{keyword}{CALL }mpi\_recv( \&}
+\DoxyCodeLine{322     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice), \&}
+\DoxyCodeLine{323     \& dim1\_len\_dim2\_slice\_list(proc\_id+1) \&}
+\DoxyCodeLine{324     \& * dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{325     \& fill\_in\_proc\_trgt, proc\_id, mpi\_comm\_world, status, ierror)}
+\DoxyCodeLine{326 }
+\DoxyCodeLine{327   \textcolor{comment}{! If dim2\_slice\_fill\_in\_param = proc\_id, then fill in dim2\_slice from your}}
+\DoxyCodeLine{328   \textcolor{comment}{! dim1\_slice.}}
+\DoxyCodeLine{329   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{330     dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice) = \&}
+\DoxyCodeLine{331     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:)}
+\DoxyCodeLine{332 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{333 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{334 }
+\DoxyCodeLine{335 \textcolor{comment}{! \string~\string~\string~ Up to this point, each processor has a filled-\/in dim2\_slice,}}
+\DoxyCodeLine{336 \textcolor{comment}{! and we are ready to FFT along dim2\_len.}}
+\DoxyCodeLine{337 \textcolor{keyword}{ALLOCATE}( \&}
+\DoxyCodeLine{338 \& dim2\_slice\_tr(dim2\_len\_dim2\_slice, dim1\_len\_dim2\_slice\_list(proc\_id + 1)))}
+\DoxyCodeLine{339 dim2\_slice\_tr = 0.0}
+\DoxyCodeLine{340 dim2\_slice\_tr = transpose(dim2\_slice)}
+\DoxyCodeLine{341 \textcolor{keyword}{ALLOCATE}(wsave2(4*dim2\_len\_dim2\_slice+15))}
+\DoxyCodeLine{342 }
+\DoxyCodeLine{343 \textcolor{comment}{! Perfom 1D FFT along dim1 of dim2\_slice\_tr.}}
+\DoxyCodeLine{344   \textcolor{comment}{! SW real forward 1D FFT (FFFT) initialization, fills WSAVE2.}}
+\DoxyCodeLine{345 wsave2 = 0.}
+\DoxyCodeLine{346 \textcolor{keyword}{CALL }\mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}}(dim2\_len\_dim2\_slice, wsave2)}
+\DoxyCodeLine{347 }
+\DoxyCodeLine{348 \textcolor{keywordflow}{DO} ii = 1, dim1\_len\_dim2\_slice\_list(proc\_id + 1)}
+\DoxyCodeLine{349   \textcolor{keyword}{CALL }\mbox{\hyperlink{dfftb_8f_a474929892e1520a099a04ff1753cfbd3}{dfftb}}(dim2\_len\_dim2\_slice, dim2\_slice\_tr(:,ii), wsave2)}
+\DoxyCodeLine{350 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{351 }
+\DoxyCodeLine{352 dim2\_slice = transpose(dim2\_slice\_tr)}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354 \textcolor{comment}{! \string~\string~\string~ Up to this point, we have FFT'd along dim2\_len, and now we must}}
+\DoxyCodeLine{355 \textcolor{comment}{! reconstruct the dim1\_slice's.}}
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357 \textcolor{comment}{! Fill in dim1\_slice using sections of the dim2\_slice's.}}
+\DoxyCodeLine{358 \textcolor{keywordflow}{DO} ii = 1, proc\_count}
+\DoxyCodeLine{359   fill\_in\_proc\_trgt = mod(proc\_count -\/ proc\_id + ii, proc\_count)}
+\DoxyCodeLine{360   dim2\_high\_index\_dim1\_slice = \&}
+\DoxyCodeLine{361   \& sum(dim1\_len\_dim2\_slice\_list(1:fill\_in\_proc\_trgt+1))}
+\DoxyCodeLine{362   dim2\_low\_index\_dim1\_slice = dim2\_high\_index\_dim1\_slice \&}
+\DoxyCodeLine{363   \& -\/ dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) + 1}
+\DoxyCodeLine{364   dim2\_high\_index\_dim2\_slice = \&}
+\DoxyCodeLine{365   \& sum(dim2\_len\_dim1\_slice\_list(1:fill\_in\_proc\_trgt+1))}
+\DoxyCodeLine{366   dim2\_low\_index\_dim2\_slice = dim2\_high\_index\_dim2\_slice \&}
+\DoxyCodeLine{367   \& -\/ dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1) + 1}
+\DoxyCodeLine{368 }
+\DoxyCodeLine{369   \textcolor{comment}{! If fill\_in\_proc\_trgt < proc\_id, RECV then SEND.}}
+\DoxyCodeLine{370   \textcolor{keywordflow}{IF} (fill\_in\_proc\_trgt .LT. proc\_id) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{371     \textcolor{keyword}{CALL }mpi\_recv( \&}
+\DoxyCodeLine{372     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:), \&}
+\DoxyCodeLine{373     \& dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) \&}
+\DoxyCodeLine{374     \& * dim2\_len\_dim1\_slice\_list(proc\_id+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{375     \& fill\_in\_proc\_trgt, proc\_id, mpi\_comm\_world, status, ierror)}
+\DoxyCodeLine{376 }
+\DoxyCodeLine{377     \textcolor{keyword}{CALL }mpi\_send( \&}
+\DoxyCodeLine{378     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice), \&}
+\DoxyCodeLine{379     \& dim1\_len\_dim2\_slice\_list(proc\_id+1) \&}
+\DoxyCodeLine{380     \& * dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{381     \& fill\_in\_proc\_trgt, fill\_in\_proc\_trgt, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{383   \textcolor{comment}{! If dim2\_slice\_fill\_in\_param > proc\_id, SEND then RECV.}}
+\DoxyCodeLine{384   \textcolor{keywordflow}{ELSE} \textcolor{keywordflow}{IF} (fill\_in\_proc\_trgt .GT. proc\_id) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{385     \textcolor{keyword}{CALL }mpi\_send( \&}
+\DoxyCodeLine{386     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice), \&}
+\DoxyCodeLine{387     \& dim1\_len\_dim2\_slice\_list(proc\_id+1) \&}
+\DoxyCodeLine{388     \& * dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{389     \& fill\_in\_proc\_trgt, fill\_in\_proc\_trgt, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{390 }
+\DoxyCodeLine{391     \textcolor{keyword}{CALL }mpi\_recv( \&}
+\DoxyCodeLine{392     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:), \&}
+\DoxyCodeLine{393     \& dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) \&}
+\DoxyCodeLine{394     \& * dim2\_len\_dim1\_slice\_list(proc\_id+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{395     \& fill\_in\_proc\_trgt, proc\_id, mpi\_comm\_world, status, ierror)}
+\DoxyCodeLine{396 }
+\DoxyCodeLine{397   \textcolor{comment}{! If dim2\_slice\_fill\_in\_param = proc\_id, then fill in dim2\_slice from your}}
+\DoxyCodeLine{398   \textcolor{comment}{! dim1\_slice.}}
+\DoxyCodeLine{399   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{400     dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:) = \&}
+\DoxyCodeLine{401     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice)}
+\DoxyCodeLine{402 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{403 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405 \textcolor{comment}{! Normalize the dim1\_slice for the inverse transform.}}
+\DoxyCodeLine{406 norm = 1.0/dble(dim1\_len * dim2\_len\_total)}
+\DoxyCodeLine{407 dim1\_slice = norm * dim1\_slice}
+\DoxyCodeLine{408 }
+\DoxyCodeLine{409 \textcolor{comment}{! Fill in interior of input matrix.}}
+\DoxyCodeLine{410 \textcolor{keywordflow}{IF} (proc\_id .EQ. 0) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{411   \textcolor{comment}{! First processor, fill in all except last part along dimension 2 of matrix.}}
+\DoxyCodeLine{412   matrix(:, 1:dim2\_len-\/overlap) = dim1\_slice}
+\DoxyCodeLine{413 \textcolor{keywordflow}{ELSE} \textcolor{keywordflow}{IF} (proc\_id .EQ. proc\_count-\/1) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{414   \textcolor{comment}{! Last processor, fill in all but first part along dimension 2 of matrix.}}
+\DoxyCodeLine{415   matrix(:, 1+overlap:dim2\_len) = dim1\_slice}
+\DoxyCodeLine{416 \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{417   \textcolor{comment}{! Middle processor, fill in all but first and last part along dimension 2 of}}
+\DoxyCodeLine{418   \textcolor{comment}{! matrix.}}
+\DoxyCodeLine{419    matrix(:, 1+overlap:dim2\_len-\/overlap) = dim1\_slice}
+\DoxyCodeLine{420 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422 \textcolor{keyword}{CALL }\mbox{\hyperlink{share__subgrid__boundaries__dble__real_8f_a5170f5c15842e65d901113fc48dfe97a}{share\_subgrid\_boundaries\_dble\_real\_ezp}}(dim1\_len, dim2\_len, overlap, matrix)}
+\DoxyCodeLine{423 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{rfft2db_8f_a351eb3f54424961eb891278a1c0373fe}\label{rfft2db_8f_a351eb3f54424961eb891278a1c0373fe}} 
+\index{rfft2db.f@{rfft2db.f}!rfft2db\_ezp@{rfft2db\_ezp}}
+\index{rfft2db\_ezp@{rfft2db\_ezp}!rfft2db.f@{rfft2db.f}}
+\doxysubsubsection{\texorpdfstring{rfft2db\_ezp()}{rfft2db\_ezp()}}
+{\footnotesize\ttfamily subroutine rfft2db\+\_\+ezp (\begin{DoxyParamCaption}\item[{integer}]{dim1\+\_\+len,  }\item[{integer}]{dim2\+\_\+len,  }\item[{integer}]{overlap,  }\item[{double precision, dimension(\mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_acb4b6a591c5ad6fc207ef543dc74d1ae}{dim1\+\_\+len}}, \mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_adef80e51b1bb5916dd9410de399f1319}{dim2\+\_\+len}})}]{matrix }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{24 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{31 \& dim2\_len, \&}
+\DoxyCodeLine{32 \& overlap, \&}
+\DoxyCodeLine{33 \& proc\_id, \&}
+\DoxyCodeLine{34 \& proc\_count, \&}
+\DoxyCodeLine{35 \& ierror}
+\DoxyCodeLine{36 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: matrix}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{CALL }mpi\_comm\_rank(mpi\_comm\_world, proc\_id, ierror)}
+\DoxyCodeLine{39 \textcolor{keyword}{CALL }mpi\_comm\_size(mpi\_comm\_world, proc\_count, ierror)}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{comment}{! Check for errors in user input.}}
+\DoxyCodeLine{42 \textcolor{keyword}{CALL }\mbox{\hyperlink{cfft2db_8f_affb0dbcf8f28b8f5eace6c4d749168c7}{error\_handling}}(proc\_id)}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{comment}{! Run in serial if there is only one processor.}}
+\DoxyCodeLine{45 \textcolor{keywordflow}{IF} (proc\_count .EQ. 1) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{46   \textcolor{keyword}{CALL }\mbox{\hyperlink{cfft2db_8f_ab154587f08cd7f195f626481a7e73fa0}{serial}}(dim1\_len, dim2\_len, matrix)}
+\DoxyCodeLine{47 \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{48   \textcolor{keyword}{CALL }\mbox{\hyperlink{cfft2db_8f_a029e5f37aade02d3db47f37ddec68f56}{parallel}}(dim1\_len, dim2\_len, overlap, matrix, proc\_id, proc\_count)}
+\DoxyCodeLine{49 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{53 \textcolor{keyword}{CONTAINS}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{56 \textcolor{comment}{! SERIAL. Handles the execution if there is only one processor.}}
+\DoxyCodeLine{57 \textcolor{comment}{!}}
+\DoxyCodeLine{58 \textcolor{comment}{! STRUCTURE: 1) Fills WSAVE1, and transforms the matrix along dimension 1}}
+\DoxyCodeLine{59 \textcolor{comment}{! (dim1).}}
+\DoxyCodeLine{60 \textcolor{comment}{! 2) Fills WSAVE2, transposes the matrix, and transforms the transpose along}}
+\DoxyCodeLine{61 \textcolor{comment}{! dim1 (which is dimension 2 of the matrix). Returns the transpose of the}}
+\DoxyCodeLine{62 \textcolor{comment}{! tranformed transpose matrix.}}
+\DoxyCodeLine{63 \textcolor{comment}{!}}
+\DoxyCodeLine{64 \textcolor{comment}{! VARIABLES: -\/ dim1\_len, dim2\_len: The shape of the sub-\/grid (INTEGER).}}
+\DoxyCodeLine{65 \textcolor{comment}{! -\/ matrix: The 2D DOUBLE PRECISION array which will be Fourier transformed}}
+\DoxyCodeLine{66 \textcolor{comment}{! (DOUBLE PRECISION, DIMENSION(dim1\_len, dim2\_len)).}}
+\DoxyCodeLine{67 \textcolor{comment}{! -\/ norm: The normalization coefficient for the transform (DOUBLE PRECISION).}}
+\DoxyCodeLine{68 \textcolor{comment}{! -\/ WSAVE1: Work array to store prime factorization of dim1\_len and tabulate}}
+\DoxyCodeLine{69 \textcolor{comment}{! trig functions for usage in SW's FFT routines (DOUBLE PRECISION,}}
+\DoxyCodeLine{70 \textcolor{comment}{! DIMENSION(4*dim1\_len+15)).}}
+\DoxyCodeLine{71 \textcolor{comment}{! -\/ WSAVE2: Work array to store prime factorization of dim2\_len and tabulate}}
+\DoxyCodeLine{72 \textcolor{comment}{! trig functions for usage in SW's FFT routines (DOUBLE PRECISION,}}
+\DoxyCodeLine{73 \textcolor{comment}{! DIMENSION(4*dim2\_len+15)).}}
+\DoxyCodeLine{74 \textcolor{comment}{! -\/ matrix\_tr: The 2D DOUBLE PRECISION array which will store the transpose of}}
+\DoxyCodeLine{75 \textcolor{comment}{! matrix during the Fourier transform (DOUBLE PRECISION,}}
+\DoxyCodeLine{76 \textcolor{comment}{! DIMENSION(dim2\_len, dim1\_len)).}}
+\DoxyCodeLine{77 \textcolor{comment}{! -\/ ii: Counting index used in DO loops (INTEGER).}}
+\DoxyCodeLine{78 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{79 \textcolor{keyword}{SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_ab154587f08cd7f195f626481a7e73fa0}{serial}}(dim1\_len, dim2\_len, matrix)}
+\DoxyCodeLine{80 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{87 \& dim2\_len, \&}
+\DoxyCodeLine{88 \& overlap, \&}
+\DoxyCodeLine{89 \& proc\_id, \&}
+\DoxyCodeLine{90 \& proc\_count, \&}
+\DoxyCodeLine{91 \& ierror, \&}
+\DoxyCodeLine{92 \& ii}
+\DoxyCodeLine{93 \textcolor{keywordtype}{DOUBLE PRECISION} :: norm}
+\DoxyCodeLine{94 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: matrix}
+\DoxyCodeLine{95 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim2\_len, dim1\_len)} :: matrix\_tr}
+\DoxyCodeLine{96 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(4*dim1\_len+15)} :: WSAVE1}
+\DoxyCodeLine{97 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(4*dim2\_len+15)} :: WSAVE2}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{comment}{! SW real forward 1D FFT (FFFT) initialization, fills WSAVE1.}}
+\DoxyCodeLine{100 wsave1 = 0.0}
+\DoxyCodeLine{101 \textcolor{keyword}{CALL }\mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}}(dim1\_len, wsave1)}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{comment}{! Perform 1D FFFT on the dim1\_len of matrix.}}
+\DoxyCodeLine{104 \textcolor{keywordflow}{DO} ii = 1, dim2\_len}
+\DoxyCodeLine{105   \textcolor{keyword}{CALL }\mbox{\hyperlink{dfftb_8f_a474929892e1520a099a04ff1753cfbd3}{dfftb}}(dim1\_len, matrix(:,ii), wsave1) \textcolor{comment}{! SW FFFT routine.}}
+\DoxyCodeLine{106 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{107 matrix\_tr = transpose(matrix)}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 wsave2 = 0.0}
+\DoxyCodeLine{110 \textcolor{keyword}{CALL }\mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}}(dim2\_len, wsave2)}
+\DoxyCodeLine{111 \textcolor{comment}{! SW 1D (FFFT) initialization, fills WSAVE2.}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{comment}{! Perform 1D FFFT on the dim1\_len of matrix\_transpose.}}
+\DoxyCodeLine{114 \textcolor{keywordflow}{DO} ii = 1, dim1\_len}
+\DoxyCodeLine{115   \textcolor{keyword}{CALL }\mbox{\hyperlink{dfftb_8f_a474929892e1520a099a04ff1753cfbd3}{dfftb}}(dim2\_len, matrix\_tr(:,ii), wsave2)}
+\DoxyCodeLine{116 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{117 matrix = transpose(matrix\_tr)}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{comment}{! Normalize the matrix in the inverse transform.}}
+\DoxyCodeLine{120 norm = 1.0/dble(dim1\_len * dim2\_len)}
+\DoxyCodeLine{121 matrix = norm * matrix}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{keyword}{END SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_ab154587f08cd7f195f626481a7e73fa0}{serial}}}
+\DoxyCodeLine{124 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{127 \textcolor{comment}{! PARALLEL. Handles the execution if there is more than one processor.}}
+\DoxyCodeLine{128 \textcolor{comment}{!}}
+\DoxyCodeLine{129 \textcolor{comment}{! STRUCTURE: 1) Trim the overlap from the input matrix. FFT input matrix along}}
+\DoxyCodeLine{130 \textcolor{comment}{! dim1.}}
+\DoxyCodeLine{131 \textcolor{comment}{! 2) Get the sub-\/grids that the processor would have if the grid was split along}}
+\DoxyCodeLine{132 \textcolor{comment}{! dimension 2 (dim2). FFT those sub-\/grids along dim2.}}
+\DoxyCodeLine{133 \textcolor{comment}{! 3) Send dim2 sub-\/grid sections to their appropriate places in the}}
+\DoxyCodeLine{134 \textcolor{comment}{! dim1 sub-\/grids}}
+\DoxyCodeLine{135 \textcolor{comment}{!}}
+\DoxyCodeLine{136 \textcolor{comment}{! VARIABLES: -\/ dim1\_len, dim2\_len: The shape of the sub-\/grid (INTEGER).}}
+\DoxyCodeLine{137 \textcolor{comment}{! -\/ overlap: The overlap required for the numerical scheme (INTEGER).}}
+\DoxyCodeLine{138 \textcolor{comment}{! -\/ matrix: The 2D DOUBLE PRECISION array which will be Fourier transformed}}
+\DoxyCodeLine{139 \textcolor{comment}{! (DOUBLE PRECISION, DIMENSION(dim1\_len, dim2\_len)).}}
+\DoxyCodeLine{140 \textcolor{comment}{! -\/ proc\_id: Processor ID (INTEGER).}}
+\DoxyCodeLine{141 \textcolor{comment}{! -\/ proc\_count: Total number of processors (INTEGER).}}
+\DoxyCodeLine{142 \textcolor{comment}{! -\/ WSAVE1: Work array to store prime factorization of dim1\_len and tabulate}}
+\DoxyCodeLine{143 \textcolor{comment}{! trig functions for usage in SW's FFT routines (DOUBLE PRECISION,}}
+\DoxyCodeLine{144 \textcolor{comment}{! DIMENSION(4*dim1\_len+15)).}}
+\DoxyCodeLine{145 \textcolor{comment}{! -\/ dim1\_slice: The sub-\/grid (along dim1) that does not include its overlap with}}
+\DoxyCodeLine{146 \textcolor{comment}{! neighboring subgrids (DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE).}}
+\DoxyCodeLine{147 \textcolor{comment}{! -\/ ii: Counting index used in DO loops (INTEGER).}}
+\DoxyCodeLine{148 \textcolor{comment}{! -\/ dim2\_len\_dim1\_slice: dim2 length of dim1\_slice, later recalculated for use}}
+\DoxyCodeLine{149 \textcolor{comment}{! in communication (INTEGER).}}
+\DoxyCodeLine{150 \textcolor{comment}{! -\/ dim2\_slice: The sub-\/grid (along dim2) that does not include its overlap with}}
+\DoxyCodeLine{151 \textcolor{comment}{! neighboring subgrids (DOUBLE PRECISION, DIMENSION(:,:), ALLOCATABLE).}}
+\DoxyCodeLine{152 \textcolor{comment}{! -\/ dim1\_len\_dim2\_slice: dim1 length of dim2\_slice, later recalculated for use}}
+\DoxyCodeLine{153 \textcolor{comment}{! in communication (INTEGER).}}
+\DoxyCodeLine{154 \textcolor{comment}{! -\/ dim1\_len\_dim2\_slice\_list: List of all dim1\_len for all dim2\_slice's}}
+\DoxyCodeLine{155 \textcolor{comment}{! (INTEGER, DIMENSION(proc\_count)).}}
+\DoxyCodeLine{156 \textcolor{comment}{! -\/ dim2\_len\_dim2\_slice: dim2 length of dim2\_slice, later recalculated for use}}
+\DoxyCodeLine{157 \textcolor{comment}{! in communication (INTEGER).}}
+\DoxyCodeLine{158 \textcolor{comment}{! -\/ fill\_in\_proc\_trgt: The proc\_id of the processor to communicate with during}}
+\DoxyCodeLine{159 \textcolor{comment}{! the dim2\_slice fill-\/in process (INTEGER).}}
+\DoxyCodeLine{160 \textcolor{comment}{! -\/ dim2\_len\_total: dim2 length of the grid (INTEGER).}}
+\DoxyCodeLine{161 \textcolor{comment}{! -\/ dim2\_len\_dim1\_slice\_list: List of all dim2\_len for all dim1\_slice's}}
+\DoxyCodeLine{162 \textcolor{comment}{! (INTEGER, DIMENSION(proc\_count)).}}
+\DoxyCodeLine{163 \textcolor{comment}{! -\/ dim2\_low\_index\_dim1\_slice: Lesser global dim2 index for the portion of}}
+\DoxyCodeLine{164 \textcolor{comment}{! dim1\_slice to be put into dim2\_slice (INTEGER).}}
+\DoxyCodeLine{165 \textcolor{comment}{! -\/ dim2\_high\_index\_dim1\_slice: Greater global dim2 index for the portion of}}
+\DoxyCodeLine{166 \textcolor{comment}{! dim1\_slice to be put into dim2\_slice (INTEGER).}}
+\DoxyCodeLine{167 \textcolor{comment}{! -\/ dim2\_low\_index\_dim2\_slice: Lesser global dim2 index for the portion of}}
+\DoxyCodeLine{168 \textcolor{comment}{! dim2\_slice to be filled in by dim1\_slice (INTEGER).}}
+\DoxyCodeLine{169 \textcolor{comment}{! -\/ dim2\_high\_index\_dim2\_slice: Greater global dim2 index for the portion of}}
+\DoxyCodeLine{170 \textcolor{comment}{! dim2\_slice to be filled in by dim1\_slice (INTEGER).}}
+\DoxyCodeLine{171 \textcolor{comment}{! -\/ dim2\_slice\_tr: The 2D DOUBLE PRECISION array which will store the transpose}}
+\DoxyCodeLine{172 \textcolor{comment}{! of dim2\_slice during the Fourier transform (DOUBLE PRECISION, DIMENSION(:,:),}}
+\DoxyCodeLine{173 \textcolor{comment}{! ALLOCATABLE).}}
+\DoxyCodeLine{174 \textcolor{comment}{! -\/ WSAVE2: Work array to store prime factorization of dim2\_len and tabulate}}
+\DoxyCodeLine{175 \textcolor{comment}{! trig functions for usage in SW's FFT routines (DOUBLE PRECISION,}}
+\DoxyCodeLine{176 \textcolor{comment}{! DIMENSION(:), ALLOCATABLE).}}
+\DoxyCodeLine{177 \textcolor{comment}{! -\/ norm: The normalization coefficient for the transform (DOUBLE PRECISION).}}
+\DoxyCodeLine{178 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{179 \textcolor{keyword}{SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_a029e5f37aade02d3db47f37ddec68f56}{parallel}}(dim1\_len, dim2\_len, overlap, matrix, proc\_id, proc\_count)}
+\DoxyCodeLine{180 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{187 \& dim2\_len, \&}
+\DoxyCodeLine{188 \& overlap, \&}
+\DoxyCodeLine{189 \& proc\_id, \&}
+\DoxyCodeLine{190 \& proc\_count, \&}
+\DoxyCodeLine{191 \& ii, \&}
+\DoxyCodeLine{192 \& status(MPI\_STATUS\_SIZE), \&}
+\DoxyCodeLine{193 \& ierror, \&}
+\DoxyCodeLine{194 \& dim2\_len\_dim1\_slice, \&}
+\DoxyCodeLine{195 \& dim1\_len\_dim2\_slice, \&}
+\DoxyCodeLine{196 \& dim2\_len\_dim2\_slice, \&}
+\DoxyCodeLine{197 \& fill\_in\_proc\_trgt, \&}
+\DoxyCodeLine{198 \& dim2\_len\_total, \&}
+\DoxyCodeLine{199 \& dim2\_low\_index\_dim1\_slice, \&}
+\DoxyCodeLine{200 \& dim2\_high\_index\_dim1\_slice, \&}
+\DoxyCodeLine{201 \& dim2\_low\_index\_dim2\_slice, \&}
+\DoxyCodeLine{202 \& dim2\_high\_index\_dim2\_slice}
+\DoxyCodeLine{203 \textcolor{keywordtype}{INTEGER}, \textcolor{keywordtype}{DIMENSION(proc\_count)} :: dim1\_len\_dim2\_slice\_list, \&}
+\DoxyCodeLine{204 \& dim2\_len\_dim1\_slice\_list}
+\DoxyCodeLine{205 \textcolor{keywordtype}{DOUBLE PRECISION} :: norm}
+\DoxyCodeLine{206 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(4*dim1\_len+15)} :: WSAVE1}
+\DoxyCodeLine{207 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: matrix}
+\DoxyCodeLine{208 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(:)}, \textcolor{keywordtype}{ALLOCATABLE} :: WSAVE2}
+\DoxyCodeLine{209 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(:,:)}, \textcolor{keywordtype}{ALLOCATABLE} :: dim1\_slice, \&}
+\DoxyCodeLine{210 \& dim2\_slice, \&}
+\DoxyCodeLine{211 \& dim2\_slice\_tr}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \textcolor{comment}{! Trim the overlap from the input matrix.}}
+\DoxyCodeLine{214 \textcolor{keywordflow}{IF} (proc\_id .EQ. 0) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{215   \textcolor{comment}{! First processor, trim last part along dimension 2 of matrix.}}
+\DoxyCodeLine{216   dim2\_len\_dim1\_slice = dim2\_len -\/ overlap}
+\DoxyCodeLine{217   \textcolor{keyword}{ALLOCATE}(dim1\_slice(dim1\_len, dim2\_len\_dim1\_slice))}
+\DoxyCodeLine{218   dim1\_slice = matrix(:, 1:dim2\_len-\/overlap)}
+\DoxyCodeLine{219 \textcolor{keywordflow}{ELSE} \textcolor{keywordflow}{IF} (proc\_id .EQ. proc\_count-\/1) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{220   \textcolor{comment}{! Last processor, trim first part along dimension 2 of matrix.}}
+\DoxyCodeLine{221   dim2\_len\_dim1\_slice = dim2\_len -\/ overlap}
+\DoxyCodeLine{222   \textcolor{keyword}{ALLOCATE}(dim1\_slice(dim1\_len, dim2\_len\_dim1\_slice))}
+\DoxyCodeLine{223   dim1\_slice = matrix(:, 1+overlap:dim2\_len)}
+\DoxyCodeLine{224 \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{225   \textcolor{comment}{! Middle processor, trim first and last part along dimension 2 of matrix.}}
+\DoxyCodeLine{226   dim2\_len\_dim1\_slice = dim2\_len -\/ 2 * overlap}
+\DoxyCodeLine{227   \textcolor{keyword}{ALLOCATE}(dim1\_slice(dim1\_len, dim2\_len\_dim1\_slice))}
+\DoxyCodeLine{228   dim1\_slice = matrix(:, 1+overlap:dim2\_len-\/overlap)}
+\DoxyCodeLine{229 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 \textcolor{comment}{! Perfom 1D FFT along first dimension of dim1\_slice.}}
+\DoxyCodeLine{232   \textcolor{comment}{! SW real forward 1D FFT (FFFT) initialization, fills WSAVE1.}}
+\DoxyCodeLine{233 wsave1 = 0.0}
+\DoxyCodeLine{234 \textcolor{keyword}{CALL }\mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}}(dim1\_len, wsave1)}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 \textcolor{keywordflow}{DO} ii = 1, dim2\_len\_dim1\_slice}
+\DoxyCodeLine{237   \textcolor{keyword}{CALL }\mbox{\hyperlink{dfftb_8f_a474929892e1520a099a04ff1753cfbd3}{dfftb}}(dim1\_len, dim1\_slice(:,ii), wsave1) \textcolor{comment}{! SW FFFT routine.}}
+\DoxyCodeLine{238 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{240 \textcolor{comment}{! \string~\string~\string~ Up to this point, we have FFT'd the grid along dim1.}}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 \textcolor{comment}{! Now need to FFT along dim2, so we need a dim2\_slice. First, we must}}
+\DoxyCodeLine{243 \textcolor{comment}{! calculate the size of dim2\_slice for all processors.}}
+\DoxyCodeLine{244 \textcolor{comment}{! Calculate dim1\_len for each dim2\_slice.}}
+\DoxyCodeLine{245   \textcolor{comment}{! Divide dim1\_len of total grid as evenly as possible.}}
+\DoxyCodeLine{246 dim1\_len\_dim2\_slice = dim1\_len/proc\_count}
+\DoxyCodeLine{247   \textcolor{comment}{! Now check if dim2\_slice of a given processor needs to take additional row,}}
+\DoxyCodeLine{248   \textcolor{comment}{! i.e., dim1\_len \% proc\_count != 0.}}
+\DoxyCodeLine{249 \textcolor{keywordflow}{DO} ii = 1, proc\_count}
+\DoxyCodeLine{250   \textcolor{keywordflow}{IF} ((ii-\/1) .LT. modulo(dim1\_len, proc\_count)) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{251     dim1\_len\_dim2\_slice\_list(ii) = dim1\_len\_dim2\_slice + 1}
+\DoxyCodeLine{252     \textcolor{comment}{! The indexing is weird here since processors start at index 0 but arrays}}
+\DoxyCodeLine{253     \textcolor{comment}{! start at index 1. Thus, entry ii of this corresponds to processor (ii-\/1).}}
+\DoxyCodeLine{254   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{255     dim1\_len\_dim2\_slice\_list(ii) = dim1\_len\_dim2\_slice}
+\DoxyCodeLine{256 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{257 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259 \textcolor{comment}{! Calculate dim2\_len for all dim2\_slice's by adding up dim2\_len for each}}
+\DoxyCodeLine{260 \textcolor{comment}{! processor's dim1\_slice.}}
+\DoxyCodeLine{261 \textcolor{keyword}{CALL }mpi\_allreduce(dim2\_len\_dim1\_slice, dim2\_len\_dim2\_slice, 1, mpi\_integer, \&}
+\DoxyCodeLine{262 \& mpi\_sum, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264 \textcolor{comment}{! Allocate memory to dim2\_slice and fill it in.}}
+\DoxyCodeLine{265 \textcolor{keyword}{ALLOCATE}(dim2\_slice(dim1\_len\_dim2\_slice\_list(proc\_id + 1), dim2\_len\_dim2\_slice))}
+\DoxyCodeLine{266 dim2\_slice = 0.0}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 \textcolor{comment}{! To fill in dim2\_slice, we need the dim2\_len of all dim1\_slice's.}}
+\DoxyCodeLine{269 \textcolor{keyword}{CALL }mpi\_allreduce(dim2\_len\_dim1\_slice, dim2\_len\_total, 1, mpi\_integer, \&}
+\DoxyCodeLine{270 \& mpi\_sum, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{271 \textcolor{comment}{! Calculate dim2\_len for each dim1\_slice, to avoid communication between}}
+\DoxyCodeLine{272 \textcolor{comment}{! processors.}}
+\DoxyCodeLine{273   \textcolor{comment}{! Divide dim2\_len of total grid as evenly as possible.}}
+\DoxyCodeLine{274 dim2\_len\_dim1\_slice = dim2\_len\_total/proc\_count}
+\DoxyCodeLine{275   \textcolor{comment}{! Now check if dim1\_slice of a given processor needs to take additional row,}}
+\DoxyCodeLine{276   \textcolor{comment}{! i.e., dim2\_len \% proc\_count != 0.}}
+\DoxyCodeLine{277 \textcolor{keywordflow}{DO} ii = 1, proc\_count}
+\DoxyCodeLine{278   \textcolor{keywordflow}{IF} ((ii-\/1) .LT. modulo(dim2\_len\_total, proc\_count)) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{279     dim2\_len\_dim1\_slice\_list(ii) = dim2\_len\_dim1\_slice + 1}
+\DoxyCodeLine{280     \textcolor{comment}{! The indexing is weird here since processors start at index 0 but arrays}}
+\DoxyCodeLine{281     \textcolor{comment}{! start at index 1. Thus, entry ii of this corresponds to processor (ii-\/1).}}
+\DoxyCodeLine{282   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{283     dim2\_len\_dim1\_slice\_list(ii) = dim2\_len\_dim1\_slice}
+\DoxyCodeLine{284 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{285 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 \textcolor{comment}{! Fill in dim2\_slice using sections of the dim1\_slice's.}}
+\DoxyCodeLine{288 \textcolor{keywordflow}{DO} ii = 1, proc\_count}
+\DoxyCodeLine{289   fill\_in\_proc\_trgt = mod(proc\_count -\/ proc\_id + ii, proc\_count)}
+\DoxyCodeLine{290   dim2\_high\_index\_dim1\_slice = \&}
+\DoxyCodeLine{291   \& sum(dim1\_len\_dim2\_slice\_list(1:fill\_in\_proc\_trgt+1))}
+\DoxyCodeLine{292   dim2\_low\_index\_dim1\_slice = dim2\_high\_index\_dim1\_slice \&}
+\DoxyCodeLine{293   \& -\/ dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) + 1}
+\DoxyCodeLine{294   dim2\_high\_index\_dim2\_slice = \&}
+\DoxyCodeLine{295   \& sum(dim2\_len\_dim1\_slice\_list(1:fill\_in\_proc\_trgt+1))}
+\DoxyCodeLine{296   dim2\_low\_index\_dim2\_slice = dim2\_high\_index\_dim2\_slice \&}
+\DoxyCodeLine{297   \& -\/ dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1) + 1}
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299   \textcolor{comment}{! If fill\_in\_proc\_trgt < proc\_id, RECV then SEND.}}
+\DoxyCodeLine{300   \textcolor{keywordflow}{IF} (fill\_in\_proc\_trgt .LT. proc\_id) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{301     \textcolor{keyword}{CALL }mpi\_recv( \&}
+\DoxyCodeLine{302     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice), \&}
+\DoxyCodeLine{303     \& dim1\_len\_dim2\_slice\_list(proc\_id+1) \&}
+\DoxyCodeLine{304     \& * dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{305     \& fill\_in\_proc\_trgt, proc\_id, mpi\_comm\_world, status, ierror)}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307     \textcolor{keyword}{CALL }mpi\_send( \&}
+\DoxyCodeLine{308     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:), \&}
+\DoxyCodeLine{309     \& dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) \&}
+\DoxyCodeLine{310     \& * dim2\_len\_dim1\_slice\_list(proc\_id+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{311     \& fill\_in\_proc\_trgt, fill\_in\_proc\_trgt, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{313   \textcolor{comment}{! If dim2\_slice\_fill\_in\_param > proc\_id, SEND then RECV.}}
+\DoxyCodeLine{314   \textcolor{keywordflow}{ELSE} \textcolor{keywordflow}{IF} (fill\_in\_proc\_trgt .GT. proc\_id) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{315     \textcolor{keyword}{CALL }mpi\_send( \&}
+\DoxyCodeLine{316     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:), \&}
+\DoxyCodeLine{317     \& dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) \&}
+\DoxyCodeLine{318     \& * dim2\_len\_dim1\_slice\_list(proc\_id+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{319     \& fill\_in\_proc\_trgt, fill\_in\_proc\_trgt, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{321     \textcolor{keyword}{CALL }mpi\_recv( \&}
+\DoxyCodeLine{322     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice), \&}
+\DoxyCodeLine{323     \& dim1\_len\_dim2\_slice\_list(proc\_id+1) \&}
+\DoxyCodeLine{324     \& * dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{325     \& fill\_in\_proc\_trgt, proc\_id, mpi\_comm\_world, status, ierror)}
+\DoxyCodeLine{326 }
+\DoxyCodeLine{327   \textcolor{comment}{! If dim2\_slice\_fill\_in\_param = proc\_id, then fill in dim2\_slice from your}}
+\DoxyCodeLine{328   \textcolor{comment}{! dim1\_slice.}}
+\DoxyCodeLine{329   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{330     dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice) = \&}
+\DoxyCodeLine{331     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:)}
+\DoxyCodeLine{332 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{333 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{334 }
+\DoxyCodeLine{335 \textcolor{comment}{! \string~\string~\string~ Up to this point, each processor has a filled-\/in dim2\_slice,}}
+\DoxyCodeLine{336 \textcolor{comment}{! and we are ready to FFT along dim2\_len.}}
+\DoxyCodeLine{337 \textcolor{keyword}{ALLOCATE}( \&}
+\DoxyCodeLine{338 \& dim2\_slice\_tr(dim2\_len\_dim2\_slice, dim1\_len\_dim2\_slice\_list(proc\_id + 1)))}
+\DoxyCodeLine{339 dim2\_slice\_tr = 0.0}
+\DoxyCodeLine{340 dim2\_slice\_tr = transpose(dim2\_slice)}
+\DoxyCodeLine{341 \textcolor{keyword}{ALLOCATE}(wsave2(4*dim2\_len\_dim2\_slice+15))}
+\DoxyCodeLine{342 }
+\DoxyCodeLine{343 \textcolor{comment}{! Perfom 1D FFT along dim1 of dim2\_slice\_tr.}}
+\DoxyCodeLine{344   \textcolor{comment}{! SW real forward 1D FFT (FFFT) initialization, fills WSAVE2.}}
+\DoxyCodeLine{345 wsave2 = 0.}
+\DoxyCodeLine{346 \textcolor{keyword}{CALL }\mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}}(dim2\_len\_dim2\_slice, wsave2)}
+\DoxyCodeLine{347 }
+\DoxyCodeLine{348 \textcolor{keywordflow}{DO} ii = 1, dim1\_len\_dim2\_slice\_list(proc\_id + 1)}
+\DoxyCodeLine{349   \textcolor{keyword}{CALL }\mbox{\hyperlink{dfftb_8f_a474929892e1520a099a04ff1753cfbd3}{dfftb}}(dim2\_len\_dim2\_slice, dim2\_slice\_tr(:,ii), wsave2)}
+\DoxyCodeLine{350 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{351 }
+\DoxyCodeLine{352 dim2\_slice = transpose(dim2\_slice\_tr)}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354 \textcolor{comment}{! \string~\string~\string~ Up to this point, we have FFT'd along dim2\_len, and now we must}}
+\DoxyCodeLine{355 \textcolor{comment}{! reconstruct the dim1\_slice's.}}
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357 \textcolor{comment}{! Fill in dim1\_slice using sections of the dim2\_slice's.}}
+\DoxyCodeLine{358 \textcolor{keywordflow}{DO} ii = 1, proc\_count}
+\DoxyCodeLine{359   fill\_in\_proc\_trgt = mod(proc\_count -\/ proc\_id + ii, proc\_count)}
+\DoxyCodeLine{360   dim2\_high\_index\_dim1\_slice = \&}
+\DoxyCodeLine{361   \& sum(dim1\_len\_dim2\_slice\_list(1:fill\_in\_proc\_trgt+1))}
+\DoxyCodeLine{362   dim2\_low\_index\_dim1\_slice = dim2\_high\_index\_dim1\_slice \&}
+\DoxyCodeLine{363   \& -\/ dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) + 1}
+\DoxyCodeLine{364   dim2\_high\_index\_dim2\_slice = \&}
+\DoxyCodeLine{365   \& sum(dim2\_len\_dim1\_slice\_list(1:fill\_in\_proc\_trgt+1))}
+\DoxyCodeLine{366   dim2\_low\_index\_dim2\_slice = dim2\_high\_index\_dim2\_slice \&}
+\DoxyCodeLine{367   \& -\/ dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1) + 1}
+\DoxyCodeLine{368 }
+\DoxyCodeLine{369   \textcolor{comment}{! If fill\_in\_proc\_trgt < proc\_id, RECV then SEND.}}
+\DoxyCodeLine{370   \textcolor{keywordflow}{IF} (fill\_in\_proc\_trgt .LT. proc\_id) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{371     \textcolor{keyword}{CALL }mpi\_recv( \&}
+\DoxyCodeLine{372     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:), \&}
+\DoxyCodeLine{373     \& dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) \&}
+\DoxyCodeLine{374     \& * dim2\_len\_dim1\_slice\_list(proc\_id+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{375     \& fill\_in\_proc\_trgt, proc\_id, mpi\_comm\_world, status, ierror)}
+\DoxyCodeLine{376 }
+\DoxyCodeLine{377     \textcolor{keyword}{CALL }mpi\_send( \&}
+\DoxyCodeLine{378     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice), \&}
+\DoxyCodeLine{379     \& dim1\_len\_dim2\_slice\_list(proc\_id+1) \&}
+\DoxyCodeLine{380     \& * dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{381     \& fill\_in\_proc\_trgt, fill\_in\_proc\_trgt, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{383   \textcolor{comment}{! If dim2\_slice\_fill\_in\_param > proc\_id, SEND then RECV.}}
+\DoxyCodeLine{384   \textcolor{keywordflow}{ELSE} \textcolor{keywordflow}{IF} (fill\_in\_proc\_trgt .GT. proc\_id) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{385     \textcolor{keyword}{CALL }mpi\_send( \&}
+\DoxyCodeLine{386     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice), \&}
+\DoxyCodeLine{387     \& dim1\_len\_dim2\_slice\_list(proc\_id+1) \&}
+\DoxyCodeLine{388     \& * dim2\_len\_dim1\_slice\_list(fill\_in\_proc\_trgt+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{389     \& fill\_in\_proc\_trgt, fill\_in\_proc\_trgt, mpi\_comm\_world, ierror)}
+\DoxyCodeLine{390 }
+\DoxyCodeLine{391     \textcolor{keyword}{CALL }mpi\_recv( \&}
+\DoxyCodeLine{392     \& dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:), \&}
+\DoxyCodeLine{393     \& dim1\_len\_dim2\_slice\_list(fill\_in\_proc\_trgt+1) \&}
+\DoxyCodeLine{394     \& * dim2\_len\_dim1\_slice\_list(proc\_id+1), mpi\_double\_precision, \&}
+\DoxyCodeLine{395     \& fill\_in\_proc\_trgt, proc\_id, mpi\_comm\_world, status, ierror)}
+\DoxyCodeLine{396 }
+\DoxyCodeLine{397   \textcolor{comment}{! If dim2\_slice\_fill\_in\_param = proc\_id, then fill in dim2\_slice from your}}
+\DoxyCodeLine{398   \textcolor{comment}{! dim1\_slice.}}
+\DoxyCodeLine{399   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{400     dim1\_slice(dim2\_low\_index\_dim1\_slice:dim2\_high\_index\_dim1\_slice,:) = \&}
+\DoxyCodeLine{401     \& dim2\_slice(:,dim2\_low\_index\_dim2\_slice:dim2\_high\_index\_dim2\_slice)}
+\DoxyCodeLine{402 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{403 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405 \textcolor{comment}{! Normalize the dim1\_slice for the inverse transform.}}
+\DoxyCodeLine{406 norm = 1.0/dble(dim1\_len * dim2\_len\_total)}
+\DoxyCodeLine{407 dim1\_slice = norm * dim1\_slice}
+\DoxyCodeLine{408 }
+\DoxyCodeLine{409 \textcolor{comment}{! Fill in interior of input matrix.}}
+\DoxyCodeLine{410 \textcolor{keywordflow}{IF} (proc\_id .EQ. 0) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{411   \textcolor{comment}{! First processor, fill in all except last part along dimension 2 of matrix.}}
+\DoxyCodeLine{412   matrix(:, 1:dim2\_len-\/overlap) = dim1\_slice}
+\DoxyCodeLine{413 \textcolor{keywordflow}{ELSE} \textcolor{keywordflow}{IF} (proc\_id .EQ. proc\_count-\/1) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{414   \textcolor{comment}{! Last processor, fill in all but first part along dimension 2 of matrix.}}
+\DoxyCodeLine{415   matrix(:, 1+overlap:dim2\_len) = dim1\_slice}
+\DoxyCodeLine{416 \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{417   \textcolor{comment}{! Middle processor, fill in all but first and last part along dimension 2 of}}
+\DoxyCodeLine{418   \textcolor{comment}{! matrix.}}
+\DoxyCodeLine{419    matrix(:, 1+overlap:dim2\_len-\/overlap) = dim1\_slice}
+\DoxyCodeLine{420 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422 \textcolor{keyword}{CALL }\mbox{\hyperlink{share__subgrid__boundaries__dble__real_8f_a5170f5c15842e65d901113fc48dfe97a}{share\_subgrid\_boundaries\_dble\_real\_ezp}}(dim1\_len, dim2\_len, overlap, matrix)}
+\DoxyCodeLine{423 }
+\DoxyCodeLine{424 \textcolor{keyword}{END SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_a029e5f37aade02d3db47f37ddec68f56}{parallel}}}
+\DoxyCodeLine{425 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{426 }
+\DoxyCodeLine{427 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{428 \textcolor{comment}{! ERROR\_HANDLING. Checks for input error and other possible complications.}}
+\DoxyCodeLine{429 \textcolor{comment}{!}}
+\DoxyCodeLine{430 \textcolor{comment}{! ERRORS TO CHECK: N/A. (Assume that users will not enter negative matrix}}
+\DoxyCodeLine{431 \textcolor{comment}{! dimension lengths.)}}
+\DoxyCodeLine{432 \textcolor{comment}{!}}
+\DoxyCodeLine{433 \textcolor{comment}{! VARIABLES: -\/ proc\_id: Processor ID (INTEGER).}}
+\DoxyCodeLine{434 \textcolor{comment}{! -\/ proc\_err\_flag -\/ Flag is triggered if processor encounters an error}}
+\DoxyCodeLine{435 \textcolor{comment}{! (LOGICAL).}}
+\DoxyCodeLine{436 \textcolor{comment}{! -\/ global\_err\_flag -\/ Flag is triggered if any processor encouters an error}}
+\DoxyCodeLine{437 \textcolor{comment}{! (LOGICAL).}}
+\DoxyCodeLine{438 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{439 \textcolor{keyword}{SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_affb0dbcf8f28b8f5eace6c4d749168c7}{error\_handling}}(proc\_id)}
+\DoxyCodeLine{440 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{441 }
+\DoxyCodeLine{442 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{443 }
+\DoxyCodeLine{444 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446 \textcolor{keywordtype}{INTEGER} :: proc\_id}
+\DoxyCodeLine{447 \textcolor{keywordtype}{LOGICAL} :: proc\_err\_flag, \&}
+\DoxyCodeLine{448 \& global\_err\_flag}
+\DoxyCodeLine{449 }
+\DoxyCodeLine{450 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{451 }
+\DoxyCodeLine{452 proc\_err\_flag = .false.}
+\DoxyCodeLine{453 global\_err\_flag = .false.}
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455 \textcolor{comment}{! STOP all processors if any encounter an error.}}
+\DoxyCodeLine{456 \textcolor{keyword}{CALL }mpi\_allreduce(proc\_err\_flag, global\_err\_flag, 1, mpi\_logical, mpi\_lor, \&}
+\DoxyCodeLine{457 \& mpi\_comm\_world, ierror)}
+\DoxyCodeLine{458 }
+\DoxyCodeLine{459 \textcolor{keywordflow}{IF} (global\_err\_flag) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{460   \textcolor{keyword}{CALL }mpi\_finalize(ierror)}
+\DoxyCodeLine{461   stop}
+\DoxyCodeLine{462 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{463 }
+\DoxyCodeLine{464 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{465 }
+\DoxyCodeLine{466 \textcolor{keyword}{END SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_affb0dbcf8f28b8f5eace6c4d749168c7}{error\_handling}}}
+\DoxyCodeLine{467 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{468 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{rfft2db_8f_a9a600712547c8b1dde99dfb561d53945}\label{rfft2db_8f_a9a600712547c8b1dde99dfb561d53945}} 
+\index{rfft2db.f@{rfft2db.f}!serial@{serial}}
+\index{serial@{serial}!rfft2db.f@{rfft2db.f}}
+\doxysubsubsection{\texorpdfstring{serial()}{serial()}}
+{\footnotesize\ttfamily subroutine rfft2db\+\_\+ezp\+::serial (\begin{DoxyParamCaption}\item[{integer}]{dim1\+\_\+len,  }\item[{integer}]{dim2\+\_\+len,  }\item[{double precision, dimension(\mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_acb4b6a591c5ad6fc207ef543dc74d1ae}{dim1\+\_\+len}}, \mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_adef80e51b1bb5916dd9410de399f1319}{dim2\+\_\+len}})}]{matrix }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{80 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{87 \& dim2\_len, \&}
+\DoxyCodeLine{88 \& overlap, \&}
+\DoxyCodeLine{89 \& proc\_id, \&}
+\DoxyCodeLine{90 \& proc\_count, \&}
+\DoxyCodeLine{91 \& ierror, \&}
+\DoxyCodeLine{92 \& ii}
+\DoxyCodeLine{93 \textcolor{keywordtype}{DOUBLE PRECISION} :: norm}
+\DoxyCodeLine{94 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: matrix}
+\DoxyCodeLine{95 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim2\_len, dim1\_len)} :: matrix\_tr}
+\DoxyCodeLine{96 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(4*dim1\_len+15)} :: WSAVE1}
+\DoxyCodeLine{97 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(4*dim2\_len+15)} :: WSAVE2}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{comment}{! SW real forward 1D FFT (FFFT) initialization, fills WSAVE1.}}
+\DoxyCodeLine{100 wsave1 = 0.0}
+\DoxyCodeLine{101 \textcolor{keyword}{CALL }\mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}}(dim1\_len, wsave1)}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{comment}{! Perform 1D FFFT on the dim1\_len of matrix.}}
+\DoxyCodeLine{104 \textcolor{keywordflow}{DO} ii = 1, dim2\_len}
+\DoxyCodeLine{105   \textcolor{keyword}{CALL }\mbox{\hyperlink{dfftb_8f_a474929892e1520a099a04ff1753cfbd3}{dfftb}}(dim1\_len, matrix(:,ii), wsave1) \textcolor{comment}{! SW FFFT routine.}}
+\DoxyCodeLine{106 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{107 matrix\_tr = transpose(matrix)}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 wsave2 = 0.0}
+\DoxyCodeLine{110 \textcolor{keyword}{CALL }\mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}}(dim2\_len, wsave2)}
+\DoxyCodeLine{111 \textcolor{comment}{! SW 1D (FFFT) initialization, fills WSAVE2.}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{comment}{! Perform 1D FFFT on the dim1\_len of matrix\_transpose.}}
+\DoxyCodeLine{114 \textcolor{keywordflow}{DO} ii = 1, dim1\_len}
+\DoxyCodeLine{115   \textcolor{keyword}{CALL }\mbox{\hyperlink{dfftb_8f_a474929892e1520a099a04ff1753cfbd3}{dfftb}}(dim2\_len, matrix\_tr(:,ii), wsave2)}
+\DoxyCodeLine{116 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{117 matrix = transpose(matrix\_tr)}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{comment}{! Normalize the matrix in the inverse transform.}}
+\DoxyCodeLine{120 norm = 1.0/dble(dim1\_len * dim2\_len)}
+\DoxyCodeLine{121 matrix = norm * matrix}
+\DoxyCodeLine{122 }
+
+\end{DoxyCode}

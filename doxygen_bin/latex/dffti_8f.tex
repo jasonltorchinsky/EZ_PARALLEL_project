@@ -1,0 +1,25 @@
+\hypertarget{dffti_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/dffti.f File Reference}
+\label{dffti_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/dffti.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/dffti.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}} (N, W\+S\+A\+VE)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}\label{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}} 
+\index{dffti.f@{dffti.f}!dffti@{dffti}}
+\index{dffti@{dffti}!dffti.f@{dffti.f}}
+\doxysubsubsection{\texorpdfstring{dffti()}{dffti()}}
+{\footnotesize\ttfamily subroutine dffti (\begin{DoxyParamCaption}\item[{}]{N,  }\item[{dimension(1)}]{W\+S\+A\+VE }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z)}
+\DoxyCodeLine{3       dimension       wsave(1)}
+\DoxyCodeLine{4       \textcolor{keywordflow}{IF} (n .EQ. 1) \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{5       \textcolor{keyword}{CALL }\mbox{\hyperlink{rffti1_8f_ae3569ef7a371390f6bf38417865ef71b}{rffti1}} (n,wsave(n+1),wsave(2*n+1))}
+\DoxyCodeLine{6       \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

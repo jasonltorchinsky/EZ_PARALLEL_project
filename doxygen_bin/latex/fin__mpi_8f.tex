@@ -1,0 +1,36 @@
+\hypertarget{fin__mpi_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/fin\+\_\+mpi.f File Reference}
+\label{fin__mpi_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/fin\_mpi.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/fin\_mpi.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{fin__mpi_8f_ad9592fceaa187ad8c5d3e5ec6844d22f}{fin\+\_\+mpi\+\_\+ezp}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{fin__mpi_8f_ad9592fceaa187ad8c5d3e5ec6844d22f}\label{fin__mpi_8f_ad9592fceaa187ad8c5d3e5ec6844d22f}} 
+\index{fin\_mpi.f@{fin\_mpi.f}!fin\_mpi\_ezp@{fin\_mpi\_ezp}}
+\index{fin\_mpi\_ezp@{fin\_mpi\_ezp}!fin\_mpi.f@{fin\_mpi.f}}
+\doxysubsubsection{\texorpdfstring{fin\_mpi\_ezp()}{fin\_mpi\_ezp()}}
+{\footnotesize\ttfamily subroutine fin\+\_\+mpi\+\_\+ezp}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{16 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keywordtype}{INTEGER} :: proc\_id, \&}
+\DoxyCodeLine{23 \& ierror}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{CALL }mpi\_comm\_rank(mpi\_comm\_world, proc\_id, ierror)}
+\DoxyCodeLine{26 \textcolor{keyword}{CALL }mpi\_finalize(ierror)}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keywordflow}{IF} (proc\_id .NE. 0) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{29   stop}
+\DoxyCodeLine{30 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{31 }
+
+\end{DoxyCode}

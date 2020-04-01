@@ -1,0 +1,37 @@
+\hypertarget{dsinqb_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/dsinqb.f File Reference}
+\label{dsinqb_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/dsinqb.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/dsinqb.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{dsinqb_8f_a00b548941be46b0427f7c5443210eccd}{dsinqb}} (N, X, W\+S\+A\+VE)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{dsinqb_8f_a00b548941be46b0427f7c5443210eccd}\label{dsinqb_8f_a00b548941be46b0427f7c5443210eccd}} 
+\index{dsinqb.f@{dsinqb.f}!dsinqb@{dsinqb}}
+\index{dsinqb@{dsinqb}!dsinqb.f@{dsinqb.f}}
+\doxysubsubsection{\texorpdfstring{dsinqb()}{dsinqb()}}
+{\footnotesize\ttfamily subroutine dsinqb (\begin{DoxyParamCaption}\item[{}]{N,  }\item[{dimension(1)}]{X,  }\item[{dimension(1)}]{W\+S\+A\+VE }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z)}
+\DoxyCodeLine{3       dimension       x(1)       ,wsave(1)}
+\DoxyCodeLine{4       \textcolor{keywordflow}{IF} (n .GT. 1) \textcolor{keywordflow}{GO TO} 101}
+\DoxyCodeLine{5       x(1) = 4.0d0*x(1)}
+\DoxyCodeLine{6       \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{7   101 ns2 = n/2}
+\DoxyCodeLine{8       \textcolor{keywordflow}{DO} 102 k=2,n,2}
+\DoxyCodeLine{9          x(k) = -\/x(k)}
+\DoxyCodeLine{10   102 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{11       \textcolor{keyword}{CALL }\mbox{\hyperlink{dcosqb_8f_a4f2536cb7f40de6df80514e1cad2678f}{dcosqb}} (n,x,wsave)}
+\DoxyCodeLine{12       \textcolor{keywordflow}{DO} 103 k=1,ns2}
+\DoxyCodeLine{13          kc = n-\/k}
+\DoxyCodeLine{14          xhold = x(k)}
+\DoxyCodeLine{15          x(k) = x(kc+1)}
+\DoxyCodeLine{16          x(kc+1) = xhold}
+\DoxyCodeLine{17   103 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{18       \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

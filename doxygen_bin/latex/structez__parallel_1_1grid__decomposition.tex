@@ -1,0 +1,89 @@
+\hypertarget{structez__parallel_1_1grid__decomposition}{}\doxysection{ez\+\_\+parallel\+::grid\+\_\+decomposition Type Reference}
+\label{structez__parallel_1_1grid__decomposition}\index{ez\_parallel::grid\_decomposition@{ez\_parallel::grid\_decomposition}}
+
+
+The G\+R\+I\+D\+\_\+\+D\+E\+C\+O\+M\+P\+O\+S\+I\+T\+I\+ON derived datatype. It contains all information about the grid and the sub-\/grid decomposition of the grid.  
+
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+integer \mbox{\hyperlink{structez__parallel_1_1grid__decomposition_aa091135664c2e411d38969f4f8e5a5d4}{row\+\_\+count\+\_\+g}}
+\begin{DoxyCompactList}\small\item\em Number of rows in the grid. \end{DoxyCompactList}\item 
+integer \mbox{\hyperlink{structez__parallel_1_1grid__decomposition_a95ef2be63b7b59940fa5967324108124}{col\+\_\+count\+\_\+g}}
+\begin{DoxyCompactList}\small\item\em Number of columns in the grid. \end{DoxyCompactList}\item 
+integer, dimension(\+:), allocatable \mbox{\hyperlink{structez__parallel_1_1grid__decomposition_ac430e5a9776f8e32aef386900dd35955}{row\+\_\+decomp}}
+\begin{DoxyCompactList}\small\item\em Number of rows in each sub-\/grid of the horizontal-\/ slab decomposition, excluding overlap. \end{DoxyCompactList}\item 
+integer, dimension(\+:), allocatable \mbox{\hyperlink{structez__parallel_1_1grid__decomposition_a1dc855cc6730fb054fa724e2cba094ce}{col\+\_\+decomp}}
+\begin{DoxyCompactList}\small\item\em Number of columns in each sub-\/grid of the vertical-\/slab decomposition, excluding overlap. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The G\+R\+I\+D\+\_\+\+D\+E\+C\+O\+M\+P\+O\+S\+I\+T\+I\+ON derived datatype. It contains all information about the grid and the sub-\/grid decomposition of the grid. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structez__parallel_1_1grid__decomposition_a95ef2be63b7b59940fa5967324108124}\label{structez__parallel_1_1grid__decomposition_a95ef2be63b7b59940fa5967324108124}} 
+\index{ez\_parallel::grid\_decomposition@{ez\_parallel::grid\_decomposition}!col\_count\_g@{col\_count\_g}}
+\index{col\_count\_g@{col\_count\_g}!ez\_parallel::grid\_decomposition@{ez\_parallel::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{col\_count\_g}{col\_count\_g}}
+{\footnotesize\ttfamily integer ez\+\_\+parallel\+::grid\+\_\+decomposition\+::col\+\_\+count\+\_\+g}
+
+
+
+Number of columns in the grid. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{30      \textcolor{keywordtype}{INTEGER} :: col\_count\_g}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{structez__parallel_1_1grid__decomposition_a1dc855cc6730fb054fa724e2cba094ce}\label{structez__parallel_1_1grid__decomposition_a1dc855cc6730fb054fa724e2cba094ce}} 
+\index{ez\_parallel::grid\_decomposition@{ez\_parallel::grid\_decomposition}!col\_decomp@{col\_decomp}}
+\index{col\_decomp@{col\_decomp}!ez\_parallel::grid\_decomposition@{ez\_parallel::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{col\_decomp}{col\_decomp}}
+{\footnotesize\ttfamily integer, dimension(\+:), allocatable ez\+\_\+parallel\+::grid\+\_\+decomposition\+::col\+\_\+decomp}
+
+
+
+Number of columns in each sub-\/grid of the vertical-\/slab decomposition, excluding overlap. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{33      \textcolor{keywordtype}{INTEGER}, \textcolor{keywordtype}{ALLOCATABLE} :: col\_decomp(:)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{structez__parallel_1_1grid__decomposition_aa091135664c2e411d38969f4f8e5a5d4}\label{structez__parallel_1_1grid__decomposition_aa091135664c2e411d38969f4f8e5a5d4}} 
+\index{ez\_parallel::grid\_decomposition@{ez\_parallel::grid\_decomposition}!row\_count\_g@{row\_count\_g}}
+\index{row\_count\_g@{row\_count\_g}!ez\_parallel::grid\_decomposition@{ez\_parallel::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{row\_count\_g}{row\_count\_g}}
+{\footnotesize\ttfamily integer ez\+\_\+parallel\+::grid\+\_\+decomposition\+::row\+\_\+count\+\_\+g}
+
+
+
+Number of rows in the grid. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{29      \textcolor{keywordtype}{INTEGER} :: row\_count\_g}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{structez__parallel_1_1grid__decomposition_ac430e5a9776f8e32aef386900dd35955}\label{structez__parallel_1_1grid__decomposition_ac430e5a9776f8e32aef386900dd35955}} 
+\index{ez\_parallel::grid\_decomposition@{ez\_parallel::grid\_decomposition}!row\_decomp@{row\_decomp}}
+\index{row\_decomp@{row\_decomp}!ez\_parallel::grid\_decomposition@{ez\_parallel::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{row\_decomp}{row\_decomp}}
+{\footnotesize\ttfamily integer, dimension(\+:), allocatable ez\+\_\+parallel\+::grid\+\_\+decomposition\+::row\+\_\+decomp}
+
+
+
+Number of rows in each sub-\/grid of the horizontal-\/ slab decomposition, excluding overlap. 
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{31      \textcolor{keywordtype}{INTEGER}, \textcolor{keywordtype}{ALLOCATABLE} :: row\_decomp(:)}
+
+\end{DoxyCode}
+
+
+The documentation for this type was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\mbox{\hyperlink{main_8f90}{main.\+f90}}\end{DoxyCompactItemize}

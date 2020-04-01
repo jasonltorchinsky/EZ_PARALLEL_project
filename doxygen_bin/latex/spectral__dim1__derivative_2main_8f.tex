@@ -1,0 +1,157 @@
+\hypertarget{spectral__dim1__derivative_2main_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/unit\+\_\+tests/spectral\+\_\+dim1\+\_\+derivative/main.f File Reference}
+\label{spectral__dim1__derivative_2main_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/spectral\_dim1\_derivative/main.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/spectral\_dim1\_derivative/main.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+program \mbox{\hyperlink{spectral__dim1__derivative_2main_8f_ac5605d7f76dfcf7d5b2ce5fe3fe4c2f8}{spectral\+\_\+dim1\+\_\+derivative\+\_\+unit\+\_\+test}}
+\item 
+subroutine \mbox{\hyperlink{spectral__dim1__derivative_2main_8f_a3aaab028df4218189c0e912342720025}{main}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{spectral__dim1__derivative_2main_8f_a3aaab028df4218189c0e912342720025}\label{spectral__dim1__derivative_2main_8f_a3aaab028df4218189c0e912342720025}} 
+\index{main.f@{main.f}!main@{main}}
+\index{main@{main}!main.f@{main.f}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily subroutine spectral\+\_\+dim1\+\_\+derivative\+\_\+unit\+\_\+test\+::main}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{39 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{keywordtype}{INTEGER(qb)} :: dim1\_len, \&}
+\DoxyCodeLine{46 \& dim2\_len, \&}
+\DoxyCodeLine{47 \& overlap, \&}
+\DoxyCodeLine{48 \& order, \&}
+\DoxyCodeLine{49 \& i, \&}
+\DoxyCodeLine{50 \& j, \&}
+\DoxyCodeLine{51 \& proc\_id, \&}
+\DoxyCodeLine{52 \& proc\_count, \&}
+\DoxyCodeLine{53 \& ierror}
+\DoxyCodeLine{54 \textcolor{keywordtype}{REAL(dp)} :: dim1\_ref, \&}
+\DoxyCodeLine{55 \& dim2\_ref, \&}
+\DoxyCodeLine{56 \& dim1\_spc, \&}
+\DoxyCodeLine{57 \& dim2\_spc}
+\DoxyCodeLine{58 \textcolor{keywordtype}{COMPLEX(dp)}, \textcolor{keywordtype}{DIMENSION(:,:)}, \textcolor{keywordtype}{ALLOCATABLE} :: spec\_dim1\_deriv, \&}
+\DoxyCodeLine{59 \& test\_grid}
+\DoxyCodeLine{60 \textcolor{keywordtype}{REAL(dp)}, \textcolor{keywordtype}{PARAMETER} :: pi\_dp = 4.0\_dp * atan(1.0\_dp)}
+\DoxyCodeLine{61 \textcolor{keywordtype}{CHARACTER(len=15)} :: output\_format}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 namelist /test\_params/ dim1\_len, dim2\_len, overlap, dim1\_ref, dim2\_ref, \&}
+\DoxyCodeLine{64 \& dim1\_spc, dim2\_spc, order}
+\DoxyCodeLine{65 \textcolor{keyword}{OPEN}(1000, file = \textcolor{stringliteral}{'NAMELIST'})}
+\DoxyCodeLine{66 \textcolor{keyword}{READ}(1000, nml = test\_params)}
+\DoxyCodeLine{67 \textcolor{keyword}{CLOSE}(1000)}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{comment}{! Create format string for output grid.}}
+\DoxyCodeLine{70 \textcolor{keyword}{WRITE}(output\_format,\textcolor{stringliteral}{'(A,I0.8,A)'}) \textcolor{stringliteral}{'('}, dim1\_len, \textcolor{stringliteral}{'F16.8)'}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{keyword}{CALL }\mbox{\hyperlink{init__mpi_8f_a9f981f068ebbfa17378e60c81aeb0056}{init\_mpi\_ezp}}}
+\DoxyCodeLine{73 \textcolor{keyword}{CALL }\mbox{\hyperlink{get__id_8f_a091a155bf3e810603ef253fa4be15bb2}{get\_id\_ezp}}(proc\_id)}
+\DoxyCodeLine{74 \textcolor{keyword}{CALL }mpi\_comm\_size(mpi\_comm\_world, proc\_count, ierror)}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{comment}{! Output dimensions of grid using processor 0.}}
+\DoxyCodeLine{77 \textcolor{keywordflow}{IF} (proc\_id .EQ. 0\_qb) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{78   print *, \textcolor{stringliteral}{'dim1\_len\_total: '}, dim1\_len, \textcolor{stringliteral}{' dim2\_len\_total: '}, dim2\_len, \&}
+\DoxyCodeLine{79   \& \textcolor{stringliteral}{' overlap: '}, overlap}
+\DoxyCodeLine{80   print *, \textcolor{stringliteral}{'dim1\_ref: '}, dim1\_ref, \textcolor{stringliteral}{' dim2\_ref: '}, dim2\_ref, \textcolor{stringliteral}{' dim1\_spc: '}, \&}
+\DoxyCodeLine{81   \& dim1\_spc, \textcolor{stringliteral}{' dim2\_spc: '}, dim2\_spc}
+\DoxyCodeLine{82   print *, \textcolor{stringliteral}{'order: '}, order}
+\DoxyCodeLine{83 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{84 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{comment}{! Fill in the test grid.}}
+\DoxyCodeLine{87 \textcolor{keyword}{CALL }\mbox{\hyperlink{decomp__grid_8f_a3d23c951820c059e318e5c68e781e165}{decomp\_grid\_ezp}}(dim2\_len, overlap)}
+\DoxyCodeLine{88 \textcolor{comment}{! Each processor prints out its dim2\_len.}}
+\DoxyCodeLine{89 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{90   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{91     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' dim2\_len: '}, dim2\_len}
+\DoxyCodeLine{92     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{93   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{94     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{95 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{96 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{97 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keyword}{CALL }\mbox{\hyperlink{identify__ref__point_8f_ac016bc84d13cb001edb3210843abc4c2}{identify\_ref\_point\_ezp}}(dim2\_len, dim2\_ref, dim2\_spc, overlap)}
+\DoxyCodeLine{100 \textcolor{comment}{! Each processor prints out its reference point.}}
+\DoxyCodeLine{101 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{102   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{103     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' dim1\_ref: '}, dim1\_ref, \textcolor{stringliteral}{' dim2\_ref: '}, \&}
+\DoxyCodeLine{104     \& dim2\_ref}
+\DoxyCodeLine{105   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{106     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{107 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{108 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{109 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{keyword}{ALLOCATE}(test\_grid(dim1\_len, dim2\_len))}
+\DoxyCodeLine{112 test\_grid = (0.0\_dp, 0.0\_dp)}
+\DoxyCodeLine{113 \textcolor{keywordflow}{DO} j = 1, dim2\_len}
+\DoxyCodeLine{114   \textcolor{keywordflow}{DO} i = 1, dim1\_len}
+\DoxyCodeLine{115     test\_grid(i,j) = sin((dim1\_ref + real(i-\/1\_qb, dp) * dim1\_spc) * pi\_dp)}
+\DoxyCodeLine{116 \textcolor{keywordflow}{  END DO}}
+\DoxyCodeLine{117 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{118 \textcolor{comment}{! Each processor prints out its test\_grid.}}
+\DoxyCodeLine{119 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{120   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{121     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' test\_grid: '}}
+\DoxyCodeLine{122     \textcolor{keywordflow}{DO} j = 1, dim2\_len}
+\DoxyCodeLine{123       \textcolor{keyword}{WRITE}(*, output\_format) real(test\_grid(:,j), dp)}
+\DoxyCodeLine{124 \textcolor{keywordflow}{    END DO}}
+\DoxyCodeLine{125     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{126   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{127     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{128 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{129 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{130 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{comment}{! Get spectral dim1 derivative matrix.}}
+\DoxyCodeLine{133 \textcolor{keyword}{ALLOCATE}(spec\_dim1\_deriv(dim1\_len, dim2\_len))}
+\DoxyCodeLine{134 spec\_dim1\_deriv = (0.0\_dp, 0.0\_dp)}
+\DoxyCodeLine{135 \textcolor{keyword}{CALL }\mbox{\hyperlink{spectral__dim1__derivative_8f_a002538a2b0327a6ad9959a8060270ce0}{spectral\_dim1\_derivative\_ezp}}(dim1\_len, dim2\_len, overlap, \&}
+\DoxyCodeLine{136 \& spec\_dim1\_deriv, order)}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 \textcolor{comment}{! Differentiate test\_grid along dim2.}}
+\DoxyCodeLine{139 \textcolor{keyword}{CALL }\mbox{\hyperlink{cfft2df_8f_adff7cfcd1f911f1dc00debad125fe530}{cfft2df\_ezp}}(dim1\_len, dim2\_len, overlap, test\_grid)}
+\DoxyCodeLine{140 test\_grid = spec\_dim1\_deriv * test\_grid}
+\DoxyCodeLine{141 \textcolor{keyword}{CALL }\mbox{\hyperlink{cfft2db_8f_a85dec28129199285c17927fb1dcd3836}{cfft2db\_ezp}}(dim1\_len, dim2\_len, overlap, test\_grid)}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{comment}{! Write out test grid.}}
+\DoxyCodeLine{144 \textcolor{keywordflow}{DO} j = 1, dim2\_len}
+\DoxyCodeLine{145   \textcolor{keywordflow}{DO} i = 1, dim1\_len}
+\DoxyCodeLine{146     test\_grid(i,j) = test\_grid(i,j)}
+\DoxyCodeLine{147     \textcolor{comment}{! Order 1 derivative -\/ COS((dim1\_ref + REAL(i-\/1\_qb, dp) * dim1\_spc) * pi\_dp)}}
+\DoxyCodeLine{148 \textcolor{keywordflow}{  END DO}}
+\DoxyCodeLine{149 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{150 \textcolor{comment}{! Each processor prints out its test\_grid.}}
+\DoxyCodeLine{151 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{152   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{153     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' output test\_grid: '}}
+\DoxyCodeLine{154     \textcolor{keywordflow}{DO} j = 1, dim2\_len}
+\DoxyCodeLine{155       \textcolor{keyword}{WRITE}(*, output\_format) real(test\_grid(:,j), dp)}
+\DoxyCodeLine{156 \textcolor{keywordflow}{    END DO}}
+\DoxyCodeLine{157     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{158   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{159     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{160 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{161 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{162 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 \textcolor{keyword}{CALL }\mbox{\hyperlink{fin__mpi_8f_ad9592fceaa187ad8c5d3e5ec6844d22f}{fin\_mpi\_ezp}}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{167 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{spectral__dim1__derivative_2main_8f_ac5605d7f76dfcf7d5b2ce5fe3fe4c2f8}\label{spectral__dim1__derivative_2main_8f_ac5605d7f76dfcf7d5b2ce5fe3fe4c2f8}} 
+\index{main.f@{main.f}!spectral\_dim1\_derivative\_unit\_test@{spectral\_dim1\_derivative\_unit\_test}}
+\index{spectral\_dim1\_derivative\_unit\_test@{spectral\_dim1\_derivative\_unit\_test}!main.f@{main.f}}
+\doxysubsubsection{\texorpdfstring{spectral\_dim1\_derivative\_unit\_test()}{spectral\_dim1\_derivative\_unit\_test()}}
+{\footnotesize\ttfamily program spectral\+\_\+dim1\+\_\+derivative\+\_\+unit\+\_\+test}
+

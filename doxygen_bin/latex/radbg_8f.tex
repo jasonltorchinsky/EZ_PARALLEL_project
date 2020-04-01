@@ -1,0 +1,179 @@
+\hypertarget{radbg_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/radbg.f File Reference}
+\label{radbg_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/radbg.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/radbg.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{radbg_8f_af5a2521b66fece6cc768206c1df0d20b}{radbg}} (I\+DO, IP, L1, I\+D\+L1, CC, C1, C2, CH, C\+H2, WA)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{radbg_8f_af5a2521b66fece6cc768206c1df0d20b}\label{radbg_8f_af5a2521b66fece6cc768206c1df0d20b}} 
+\index{radbg.f@{radbg.f}!radbg@{radbg}}
+\index{radbg@{radbg}!radbg.f@{radbg.f}}
+\doxysubsubsection{\texorpdfstring{radbg()}{radbg()}}
+{\footnotesize\ttfamily subroutine radbg (\begin{DoxyParamCaption}\item[{}]{I\+DO,  }\item[{}]{IP,  }\item[{}]{L1,  }\item[{}]{I\+D\+L1,  }\item[{dimension(ido,ip,l1)}]{CC,  }\item[{dimension(ido,l1,ip)}]{C1,  }\item[{dimension(idl1,ip)}]{C2,  }\item[{dimension(ido,l1,ip)}]{CH,  }\item[{dimension(idl1,ip)}]{C\+H2,  }\item[{dimension(1)}]{WA }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z)}
+\DoxyCodeLine{3       dimension       ch(ido,l1,ip)          ,cc(ido,ip,l1)          ,}
+\DoxyCodeLine{4      1                c1(ido,l1,ip)          ,c2(idl1,ip),}
+\DoxyCodeLine{5      2                ch2(idl1,ip)           ,wa(1)}
+\DoxyCodeLine{6       \textcolor{keyword}{DATA} tpi/6.28318530717958647692d0/}
+\DoxyCodeLine{7       arg = tpi/float(ip)}
+\DoxyCodeLine{8       dcp = cos(arg)}
+\DoxyCodeLine{9       dsp = sin(arg)}
+\DoxyCodeLine{10       idp2 = ido+2}
+\DoxyCodeLine{11       nbd = (ido-\/1)/2}
+\DoxyCodeLine{12       ipp2 = ip+2}
+\DoxyCodeLine{13       ipph = (ip+1)/2}
+\DoxyCodeLine{14       \textcolor{keywordflow}{IF} (ido .LT. l1) \textcolor{keywordflow}{GO TO} 103}
+\DoxyCodeLine{15       \textcolor{keywordflow}{DO} 102 k=1,l1}
+\DoxyCodeLine{16          \textcolor{keywordflow}{DO} 101 i=1,ido}
+\DoxyCodeLine{17             ch(i,k,1) = cc(i,1,k)}
+\DoxyCodeLine{18   101    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{19   102 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{20       \textcolor{keywordflow}{GO TO} 106}
+\DoxyCodeLine{21   103 \textcolor{keywordflow}{DO} 105 i=1,ido}
+\DoxyCodeLine{22          \textcolor{keywordflow}{DO} 104 k=1,l1}
+\DoxyCodeLine{23             ch(i,k,1) = cc(i,1,k)}
+\DoxyCodeLine{24   104    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{25   105 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{26   106 \textcolor{keywordflow}{DO} 108 j=2,ipph}
+\DoxyCodeLine{27          jc = ipp2-\/j}
+\DoxyCodeLine{28          j2 = j+j}
+\DoxyCodeLine{29          \textcolor{keywordflow}{DO} 107 k=1,l1}
+\DoxyCodeLine{30             ch(1,k,j) = cc(ido,j2-\/2,k)+cc(ido,j2-\/2,k)}
+\DoxyCodeLine{31             ch(1,k,jc) = cc(1,j2-\/1,k)+cc(1,j2-\/1,k)}
+\DoxyCodeLine{32   107    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{33   108 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{34       \textcolor{keywordflow}{IF} (ido .EQ. 1) \textcolor{keywordflow}{GO TO} 116}
+\DoxyCodeLine{35       \textcolor{keywordflow}{IF} (nbd .LT. l1) \textcolor{keywordflow}{GO TO} 112}
+\DoxyCodeLine{36       \textcolor{keywordflow}{DO} 111 j=2,ipph}
+\DoxyCodeLine{37          jc = ipp2-\/j}
+\DoxyCodeLine{38          \textcolor{keywordflow}{DO} 110 k=1,l1}
+\DoxyCodeLine{39             \textcolor{keywordflow}{DO} 109 i=3,ido,2}
+\DoxyCodeLine{40                ic = idp2-\/i}
+\DoxyCodeLine{41                ch(i-\/1,k,j) = cc(i-\/1,2*j-\/1,k)+cc(ic-\/1,2*j-\/2,k)}
+\DoxyCodeLine{42                ch(i-\/1,k,jc) = cc(i-\/1,2*j-\/1,k)-\/cc(ic-\/1,2*j-\/2,k)}
+\DoxyCodeLine{43                ch(i,k,j) = cc(i,2*j-\/1,k)-\/cc(ic,2*j-\/2,k)}
+\DoxyCodeLine{44                ch(i,k,jc) = cc(i,2*j-\/1,k)+cc(ic,2*j-\/2,k)}
+\DoxyCodeLine{45   109       \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{46   110    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{47   111 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{48       \textcolor{keywordflow}{GO TO} 116}
+\DoxyCodeLine{49   112 \textcolor{keywordflow}{DO} 115 j=2,ipph}
+\DoxyCodeLine{50          jc = ipp2-\/j}
+\DoxyCodeLine{51          \textcolor{keywordflow}{DO} 114 i=3,ido,2}
+\DoxyCodeLine{52             ic = idp2-\/i}
+\DoxyCodeLine{53             \textcolor{keywordflow}{DO} 113 k=1,l1}
+\DoxyCodeLine{54                ch(i-\/1,k,j) = cc(i-\/1,2*j-\/1,k)+cc(ic-\/1,2*j-\/2,k)}
+\DoxyCodeLine{55                ch(i-\/1,k,jc) = cc(i-\/1,2*j-\/1,k)-\/cc(ic-\/1,2*j-\/2,k)}
+\DoxyCodeLine{56                ch(i,k,j) = cc(i,2*j-\/1,k)-\/cc(ic,2*j-\/2,k)}
+\DoxyCodeLine{57                ch(i,k,jc) = cc(i,2*j-\/1,k)+cc(ic,2*j-\/2,k)}
+\DoxyCodeLine{58   113       \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{59   114    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{60   115 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{61   116 ar1 = 1.0d0}
+\DoxyCodeLine{62       ai1 = 0.0d0}
+\DoxyCodeLine{63       \textcolor{keywordflow}{DO} 120 l=2,ipph}
+\DoxyCodeLine{64          lc = ipp2-\/l}
+\DoxyCodeLine{65          ar1h = dcp*ar1-\/dsp*ai1}
+\DoxyCodeLine{66          ai1 = dcp*ai1+dsp*ar1}
+\DoxyCodeLine{67          ar1 = ar1h}
+\DoxyCodeLine{68          \textcolor{keywordflow}{DO} 117 ik=1,idl1}
+\DoxyCodeLine{69             c2(ik,l) = ch2(ik,1)+ar1*ch2(ik,2)}
+\DoxyCodeLine{70             c2(ik,lc) = ai1*ch2(ik,ip)}
+\DoxyCodeLine{71   117    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{72          dc2 = ar1}
+\DoxyCodeLine{73          ds2 = ai1}
+\DoxyCodeLine{74          ar2 = ar1}
+\DoxyCodeLine{75          ai2 = ai1}
+\DoxyCodeLine{76          \textcolor{keywordflow}{DO} 119 j=3,ipph}
+\DoxyCodeLine{77             jc = ipp2-\/j}
+\DoxyCodeLine{78             ar2h = dc2*ar2-\/ds2*ai2}
+\DoxyCodeLine{79             ai2 = dc2*ai2+ds2*ar2}
+\DoxyCodeLine{80             ar2 = ar2h}
+\DoxyCodeLine{81             \textcolor{keywordflow}{DO} 118 ik=1,idl1}
+\DoxyCodeLine{82                c2(ik,l) = c2(ik,l)+ar2*ch2(ik,j)}
+\DoxyCodeLine{83                c2(ik,lc) = c2(ik,lc)+ai2*ch2(ik,jc)}
+\DoxyCodeLine{84   118       \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{85   119    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{86   120 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{87       \textcolor{keywordflow}{DO} 122 j=2,ipph}
+\DoxyCodeLine{88          \textcolor{keywordflow}{DO} 121 ik=1,idl1}
+\DoxyCodeLine{89             ch2(ik,1) = ch2(ik,1)+ch2(ik,j)}
+\DoxyCodeLine{90   121    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{91   122 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{92       \textcolor{keywordflow}{DO} 124 j=2,ipph}
+\DoxyCodeLine{93          jc = ipp2-\/j}
+\DoxyCodeLine{94          \textcolor{keywordflow}{DO} 123 k=1,l1}
+\DoxyCodeLine{95             ch(1,k,j) = c1(1,k,j)-\/c1(1,k,jc)}
+\DoxyCodeLine{96             ch(1,k,jc) = c1(1,k,j)+c1(1,k,jc)}
+\DoxyCodeLine{97   123    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{98   124 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{99       \textcolor{keywordflow}{IF} (ido .EQ. 1) \textcolor{keywordflow}{GO TO} 132}
+\DoxyCodeLine{100       \textcolor{keywordflow}{IF} (nbd .LT. l1) \textcolor{keywordflow}{GO TO} 128}
+\DoxyCodeLine{101       \textcolor{keywordflow}{DO} 127 j=2,ipph}
+\DoxyCodeLine{102          jc = ipp2-\/j}
+\DoxyCodeLine{103          \textcolor{keywordflow}{DO} 126 k=1,l1}
+\DoxyCodeLine{104             \textcolor{keywordflow}{DO} 125 i=3,ido,2}
+\DoxyCodeLine{105                ch(i-\/1,k,j) = c1(i-\/1,k,j)-\/c1(i,k,jc)}
+\DoxyCodeLine{106                ch(i-\/1,k,jc) = c1(i-\/1,k,j)+c1(i,k,jc)}
+\DoxyCodeLine{107                ch(i,k,j) = c1(i,k,j)+c1(i-\/1,k,jc)}
+\DoxyCodeLine{108                ch(i,k,jc) = c1(i,k,j)-\/c1(i-\/1,k,jc)}
+\DoxyCodeLine{109   125       \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{110   126    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{111   127 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{112       \textcolor{keywordflow}{GO TO} 132}
+\DoxyCodeLine{113   128 \textcolor{keywordflow}{DO} 131 j=2,ipph}
+\DoxyCodeLine{114          jc = ipp2-\/j}
+\DoxyCodeLine{115          \textcolor{keywordflow}{DO} 130 i=3,ido,2}
+\DoxyCodeLine{116             \textcolor{keywordflow}{DO} 129 k=1,l1}
+\DoxyCodeLine{117                ch(i-\/1,k,j) = c1(i-\/1,k,j)-\/c1(i,k,jc)}
+\DoxyCodeLine{118                ch(i-\/1,k,jc) = c1(i-\/1,k,j)+c1(i,k,jc)}
+\DoxyCodeLine{119                ch(i,k,j) = c1(i,k,j)+c1(i-\/1,k,jc)}
+\DoxyCodeLine{120                ch(i,k,jc) = c1(i,k,j)-\/c1(i-\/1,k,jc)}
+\DoxyCodeLine{121   129       \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{122   130    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{123   131 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{124   132 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{125       \textcolor{keywordflow}{IF} (ido .EQ. 1) \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{126       \textcolor{keywordflow}{DO} 133 ik=1,idl1}
+\DoxyCodeLine{127          c2(ik,1) = ch2(ik,1)}
+\DoxyCodeLine{128   133 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{129       \textcolor{keywordflow}{DO} 135 j=2,ip}
+\DoxyCodeLine{130          \textcolor{keywordflow}{DO} 134 k=1,l1}
+\DoxyCodeLine{131             c1(1,k,j) = ch(1,k,j)}
+\DoxyCodeLine{132   134    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{133   135 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{134       \textcolor{keywordflow}{IF} (nbd .GT. l1) \textcolor{keywordflow}{GO TO} 139}
+\DoxyCodeLine{135       is = -\/ido}
+\DoxyCodeLine{136       \textcolor{keywordflow}{DO} 138 j=2,ip}
+\DoxyCodeLine{137          is = is+ido}
+\DoxyCodeLine{138          idij = is}
+\DoxyCodeLine{139          \textcolor{keywordflow}{DO} 137 i=3,ido,2}
+\DoxyCodeLine{140             idij = idij+2}
+\DoxyCodeLine{141             \textcolor{keywordflow}{DO} 136 k=1,l1}
+\DoxyCodeLine{142                c1(i-\/1,k,j) = wa(idij-\/1)*ch(i-\/1,k,j)-\/wa(idij)*ch(i,k,j)}
+\DoxyCodeLine{143                c1(i,k,j) = wa(idij-\/1)*ch(i,k,j)+wa(idij)*ch(i-\/1,k,j)}
+\DoxyCodeLine{144   136       \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{145   137    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{146   138 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{147       \textcolor{keywordflow}{GO TO} 143}
+\DoxyCodeLine{148   139 is = -\/ido}
+\DoxyCodeLine{149       \textcolor{keywordflow}{DO} 142 j=2,ip}
+\DoxyCodeLine{150          is = is+ido}
+\DoxyCodeLine{151          \textcolor{keywordflow}{DO} 141 k=1,l1}
+\DoxyCodeLine{152             idij = is}
+\DoxyCodeLine{153             \textcolor{keywordflow}{DO} 140 i=3,ido,2}
+\DoxyCodeLine{154                idij = idij+2}
+\DoxyCodeLine{155                c1(i-\/1,k,j) = wa(idij-\/1)*ch(i-\/1,k,j)-\/wa(idij)*ch(i,k,j)}
+\DoxyCodeLine{156                c1(i,k,j) = wa(idij-\/1)*ch(i,k,j)+wa(idij)*ch(i-\/1,k,j)}
+\DoxyCodeLine{157   140       \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{158   141    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{159   142 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{160   143 \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

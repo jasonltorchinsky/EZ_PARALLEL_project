@@ -1,0 +1,169 @@
+\hypertarget{zero__padding__dble__real_2main_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/unit\+\_\+tests/zero\+\_\+padding\+\_\+dble\+\_\+real/main.f File Reference}
+\label{zero__padding__dble__real_2main_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/zero\_padding\_dble\_real/main.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/zero\_padding\_dble\_real/main.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+program \mbox{\hyperlink{zero__padding__dble__real_2main_8f_a20dc198ab9df2b5202a64670cbb12bbb}{zero\+\_\+padding\+\_\+dble\+\_\+real\+\_\+test}}
+\item 
+subroutine \mbox{\hyperlink{zero__padding__dble__real_2main_8f_a9f8452d0c3c09502ec90b9d88f6fa46a}{main}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{zero__padding__dble__real_2main_8f_a9f8452d0c3c09502ec90b9d88f6fa46a}\label{zero__padding__dble__real_2main_8f_a9f8452d0c3c09502ec90b9d88f6fa46a}} 
+\index{main.f@{main.f}!main@{main}}
+\index{main@{main}!main.f@{main.f}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily subroutine zero\+\_\+padding\+\_\+dble\+\_\+real\+\_\+test\+::main}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{37 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keywordtype}{INTEGER(qb)} :: dim1\_len, \&}
+\DoxyCodeLine{44 \& dim2\_len, \&}
+\DoxyCodeLine{45 \& overlap, \&}
+\DoxyCodeLine{46 \& order, \&}
+\DoxyCodeLine{47 \& i, \&}
+\DoxyCodeLine{48 \& j, \&}
+\DoxyCodeLine{49 \& proc\_id, \&}
+\DoxyCodeLine{50 \& proc\_count, \&}
+\DoxyCodeLine{51 \& ierror, \&}
+\DoxyCodeLine{52 \& scl\_dim1\_len, \&}
+\DoxyCodeLine{53 \& scl\_dim2\_len}
+\DoxyCodeLine{54 \textcolor{keywordtype}{REAL(dp)} :: dim1\_ref, \&}
+\DoxyCodeLine{55 \& dim2\_ref, \&}
+\DoxyCodeLine{56 \& dim1\_spc, \&}
+\DoxyCodeLine{57 \& dim2\_spc}
+\DoxyCodeLine{58 \textcolor{keywordtype}{REAL(dp)}, \textcolor{keywordtype}{DIMENSION(:,:)}, \textcolor{keywordtype}{ALLOCATABLE} :: test\_grid, \&}
+\DoxyCodeLine{59 \& scaled\_test\_grid}
+\DoxyCodeLine{60 \textcolor{keywordtype}{CHARACTER(len=14)} :: output\_format\_1, \&}
+\DoxyCodeLine{61 output\_format\_2}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 namelist /test\_params/ dim1\_len, dim2\_len, overlap, dim1\_ref, dim2\_ref, \&}
+\DoxyCodeLine{64 \& dim1\_spc, dim2\_spc}
+\DoxyCodeLine{65 \textcolor{keyword}{OPEN}(1000, file = \textcolor{stringliteral}{'NAMELIST'})}
+\DoxyCodeLine{66 \textcolor{keyword}{READ}(1000, nml = test\_params)}
+\DoxyCodeLine{67 \textcolor{keyword}{CLOSE}(1000)}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{comment}{! Create format string for output grid.}}
+\DoxyCodeLine{70 \textcolor{keyword}{WRITE}(output\_format\_1,\textcolor{stringliteral}{'(A,I0.8,A)'}) \textcolor{stringliteral}{'('}, dim1\_len, \textcolor{stringliteral}{'F8.4)'}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{keyword}{CALL }\mbox{\hyperlink{init__mpi_8f_a9f981f068ebbfa17378e60c81aeb0056}{init\_mpi\_ezp}}}
+\DoxyCodeLine{73 \textcolor{keyword}{CALL }\mbox{\hyperlink{get__id_8f_a091a155bf3e810603ef253fa4be15bb2}{get\_id\_ezp}}(proc\_id)}
+\DoxyCodeLine{74 \textcolor{keyword}{CALL }mpi\_comm\_size(mpi\_comm\_world, proc\_count, ierror)}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{comment}{! Output dimensions of grid using processor 0.}}
+\DoxyCodeLine{77 \textcolor{keywordflow}{IF} (proc\_id .EQ. 0\_qb) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{78   print *, \textcolor{stringliteral}{'dim1\_len\_total: '}, dim1\_len, \textcolor{stringliteral}{' dim2\_len\_total: '}, dim2\_len, \&}
+\DoxyCodeLine{79   \& \textcolor{stringliteral}{' overlap: '}, overlap}
+\DoxyCodeLine{80   print *, \textcolor{stringliteral}{'dim1\_ref: '}, dim1\_ref, \textcolor{stringliteral}{' dim2\_ref: '}, dim2\_ref, \textcolor{stringliteral}{' dim1\_spc: '}, \&}
+\DoxyCodeLine{81   \& dim1\_spc, \textcolor{stringliteral}{' dim2\_spc: '}, dim2\_spc}
+\DoxyCodeLine{82   print *, \textcolor{stringliteral}{'order: '}, order}
+\DoxyCodeLine{83 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{84 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{comment}{! Fill in the test grid.}}
+\DoxyCodeLine{87 \textcolor{keyword}{CALL }\mbox{\hyperlink{decomp__grid_8f_a3d23c951820c059e318e5c68e781e165}{decomp\_grid\_ezp}}(dim2\_len, overlap)}
+\DoxyCodeLine{88 \textcolor{comment}{! Each processor prints out its dim2\_len.}}
+\DoxyCodeLine{89 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{90 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{91   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{92     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' dim2\_len: '}, dim2\_len}
+\DoxyCodeLine{93     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{94   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{95     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{96 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{97 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{98 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{keyword}{CALL }\mbox{\hyperlink{identify__ref__point_8f_ac016bc84d13cb001edb3210843abc4c2}{identify\_ref\_point\_ezp}}(dim2\_len, dim2\_ref, dim2\_spc, overlap)}
+\DoxyCodeLine{101 \textcolor{comment}{! Each processor prints out its reference point.}}
+\DoxyCodeLine{102 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{103 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{104   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{105     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' dim1\_ref: '}, dim1\_ref, \textcolor{stringliteral}{' dim2\_ref: '}, \&}
+\DoxyCodeLine{106     \& dim2\_ref}
+\DoxyCodeLine{107   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{108     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{109 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{110 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{111 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{comment}{! Fill the test grid..}}
+\DoxyCodeLine{114 \textcolor{keyword}{ALLOCATE}(test\_grid(dim1\_len, dim2\_len))}
+\DoxyCodeLine{115 test\_grid = 0.0\_dp}
+\DoxyCodeLine{116 \textcolor{keywordflow}{DO} j = 1, dim2\_len}
+\DoxyCodeLine{117   \textcolor{keywordflow}{DO} i = 1, dim1\_len}
+\DoxyCodeLine{118     test\_grid(i, j) = (dim1\_ref + real(i-\/1\_qb, dp) * dim1\_spc) \&}
+\DoxyCodeLine{119     \& + (dim2\_ref + real(j-\/1\_qb, dp) * dim2\_spc)}
+\DoxyCodeLine{120 \textcolor{keywordflow}{  END DO}}
+\DoxyCodeLine{121 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{keyword}{CALL }\mbox{\hyperlink{share__subgrid__boundaries__dble__real_8f_a5170f5c15842e65d901113fc48dfe97a}{share\_subgrid\_boundaries\_dble\_real\_ezp}}(dim1\_len, dim2\_len, overlap, \&}
+\DoxyCodeLine{124 \& test\_grid)}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{comment}{! Each processor prints out its test\_grid.}}
+\DoxyCodeLine{127 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{128 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{129   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{130     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' test\_grid: '}}
+\DoxyCodeLine{131     \textcolor{keywordflow}{DO} j = 1, dim2\_len}
+\DoxyCodeLine{132       \textcolor{keyword}{WRITE}(*, output\_format\_1) test\_grid(:,j)}
+\DoxyCodeLine{133 \textcolor{keywordflow}{    END DO}}
+\DoxyCodeLine{134     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{135   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{136     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{137 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{138 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{139 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 \textcolor{comment}{! Scale the test grid.}}
+\DoxyCodeLine{142 \textcolor{keyword}{CALL }\mbox{\hyperlink{zero__padding__get__shape_8f_a756eae3edbe4a05a080a603f80e6641d}{zero\_padding\_get\_shape\_ezp}}(dim1\_len, dim2\_len, overlap, scl\_dim1\_len, \&}
+\DoxyCodeLine{143   \& scl\_dim2\_len)}
+\DoxyCodeLine{144 \textcolor{comment}{! Each processor prints out its scl\_dim\_len.}}
+\DoxyCodeLine{145 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{146 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{147   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{148     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' scl\_dim\_len: '}, scl\_dim1\_len, scl\_dim2\_len}
+\DoxyCodeLine{149     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{150   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{151     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{152 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{153 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{154 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 \textcolor{keyword}{ALLOCATE}(scaled\_test\_grid(scl\_dim1\_len, scl\_dim2\_len))}
+\DoxyCodeLine{157 \textcolor{keyword}{WRITE}(output\_format\_2,\textcolor{stringliteral}{'(A,I0.8,A)'}) \textcolor{stringliteral}{'('}, scl\_dim1\_len, \textcolor{stringliteral}{'F8.4)'}}
+\DoxyCodeLine{158 scaled\_test\_grid = 0.0\_dp}
+\DoxyCodeLine{159 \textcolor{keyword}{CALL }\mbox{\hyperlink{zero__padding__dble__real_8f_a19b262ba06e1d9276225e7ca3d40f75b}{zero\_padding\_dble\_real\_ezp}}(dim1\_len, dim2\_len, test\_grid, \&}
+\DoxyCodeLine{160   \& scl\_dim1\_len, scl\_dim2\_len, scaled\_test\_grid, overlap)}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 \textcolor{comment}{! Each processor prints out its scaled\_test\_grid.}}
+\DoxyCodeLine{163 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{164   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{165     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' scaled\_test\_grid: '}}
+\DoxyCodeLine{166     \textcolor{keywordflow}{DO} j = 1\_qb, scl\_dim2\_len}
+\DoxyCodeLine{167       \textcolor{keyword}{WRITE}(*, output\_format\_2) scaled\_test\_grid(:,j)}
+\DoxyCodeLine{168 \textcolor{keywordflow}{    END DO}}
+\DoxyCodeLine{169     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{170   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{171     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{172 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{173 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{174 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{keyword}{CALL }\mbox{\hyperlink{fin__mpi_8f_ad9592fceaa187ad8c5d3e5ec6844d22f}{fin\_mpi\_ezp}}}
+\DoxyCodeLine{177 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{zero__padding__dble__real_2main_8f_a20dc198ab9df2b5202a64670cbb12bbb}\label{zero__padding__dble__real_2main_8f_a20dc198ab9df2b5202a64670cbb12bbb}} 
+\index{main.f@{main.f}!zero\_padding\_dble\_real\_test@{zero\_padding\_dble\_real\_test}}
+\index{zero\_padding\_dble\_real\_test@{zero\_padding\_dble\_real\_test}!main.f@{main.f}}
+\doxysubsubsection{\texorpdfstring{zero\_padding\_dble\_real\_test()}{zero\_padding\_dble\_real\_test()}}
+{\footnotesize\ttfamily program zero\+\_\+padding\+\_\+dble\+\_\+real\+\_\+test}
+

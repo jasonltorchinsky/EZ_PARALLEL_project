@@ -1,0 +1,66 @@
+\hypertarget{init__ezp__unit__test_8f90}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/unit\+\_\+tests/init\+\_\+ezp/init\+\_\+ezp\+\_\+unit\+\_\+test.f90 File Reference}
+\label{init__ezp__unit__test_8f90}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/init\_ezp/init\_ezp\_unit\_test.f90@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/init\_ezp/init\_ezp\_unit\_test.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+program \mbox{\hyperlink{init__ezp__unit__test_8f90_a2f4987bdc4086081f7739118460b0a34}{init\+\_\+ezp\+\_\+unit\+\_\+test}}
+\begin{DoxyCompactList}\small\item\em The unit test for the I\+N\+I\+T\+\_\+\+E\+ZP subroutine. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{init__ezp__unit__test_8f90_a06ab5e346d45c178c7cf4ee180521557}{main}}
+\begin{DoxyCompactList}\small\item\em Unit test for the E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL initialization subroutine. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{init__ezp__unit__test_8f90_a2f4987bdc4086081f7739118460b0a34}\label{init__ezp__unit__test_8f90_a2f4987bdc4086081f7739118460b0a34}} 
+\index{init\_ezp\_unit\_test.f90@{init\_ezp\_unit\_test.f90}!init\_ezp\_unit\_test@{init\_ezp\_unit\_test}}
+\index{init\_ezp\_unit\_test@{init\_ezp\_unit\_test}!init\_ezp\_unit\_test.f90@{init\_ezp\_unit\_test.f90}}
+\doxysubsubsection{\texorpdfstring{init\_ezp\_unit\_test()}{init\_ezp\_unit\_test()}}
+{\footnotesize\ttfamily program init\+\_\+ezp\+\_\+unit\+\_\+test}
+
+
+
+The unit test for the I\+N\+I\+T\+\_\+\+E\+ZP subroutine. 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner 
+\end{DoxyAuthor}
+\mbox{\Hypertarget{init__ezp__unit__test_8f90_a06ab5e346d45c178c7cf4ee180521557}\label{init__ezp__unit__test_8f90_a06ab5e346d45c178c7cf4ee180521557}} 
+\index{init\_ezp\_unit\_test.f90@{init\_ezp\_unit\_test.f90}!main@{main}}
+\index{main@{main}!init\_ezp\_unit\_test.f90@{init\_ezp\_unit\_test.f90}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily subroutine init\+\_\+ezp\+\_\+unit\+\_\+test\+::main}
+
+
+
+Unit test for the E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL initialization subroutine. 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison S\+T\+R\+U\+C\+T\+U\+RE\+: 1) Reads the N\+A\+M\+E\+L\+I\+ST. Initializes M\+PI, prints the processor ID, and finalizes M\+PI. 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em grid\+\_\+count} & Number of unique grids the user wishes to decompose, \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{53     }
+\DoxyCodeLine{54     \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{keywordtype}{INTEGER(qb)} :: grid\_count, \&}
+\DoxyCodeLine{59          ierror}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     grid\_count = 10}
+\DoxyCodeLine{62     }
+\DoxyCodeLine{63     \textcolor{keyword}{CALL }\mbox{\hyperlink{init__ezp_8f90_ae2dd1e20a6b99e89a073a1b2ef520f99}{init\_ezp}}(grid\_count)}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     \textcolor{comment}{! Each processor prints out its processor ID.}}
+\DoxyCodeLine{66     print *, \textcolor{stringliteral}{"proc\_id: "}, proc\_id, \textcolor{stringliteral}{" of "}, proc\_count, \textcolor{stringliteral}{" processors."}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{keyword}{CALL }mpi\_finalize(ierror)}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{71 }
+
+\end{DoxyCode}

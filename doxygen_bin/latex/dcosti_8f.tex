@@ -1,0 +1,37 @@
+\hypertarget{dcosti_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/dcosti.f File Reference}
+\label{dcosti_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/dcosti.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/dcosti.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{dcosti_8f_ae0d9dd1dfaf58c041ca8c12bcbd81dd0}{dcosti}} (N, W\+S\+A\+VE)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{dcosti_8f_ae0d9dd1dfaf58c041ca8c12bcbd81dd0}\label{dcosti_8f_ae0d9dd1dfaf58c041ca8c12bcbd81dd0}} 
+\index{dcosti.f@{dcosti.f}!dcosti@{dcosti}}
+\index{dcosti@{dcosti}!dcosti.f@{dcosti.f}}
+\doxysubsubsection{\texorpdfstring{dcosti()}{dcosti()}}
+{\footnotesize\ttfamily subroutine dcosti (\begin{DoxyParamCaption}\item[{}]{N,  }\item[{dimension(1)}]{W\+S\+A\+VE }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z)}
+\DoxyCodeLine{3       dimension       wsave(1)}
+\DoxyCodeLine{4       \textcolor{keyword}{DATA} pi /3.14159265358979323846d0/}
+\DoxyCodeLine{5       \textcolor{keywordflow}{IF} (n .LE. 3) \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{6       nm1 = n-\/1}
+\DoxyCodeLine{7       np1 = n+1}
+\DoxyCodeLine{8       ns2 = n/2}
+\DoxyCodeLine{9       dt = pi/float(nm1)}
+\DoxyCodeLine{10       fk = 0.0d0}
+\DoxyCodeLine{11       \textcolor{keywordflow}{DO} 101 k=2,ns2}
+\DoxyCodeLine{12          kc = np1-\/k}
+\DoxyCodeLine{13          fk = fk+1.0d0}
+\DoxyCodeLine{14          wsave(k) = 2.0d0*sin(fk*dt)}
+\DoxyCodeLine{15          wsave(kc) = 2.0d0*cos(fk*dt)}
+\DoxyCodeLine{16   101 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{17       \textcolor{keyword}{CALL }\mbox{\hyperlink{dffti_8f_aa7b1e9d8f41187e392bfffc6c2c05f2c}{dffti}} (nm1,wsave(n+1))}
+\DoxyCodeLine{18       \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

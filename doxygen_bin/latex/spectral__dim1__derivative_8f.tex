@@ -1,0 +1,348 @@
+\hypertarget{spectral__dim1__derivative_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/spectral\+\_\+dim1\+\_\+derivative.f File Reference}
+\label{spectral__dim1__derivative_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/spectral\_dim1\_derivative.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/spectral\_dim1\_derivative.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{spectral__dim1__derivative_8f_a002538a2b0327a6ad9959a8060270ce0}{spectral\+\_\+dim1\+\_\+derivative\+\_\+ezp}} (dim1\+\_\+len, dim2\+\_\+len, overlap, spec\+\_\+dim1\+\_\+deriv, order)
+\item 
+subroutine \mbox{\hyperlink{spectral__dim1__derivative_8f_aa93769bcb07b29995849021164cfc2d6}{serial}} (dim1\+\_\+len, dim2\+\_\+len, overlap, spec\+\_\+dim1\+\_\+deriv, order)
+\item 
+subroutine \mbox{\hyperlink{spectral__dim1__derivative_8f_a51d4e561276fc57d6ec0f5f7092e7916}{parallel}} (dim1\+\_\+len, dim2\+\_\+len, overlap, spec\+\_\+dim1\+\_\+deriv, order)
+\item 
+subroutine \mbox{\hyperlink{spectral__dim1__derivative_8f_a7a9bfcea9ce5a55e1616aceabff47d95}{error\+\_\+handling}} (order, proc\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{spectral__dim1__derivative_8f_a7a9bfcea9ce5a55e1616aceabff47d95}\label{spectral__dim1__derivative_8f_a7a9bfcea9ce5a55e1616aceabff47d95}} 
+\index{spectral\_dim1\_derivative.f@{spectral\_dim1\_derivative.f}!error\_handling@{error\_handling}}
+\index{error\_handling@{error\_handling}!spectral\_dim1\_derivative.f@{spectral\_dim1\_derivative.f}}
+\doxysubsubsection{\texorpdfstring{error\_handling()}{error\_handling()}}
+{\footnotesize\ttfamily subroutine spectral\+\_\+dim1\+\_\+derivative\+\_\+ezp\+::error\+\_\+handling (\begin{DoxyParamCaption}\item[{integer}]{order,  }\item[{integer}]{proc\+\_\+id }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{177 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183 \textcolor{keywordtype}{INTEGER} :: order, \&}
+\DoxyCodeLine{184 \& proc\_id, \&}
+\DoxyCodeLine{185 \& ierror}
+\DoxyCodeLine{186 \textcolor{keywordtype}{LOGICAL} :: proc\_err\_flag, \&}
+\DoxyCodeLine{187 \& global\_err\_flag}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 proc\_err\_flag = .false.}
+\DoxyCodeLine{192 global\_err\_flag = .false.}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 \textcolor{comment}{! order < 1.}}
+\DoxyCodeLine{195 \textcolor{keywordflow}{IF} (order .LT. 1) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{196   proc\_err\_flag = .true.}
+\DoxyCodeLine{197   print *, \textcolor{stringliteral}{'EZ\_PARALLEL: Issue with processor '}, proc\_id, \textcolor{stringliteral}{' in subroutine '}, \&}
+\DoxyCodeLine{198   \& \textcolor{stringliteral}{'call SPECTRAL\_DIM1\_DERIVATIVE\_DBLE\_CMPLX. order: '}, order, \textcolor{stringliteral}{' is less '}, \&}
+\DoxyCodeLine{199   \& \textcolor{stringliteral}{'than 1. Please increase the order.'}}
+\DoxyCodeLine{200 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 \textcolor{comment}{! STOP all processors if any encounter an error.}}
+\DoxyCodeLine{203 \textcolor{keyword}{CALL }mpi\_allreduce(proc\_err\_flag, global\_err\_flag, 1, mpi\_logical, mpi\_lor, \&}
+\DoxyCodeLine{204 \& mpi\_comm\_world, ierror)}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206 \textcolor{keywordflow}{IF} (global\_err\_flag) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{207   \textcolor{keyword}{CALL }mpi\_finalize(ierror)}
+\DoxyCodeLine{208   stop}
+\DoxyCodeLine{209 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{212 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{spectral__dim1__derivative_8f_a51d4e561276fc57d6ec0f5f7092e7916}\label{spectral__dim1__derivative_8f_a51d4e561276fc57d6ec0f5f7092e7916}} 
+\index{spectral\_dim1\_derivative.f@{spectral\_dim1\_derivative.f}!parallel@{parallel}}
+\index{parallel@{parallel}!spectral\_dim1\_derivative.f@{spectral\_dim1\_derivative.f}}
+\doxysubsubsection{\texorpdfstring{parallel()}{parallel()}}
+{\footnotesize\ttfamily subroutine spectral\+\_\+dim1\+\_\+derivative\+\_\+ezp\+::parallel (\begin{DoxyParamCaption}\item[{integer}]{dim1\+\_\+len,  }\item[{integer}]{dim2\+\_\+len,  }\item[{integer}]{overlap,  }\item[{double complex, dimension(\mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_acb4b6a591c5ad6fc207ef543dc74d1ae}{dim1\+\_\+len}}, \mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_adef80e51b1bb5916dd9410de399f1319}{dim2\+\_\+len}})}]{spec\+\_\+dim1\+\_\+deriv,  }\item[{integer}]{order }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{129 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{136 \& dim2\_len, \&}
+\DoxyCodeLine{137 \& overlap, \&}
+\DoxyCodeLine{138 \& order, \&}
+\DoxyCodeLine{139 \& i}
+\DoxyCodeLine{140 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim1\_len)} :: dim1\_wavenums}
+\DoxyCodeLine{141 \textcolor{keywordtype}{DOUBLE COMPLEX}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: spec\_dim1\_deriv}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{comment}{! Calculate dim1 wavenumbers.}}
+\DoxyCodeLine{144 dim1\_wavenums = 0.0}
+\DoxyCodeLine{145 dim1\_wavenums(2) = 1.0}
+\DoxyCodeLine{146 dim1\_wavenums(dim1\_len) = -\/1.0}
+\DoxyCodeLine{147 \textcolor{keywordflow}{DO} i = 1, dim1\_len/2 -\/ 1}
+\DoxyCodeLine{148   dim1\_wavenums(dim1\_len -\/ i) = dble(-\/i -\/ 1)}
+\DoxyCodeLine{149   dim1\_wavenums(i + 2) = dble(i + 1)}
+\DoxyCodeLine{150 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{151 \textcolor{comment}{! If dim1\_len even and order odd, we have to zero out highest wavenumber for}}
+\DoxyCodeLine{152 \textcolor{comment}{! derivative.}}
+\DoxyCodeLine{153 \textcolor{keywordflow}{IF} ((mod(dim1\_len, 2) .EQ. 0) .AND. (mod(order, 2) .EQ. 1)) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{154   dim1\_wavenums(dim1\_len/2 + 1) = 0.0}
+\DoxyCodeLine{155 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 \textcolor{keywordflow}{DO} i = 1, dim2\_len}
+\DoxyCodeLine{158     spec\_dim1\_deriv(:,i) = (dcmplx(0.0, dim1\_wavenums(:)))**(dble(order))}
+\DoxyCodeLine{159 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{160 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{spectral__dim1__derivative_8f_aa93769bcb07b29995849021164cfc2d6}\label{spectral__dim1__derivative_8f_aa93769bcb07b29995849021164cfc2d6}} 
+\index{spectral\_dim1\_derivative.f@{spectral\_dim1\_derivative.f}!serial@{serial}}
+\index{serial@{serial}!spectral\_dim1\_derivative.f@{spectral\_dim1\_derivative.f}}
+\doxysubsubsection{\texorpdfstring{serial()}{serial()}}
+{\footnotesize\ttfamily subroutine spectral\+\_\+dim1\+\_\+derivative\+\_\+ezp\+::serial (\begin{DoxyParamCaption}\item[{integer}]{dim1\+\_\+len,  }\item[{integer}]{dim2\+\_\+len,  }\item[{integer}]{overlap,  }\item[{double complex, dimension(\mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_acb4b6a591c5ad6fc207ef543dc74d1ae}{dim1\+\_\+len}}, \mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_adef80e51b1bb5916dd9410de399f1319}{dim2\+\_\+len}})}]{spec\+\_\+dim1\+\_\+deriv,  }\item[{integer}]{order }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{75 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{82 \& dim2\_len, \&}
+\DoxyCodeLine{83 \& overlap, \&}
+\DoxyCodeLine{84 \& order, \&}
+\DoxyCodeLine{85 \& i}
+\DoxyCodeLine{86 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim1\_len)} :: dim1\_wavenums}
+\DoxyCodeLine{87 \textcolor{keywordtype}{DOUBLE COMPLEX}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: spec\_dim1\_deriv}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{comment}{! Calculate dim1 wavenumbers.}}
+\DoxyCodeLine{90 dim1\_wavenums = 0.0}
+\DoxyCodeLine{91 dim1\_wavenums(2) = 1.0}
+\DoxyCodeLine{92 dim1\_wavenums(dim1\_len) = -\/1.0}
+\DoxyCodeLine{93 \textcolor{keywordflow}{DO} i = 1, dim1\_len/2 -\/ 1}
+\DoxyCodeLine{94   dim1\_wavenums(dim1\_len -\/ i) = dble(-\/i -\/ 1)}
+\DoxyCodeLine{95   dim1\_wavenums(i + 2) = dble(i + 1)}
+\DoxyCodeLine{96 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{97 \textcolor{comment}{! If dim1\_len even and order odd, we have to zero out highest wavenumber for}}
+\DoxyCodeLine{98 \textcolor{comment}{! derivative.}}
+\DoxyCodeLine{99 \textcolor{keywordflow}{IF} ((mod(dim1\_len, 2) .EQ. 0) .AND. (mod(order, 2) .EQ. 1)) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{100   dim1\_wavenums(dim1\_len/2 + 1) = 0.0}
+\DoxyCodeLine{101 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{keywordflow}{DO} i = 1, dim2\_len}
+\DoxyCodeLine{104   spec\_dim1\_deriv(:,i) = (dcmplx(0.0, dim1\_wavenums(:)))**(dble(order))}
+\DoxyCodeLine{105 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{106 }
+
+\end{DoxyCode}
+\mbox{\Hypertarget{spectral__dim1__derivative_8f_a002538a2b0327a6ad9959a8060270ce0}\label{spectral__dim1__derivative_8f_a002538a2b0327a6ad9959a8060270ce0}} 
+\index{spectral\_dim1\_derivative.f@{spectral\_dim1\_derivative.f}!spectral\_dim1\_derivative\_ezp@{spectral\_dim1\_derivative\_ezp}}
+\index{spectral\_dim1\_derivative\_ezp@{spectral\_dim1\_derivative\_ezp}!spectral\_dim1\_derivative.f@{spectral\_dim1\_derivative.f}}
+\doxysubsubsection{\texorpdfstring{spectral\_dim1\_derivative\_ezp()}{spectral\_dim1\_derivative\_ezp()}}
+{\footnotesize\ttfamily subroutine spectral\+\_\+dim1\+\_\+derivative\+\_\+ezp (\begin{DoxyParamCaption}\item[{integer}]{dim1\+\_\+len,  }\item[{integer}]{dim2\+\_\+len,  }\item[{integer}]{overlap,  }\item[{double complex, dimension(\mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_acb4b6a591c5ad6fc207ef543dc74d1ae}{dim1\+\_\+len}}, \mbox{\hyperlink{cfft2df__unit__test__MATLAB_8m_adef80e51b1bb5916dd9410de399f1319}{dim2\+\_\+len}})}]{spec\+\_\+dim1\+\_\+deriv,  }\item[{integer}]{order }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{24 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{31 \& dim2\_len, \&}
+\DoxyCodeLine{32 \& overlap, \&}
+\DoxyCodeLine{33 \& order, \&}
+\DoxyCodeLine{34 \& proc\_id, \&}
+\DoxyCodeLine{35 \& proc\_count, \&}
+\DoxyCodeLine{36 \& ierror}
+\DoxyCodeLine{37 \textcolor{keywordtype}{DOUBLE COMPLEX}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: spec\_dim1\_deriv}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{CALL }mpi\_comm\_rank(mpi\_comm\_world, proc\_id, ierror)}
+\DoxyCodeLine{40 \textcolor{keyword}{CALL }mpi\_comm\_size(mpi\_comm\_world, proc\_count, ierror)}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{comment}{! Check for errors in user input.}}
+\DoxyCodeLine{43 \textcolor{keyword}{CALL }\mbox{\hyperlink{cfft2db_8f_affb0dbcf8f28b8f5eace6c4d749168c7}{error\_handling}}(order, proc\_id)}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{comment}{! Run in serial if there is only one processor.}}
+\DoxyCodeLine{46 \textcolor{keywordflow}{IF} (proc\_count .EQ. 1) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{47   \textcolor{keyword}{CALL }\mbox{\hyperlink{cfft2db_8f_ab154587f08cd7f195f626481a7e73fa0}{serial}}(dim1\_len, dim2\_len, overlap, spec\_dim1\_deriv, order)}
+\DoxyCodeLine{48 \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{49   \textcolor{keyword}{CALL }\mbox{\hyperlink{cfft2db_8f_a029e5f37aade02d3db47f37ddec68f56}{parallel}}(dim1\_len, dim2\_len, overlap, spec\_dim1\_deriv, order)}
+\DoxyCodeLine{50 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{54 \textcolor{keyword}{CONTAINS}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{57 \textcolor{comment}{! SERIAL. Handles the execution if there is only one processor.}}
+\DoxyCodeLine{58 \textcolor{comment}{! (SAME AS PARALLEL)}}
+\DoxyCodeLine{59 \textcolor{comment}{!}}
+\DoxyCodeLine{60 \textcolor{comment}{! STRUCTURE: 1) Calculate the dim1 wavenumbers.}}
+\DoxyCodeLine{61 \textcolor{comment}{! 2) If dim1\_len even and order odd, zero out the dim1\_len/2 wavenumber.}}
+\DoxyCodeLine{62 \textcolor{comment}{! 3) Populate spec\_dim1\_deriv array with (sqrt(-\/1)*dim1 wavenumber)**order.}}
+\DoxyCodeLine{63 \textcolor{comment}{!}}
+\DoxyCodeLine{64 \textcolor{comment}{! VARIABLES: -\/ dim1\_len, dim2\_len: The shape of the sub-\/grid (INTEGER).}}
+\DoxyCodeLine{65 \textcolor{comment}{! -\/ overlap: The overlap required for the numerical scheme (INTEGER).}}
+\DoxyCodeLine{66 \textcolor{comment}{! -\/ spec\_dim1\_deriv: The array that will store the matrix used in calculating}}
+\DoxyCodeLine{67 \textcolor{comment}{! the derivative of the numerical solution along the first dimension of the}}
+\DoxyCodeLine{68 \textcolor{comment}{! grid (DOUBLE COMPLEX, DIMENSION(dim1\_len, dim2\_len)).}}
+\DoxyCodeLine{69 \textcolor{comment}{! -\/ order: The order of the derviate desired (INTEGER).}}
+\DoxyCodeLine{70 \textcolor{comment}{! -\/ i: Counting index used in DO loops (INTEGER).}}
+\DoxyCodeLine{71 \textcolor{comment}{! -\/ dim1\_wavenums: Array used to store the dim1 wavenumbers (DOUBLE PRECISION,}}
+\DoxyCodeLine{72 \textcolor{comment}{! DIMENSION(dim1\_len)).}}
+\DoxyCodeLine{73 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{74 \textcolor{keyword}{SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_ab154587f08cd7f195f626481a7e73fa0}{serial}}(dim1\_len, dim2\_len, overlap, spec\_dim1\_deriv, order)}
+\DoxyCodeLine{75 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{82 \& dim2\_len, \&}
+\DoxyCodeLine{83 \& overlap, \&}
+\DoxyCodeLine{84 \& order, \&}
+\DoxyCodeLine{85 \& i}
+\DoxyCodeLine{86 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim1\_len)} :: dim1\_wavenums}
+\DoxyCodeLine{87 \textcolor{keywordtype}{DOUBLE COMPLEX}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: spec\_dim1\_deriv}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{comment}{! Calculate dim1 wavenumbers.}}
+\DoxyCodeLine{90 dim1\_wavenums = 0.0}
+\DoxyCodeLine{91 dim1\_wavenums(2) = 1.0}
+\DoxyCodeLine{92 dim1\_wavenums(dim1\_len) = -\/1.0}
+\DoxyCodeLine{93 \textcolor{keywordflow}{DO} i = 1, dim1\_len/2 -\/ 1}
+\DoxyCodeLine{94   dim1\_wavenums(dim1\_len -\/ i) = dble(-\/i -\/ 1)}
+\DoxyCodeLine{95   dim1\_wavenums(i + 2) = dble(i + 1)}
+\DoxyCodeLine{96 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{97 \textcolor{comment}{! If dim1\_len even and order odd, we have to zero out highest wavenumber for}}
+\DoxyCodeLine{98 \textcolor{comment}{! derivative.}}
+\DoxyCodeLine{99 \textcolor{keywordflow}{IF} ((mod(dim1\_len, 2) .EQ. 0) .AND. (mod(order, 2) .EQ. 1)) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{100   dim1\_wavenums(dim1\_len/2 + 1) = 0.0}
+\DoxyCodeLine{101 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{keywordflow}{DO} i = 1, dim2\_len}
+\DoxyCodeLine{104   spec\_dim1\_deriv(:,i) = (dcmplx(0.0, dim1\_wavenums(:)))**(dble(order))}
+\DoxyCodeLine{105 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \textcolor{keyword}{END SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_ab154587f08cd7f195f626481a7e73fa0}{serial}}}
+\DoxyCodeLine{108 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{111 \textcolor{comment}{! PARALLEL. Handles the execution if there is more than one processor.}}
+\DoxyCodeLine{112 \textcolor{comment}{! (SAME AS SERIAL)}}
+\DoxyCodeLine{113 \textcolor{comment}{!}}
+\DoxyCodeLine{114 \textcolor{comment}{! STRUCTURE: 1) Calculate the dim1 wavenumbers.}}
+\DoxyCodeLine{115 \textcolor{comment}{! 2) If dim1\_len even and order odd, zero out the dim1\_len/2 wavenumber.}}
+\DoxyCodeLine{116 \textcolor{comment}{! 3) Populate spec\_dim1\_deriv array with (sqrt(-\/1)*dim1 wavenumber)**order.}}
+\DoxyCodeLine{117 \textcolor{comment}{!}}
+\DoxyCodeLine{118 \textcolor{comment}{! VARIABLES: -\/ dim1\_len, dim2\_len: The shape of the sub-\/grid (INTEGER).}}
+\DoxyCodeLine{119 \textcolor{comment}{! -\/ overlap: The overlap required for the numerical scheme (INTEGER).}}
+\DoxyCodeLine{120 \textcolor{comment}{! -\/ spec\_dim1\_deriv: The array that will store the matrix used in calculating}}
+\DoxyCodeLine{121 \textcolor{comment}{! the derivative of the numerical solution along the first dimension of the}}
+\DoxyCodeLine{122 \textcolor{comment}{! grid (DOUBLE COMPLEX, DIMENSION(dim1\_len, dim2\_len)).}}
+\DoxyCodeLine{123 \textcolor{comment}{! -\/ order: The order of the derviate desired (INTEGER).}}
+\DoxyCodeLine{124 \textcolor{comment}{! -\/ i: Counting index used in DO loops (INTEGER).}}
+\DoxyCodeLine{125 \textcolor{comment}{! -\/ dim1\_wavenums: Array used to store the dim1 wavenumbers (DOUBLE PRECISION,}}
+\DoxyCodeLine{126 \textcolor{comment}{! DIMENSION(dim1\_len)).}}
+\DoxyCodeLine{127 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{128 \textcolor{keyword}{SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_a029e5f37aade02d3db47f37ddec68f56}{parallel}}(dim1\_len, dim2\_len, overlap, spec\_dim1\_deriv, order)}
+\DoxyCodeLine{129 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keywordtype}{INTEGER} :: dim1\_len, \&}
+\DoxyCodeLine{136 \& dim2\_len, \&}
+\DoxyCodeLine{137 \& overlap, \&}
+\DoxyCodeLine{138 \& order, \&}
+\DoxyCodeLine{139 \& i}
+\DoxyCodeLine{140 \textcolor{keywordtype}{DOUBLE PRECISION}, \textcolor{keywordtype}{DIMENSION(dim1\_len)} :: dim1\_wavenums}
+\DoxyCodeLine{141 \textcolor{keywordtype}{DOUBLE COMPLEX}, \textcolor{keywordtype}{DIMENSION(dim1\_len, dim2\_len)} :: spec\_dim1\_deriv}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{comment}{! Calculate dim1 wavenumbers.}}
+\DoxyCodeLine{144 dim1\_wavenums = 0.0}
+\DoxyCodeLine{145 dim1\_wavenums(2) = 1.0}
+\DoxyCodeLine{146 dim1\_wavenums(dim1\_len) = -\/1.0}
+\DoxyCodeLine{147 \textcolor{keywordflow}{DO} i = 1, dim1\_len/2 -\/ 1}
+\DoxyCodeLine{148   dim1\_wavenums(dim1\_len -\/ i) = dble(-\/i -\/ 1)}
+\DoxyCodeLine{149   dim1\_wavenums(i + 2) = dble(i + 1)}
+\DoxyCodeLine{150 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{151 \textcolor{comment}{! If dim1\_len even and order odd, we have to zero out highest wavenumber for}}
+\DoxyCodeLine{152 \textcolor{comment}{! derivative.}}
+\DoxyCodeLine{153 \textcolor{keywordflow}{IF} ((mod(dim1\_len, 2) .EQ. 0) .AND. (mod(order, 2) .EQ. 1)) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{154   dim1\_wavenums(dim1\_len/2 + 1) = 0.0}
+\DoxyCodeLine{155 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 \textcolor{keywordflow}{DO} i = 1, dim2\_len}
+\DoxyCodeLine{158     spec\_dim1\_deriv(:,i) = (dcmplx(0.0, dim1\_wavenums(:)))**(dble(order))}
+\DoxyCodeLine{159 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{keyword}{END SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_a029e5f37aade02d3db47f37ddec68f56}{parallel}}}
+\DoxyCodeLine{162 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{165 \textcolor{comment}{! ERROR\_HANDLING. Checks for input error and other possible complications.}}
+\DoxyCodeLine{166 \textcolor{comment}{!}}
+\DoxyCodeLine{167 \textcolor{comment}{! ERRORS TO CHECK: -\/ order < 1.}}
+\DoxyCodeLine{168 \textcolor{comment}{!}}
+\DoxyCodeLine{169 \textcolor{comment}{! VARIABLES: -\/ order: The order of the derviate desired (INTEGER).}}
+\DoxyCodeLine{170 \textcolor{comment}{! -\/ proc\_id: Processor ID (INTEGER).}}
+\DoxyCodeLine{171 \textcolor{comment}{! -\/ proc\_err\_flag -\/ Flag is triggered if processor encounters an error}}
+\DoxyCodeLine{172 \textcolor{comment}{! (LOGICAL).}}
+\DoxyCodeLine{173 \textcolor{comment}{! -\/ global\_err\_flag -\/ Flag is triggered if any processor encouters an error}}
+\DoxyCodeLine{174 \textcolor{comment}{! (LOGICAL).}}
+\DoxyCodeLine{175 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{176 \textcolor{keyword}{SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_affb0dbcf8f28b8f5eace6c4d749168c7}{error\_handling}}(order, proc\_id)}
+\DoxyCodeLine{177 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183 \textcolor{keywordtype}{INTEGER} :: order, \&}
+\DoxyCodeLine{184 \& proc\_id, \&}
+\DoxyCodeLine{185 \& ierror}
+\DoxyCodeLine{186 \textcolor{keywordtype}{LOGICAL} :: proc\_err\_flag, \&}
+\DoxyCodeLine{187 \& global\_err\_flag}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 proc\_err\_flag = .false.}
+\DoxyCodeLine{192 global\_err\_flag = .false.}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 \textcolor{comment}{! order < 1.}}
+\DoxyCodeLine{195 \textcolor{keywordflow}{IF} (order .LT. 1) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{196   proc\_err\_flag = .true.}
+\DoxyCodeLine{197   print *, \textcolor{stringliteral}{'EZ\_PARALLEL: Issue with processor '}, proc\_id, \textcolor{stringliteral}{' in subroutine '}, \&}
+\DoxyCodeLine{198   \& \textcolor{stringliteral}{'call SPECTRAL\_DIM1\_DERIVATIVE\_DBLE\_CMPLX. order: '}, order, \textcolor{stringliteral}{' is less '}, \&}
+\DoxyCodeLine{199   \& \textcolor{stringliteral}{'than 1. Please increase the order.'}}
+\DoxyCodeLine{200 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 \textcolor{comment}{! STOP all processors if any encounter an error.}}
+\DoxyCodeLine{203 \textcolor{keyword}{CALL }mpi\_allreduce(proc\_err\_flag, global\_err\_flag, 1, mpi\_logical, mpi\_lor, \&}
+\DoxyCodeLine{204 \& mpi\_comm\_world, ierror)}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206 \textcolor{keywordflow}{IF} (global\_err\_flag) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{207   \textcolor{keyword}{CALL }mpi\_finalize(ierror)}
+\DoxyCodeLine{208   stop}
+\DoxyCodeLine{209 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \textcolor{keyword}{END SUBROUTINE }\mbox{\hyperlink{cfft2db_8f_affb0dbcf8f28b8f5eace6c4d749168c7}{error\_handling}}}
+\DoxyCodeLine{214 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{215 }
+
+\end{DoxyCode}

@@ -1,0 +1,62 @@
+\hypertarget{passf3_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/passf3.f File Reference}
+\label{passf3_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/passf3.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/passf3.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{passf3_8f_a42a7590c457cbfc57887497aada85636}{passf3}} (I\+DO, L1, CC, CH, W\+A1, W\+A2)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{passf3_8f_a42a7590c457cbfc57887497aada85636}\label{passf3_8f_a42a7590c457cbfc57887497aada85636}} 
+\index{passf3.f@{passf3.f}!passf3@{passf3}}
+\index{passf3@{passf3}!passf3.f@{passf3.f}}
+\doxysubsubsection{\texorpdfstring{passf3()}{passf3()}}
+{\footnotesize\ttfamily subroutine passf3 (\begin{DoxyParamCaption}\item[{}]{I\+DO,  }\item[{}]{L1,  }\item[{dimension(ido,3,l1)}]{CC,  }\item[{dimension(ido,l1,3)}]{CH,  }\item[{dimension(1)}]{W\+A1,  }\item[{dimension(1)}]{W\+A2 }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z) }
+\DoxyCodeLine{3       dimension       cc(ido,3,l1)           ,ch(ido,l1,3)           ,}
+\DoxyCodeLine{4      1                wa1(1)     ,wa2(1)}
+\DoxyCodeLine{5 \textcolor{comment}{C     *** TAUI IS -\/SQRT(3)/2 ***}}
+\DoxyCodeLine{6       \textcolor{keyword}{DATA} taur,taui /-\/0.5d0,-\/0.86602540378443864676d0/}
+\DoxyCodeLine{7       \textcolor{keywordflow}{IF} (ido .NE. 2) \textcolor{keywordflow}{GO TO} 102}
+\DoxyCodeLine{8       \textcolor{keywordflow}{DO} 101 k=1,l1}
+\DoxyCodeLine{9          tr2 = cc(1,2,k)+cc(1,3,k)}
+\DoxyCodeLine{10          cr2 = cc(1,1,k)+taur*tr2}
+\DoxyCodeLine{11          ch(1,k,1) = cc(1,1,k)+tr2}
+\DoxyCodeLine{12          ti2 = cc(2,2,k)+cc(2,3,k)}
+\DoxyCodeLine{13          ci2 = cc(2,1,k)+taur*ti2}
+\DoxyCodeLine{14          ch(2,k,1) = cc(2,1,k)+ti2}
+\DoxyCodeLine{15          cr3 = taui*(cc(1,2,k)-\/cc(1,3,k))}
+\DoxyCodeLine{16          ci3 = taui*(cc(2,2,k)-\/cc(2,3,k))}
+\DoxyCodeLine{17          ch(1,k,2) = cr2-\/ci3}
+\DoxyCodeLine{18          ch(1,k,3) = cr2+ci3}
+\DoxyCodeLine{19          ch(2,k,2) = ci2+cr3}
+\DoxyCodeLine{20          ch(2,k,3) = ci2-\/cr3}
+\DoxyCodeLine{21   101 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{22       \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{23   102 \textcolor{keywordflow}{DO} 104 k=1,l1}
+\DoxyCodeLine{24          \textcolor{keywordflow}{DO} 103 i=2,ido,2}
+\DoxyCodeLine{25             tr2 = cc(i-\/1,2,k)+cc(i-\/1,3,k)}
+\DoxyCodeLine{26             cr2 = cc(i-\/1,1,k)+taur*tr2}
+\DoxyCodeLine{27             ch(i-\/1,k,1) = cc(i-\/1,1,k)+tr2}
+\DoxyCodeLine{28             ti2 = cc(i,2,k)+cc(i,3,k)}
+\DoxyCodeLine{29             ci2 = cc(i,1,k)+taur*ti2}
+\DoxyCodeLine{30             ch(i,k,1) = cc(i,1,k)+ti2}
+\DoxyCodeLine{31             cr3 = taui*(cc(i-\/1,2,k)-\/cc(i-\/1,3,k))}
+\DoxyCodeLine{32             ci3 = taui*(cc(i,2,k)-\/cc(i,3,k))}
+\DoxyCodeLine{33             dr2 = cr2-\/ci3}
+\DoxyCodeLine{34             dr3 = cr2+ci3}
+\DoxyCodeLine{35             di2 = ci2+cr3}
+\DoxyCodeLine{36             di3 = ci2-\/cr3}
+\DoxyCodeLine{37             ch(i,k,2) = wa1(i-\/1)*di2-\/wa1(i)*dr2}
+\DoxyCodeLine{38             ch(i-\/1,k,2) = wa1(i-\/1)*dr2+wa1(i)*di2}
+\DoxyCodeLine{39             ch(i,k,3) = wa2(i-\/1)*di3-\/wa2(i)*dr3}
+\DoxyCodeLine{40             ch(i-\/1,k,3) = wa2(i-\/1)*dr3+wa2(i)*di3}
+\DoxyCodeLine{41   103    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{42   104 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{43       \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

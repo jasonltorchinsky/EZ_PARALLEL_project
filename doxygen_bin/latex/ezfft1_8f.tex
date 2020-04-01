@@ -1,0 +1,81 @@
+\hypertarget{ezfft1_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/ezfft1.f File Reference}
+\label{ezfft1_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/ezfft1.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/ezfft1.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{ezfft1_8f_a1b3765a31ba4a0dab0182d43cb09dc7d}{ezfft1}} (N, WA, I\+F\+AC)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{ezfft1_8f_a1b3765a31ba4a0dab0182d43cb09dc7d}\label{ezfft1_8f_a1b3765a31ba4a0dab0182d43cb09dc7d}} 
+\index{ezfft1.f@{ezfft1.f}!ezfft1@{ezfft1}}
+\index{ezfft1@{ezfft1}!ezfft1.f@{ezfft1.f}}
+\doxysubsubsection{\texorpdfstring{ezfft1()}{ezfft1()}}
+{\footnotesize\ttfamily subroutine ezfft1 (\begin{DoxyParamCaption}\item[{}]{N,  }\item[{dimension($\ast$)}]{WA,  }\item[{dimension($\ast$)}]{I\+F\+AC }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z)}
+\DoxyCodeLine{3       dimension       wa(*)      ,ifac(*)    ,ntryh(4)}
+\DoxyCodeLine{4       \textcolor{keyword}{DATA} ntryh(1),ntryh(2),ntryh(3),ntryh(4)/4,2,3,5/}
+\DoxyCodeLine{5      1    ,tpi/6.28318530717958647692d0/}
+\DoxyCodeLine{6       nl = n}
+\DoxyCodeLine{7       nf = 0}
+\DoxyCodeLine{8       j = 0}
+\DoxyCodeLine{9   101 j = j+1}
+\DoxyCodeLine{10       \textcolor{keywordflow}{IF} (j-\/4) 102,102,103}
+\DoxyCodeLine{11   102 ntry = ntryh(j)}
+\DoxyCodeLine{12       \textcolor{keywordflow}{GO TO} 104}
+\DoxyCodeLine{13   103 ntry = ntry+2}
+\DoxyCodeLine{14   104 nq = nl/ntry}
+\DoxyCodeLine{15       nr = nl-\/ntry*nq}
+\DoxyCodeLine{16       \textcolor{keywordflow}{IF} (nr) 101,105,101}
+\DoxyCodeLine{17   105 nf = nf+1}
+\DoxyCodeLine{18       ifac(nf+2) = ntry}
+\DoxyCodeLine{19       nl = nq}
+\DoxyCodeLine{20       \textcolor{keywordflow}{IF} (ntry .NE. 2) \textcolor{keywordflow}{GO TO} 107}
+\DoxyCodeLine{21       \textcolor{keywordflow}{IF} (nf .EQ. 1) \textcolor{keywordflow}{GO TO} 107}
+\DoxyCodeLine{22       \textcolor{keywordflow}{DO} 106 i=2,nf}
+\DoxyCodeLine{23          ib = nf-\/i+2}
+\DoxyCodeLine{24          ifac(ib+2) = ifac(ib+1)}
+\DoxyCodeLine{25   106 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{26       ifac(3) = 2}
+\DoxyCodeLine{27   107 \textcolor{keywordflow}{IF} (nl .NE. 1) \textcolor{keywordflow}{GO TO} 104}
+\DoxyCodeLine{28       ifac(1) = n}
+\DoxyCodeLine{29       ifac(2) = nf}
+\DoxyCodeLine{30       argh = tpi/float(n)}
+\DoxyCodeLine{31       is = 0}
+\DoxyCodeLine{32       nfm1 = nf-\/1}
+\DoxyCodeLine{33       l1 = 1}
+\DoxyCodeLine{34       \textcolor{keywordflow}{IF} (nfm1 .EQ. 0) \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{35       \textcolor{keywordflow}{DO} 111 k1=1,nfm1}
+\DoxyCodeLine{36          ip = ifac(k1+2)}
+\DoxyCodeLine{37          l2 = l1*ip}
+\DoxyCodeLine{38          ido = n/l2}
+\DoxyCodeLine{39          ipm = ip-\/1}
+\DoxyCodeLine{40          arg1 = float(l1)*argh}
+\DoxyCodeLine{41          ch1 = 1.0d0}
+\DoxyCodeLine{42          sh1 = 0.0d0}
+\DoxyCodeLine{43          dch1 = cos(arg1)}
+\DoxyCodeLine{44          dsh1 = sin(arg1)}
+\DoxyCodeLine{45          \textcolor{keywordflow}{DO} 110 j=1,ipm}
+\DoxyCodeLine{46             ch1h = dch1*ch1-\/dsh1*sh1}
+\DoxyCodeLine{47             sh1 = dch1*sh1+dsh1*ch1}
+\DoxyCodeLine{48             ch1 = ch1h}
+\DoxyCodeLine{49             i = is+2}
+\DoxyCodeLine{50             wa(i-\/1) = ch1}
+\DoxyCodeLine{51             wa(i) = sh1}
+\DoxyCodeLine{52             \textcolor{keywordflow}{IF} (ido .LT. 5) \textcolor{keywordflow}{GO TO} 109}
+\DoxyCodeLine{53             \textcolor{keywordflow}{DO} 108 ii=5,ido,2}
+\DoxyCodeLine{54                i = i+2}
+\DoxyCodeLine{55                wa(i-\/1) = ch1*wa(i-\/3)-\/sh1*wa(i-\/2)}
+\DoxyCodeLine{56                wa(i) = ch1*wa(i-\/2)+sh1*wa(i-\/3)}
+\DoxyCodeLine{57   108       \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{58   109       is = is+ido}
+\DoxyCodeLine{59   110    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{60          l1 = l2}
+\DoxyCodeLine{61   111 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{62       \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

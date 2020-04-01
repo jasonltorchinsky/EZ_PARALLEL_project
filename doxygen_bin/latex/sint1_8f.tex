@@ -1,0 +1,59 @@
+\hypertarget{sint1_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/sint1.f File Reference}
+\label{sint1_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/sint1.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/sint1.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{sint1_8f_a86b3db2c795fa66965cdf6ee45a7f3ff}{sint1}} (N, W\+AR, W\+AS, XH, X, I\+F\+AC)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{sint1_8f_a86b3db2c795fa66965cdf6ee45a7f3ff}\label{sint1_8f_a86b3db2c795fa66965cdf6ee45a7f3ff}} 
+\index{sint1.f@{sint1.f}!sint1@{sint1}}
+\index{sint1@{sint1}!sint1.f@{sint1.f}}
+\doxysubsubsection{\texorpdfstring{sint1()}{sint1()}}
+{\footnotesize\ttfamily subroutine sint1 (\begin{DoxyParamCaption}\item[{}]{N,  }\item[{dimension($\ast$)}]{W\+AR,  }\item[{dimension($\ast$)}]{W\+AS,  }\item[{dimension($\ast$)}]{XH,  }\item[{dimension($\ast$)}]{X,  }\item[{dimension($\ast$)}]{I\+F\+AC }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z)}
+\DoxyCodeLine{3       dimension war(*),was(*),x(*),xh(*),ifac(*)}
+\DoxyCodeLine{4       \textcolor{keyword}{DATA} sqrt3 /1.73205080756887729352d0/}
+\DoxyCodeLine{5       \textcolor{keywordflow}{DO} 100 i=1,n}
+\DoxyCodeLine{6       xh(i) = war(i)}
+\DoxyCodeLine{7       war(i) = x(i)}
+\DoxyCodeLine{8   100 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{9       \textcolor{keywordflow}{IF} (n-\/2) 101,102,103}
+\DoxyCodeLine{10   101 xh(1) = xh(1)+xh(1)}
+\DoxyCodeLine{11       \textcolor{keywordflow}{GO TO} 106}
+\DoxyCodeLine{12   102 xhold = sqrt3*(xh(1)+xh(2))}
+\DoxyCodeLine{13       xh(2) = sqrt3*(xh(1)-\/xh(2))}
+\DoxyCodeLine{14       xh(1) = xhold}
+\DoxyCodeLine{15       \textcolor{keywordflow}{GO TO} 106}
+\DoxyCodeLine{16   103 np1 = n+1}
+\DoxyCodeLine{17       ns2 = n/2}
+\DoxyCodeLine{18       x(1) = 0.0d0}
+\DoxyCodeLine{19       \textcolor{keywordflow}{DO} 104 k=1,ns2}
+\DoxyCodeLine{20          kc = np1-\/k}
+\DoxyCodeLine{21          t1 = xh(k)-\/xh(kc)}
+\DoxyCodeLine{22          t2 = was(k)*(xh(k)+xh(kc))}
+\DoxyCodeLine{23          x(k+1) = t1+t2}
+\DoxyCodeLine{24          x(kc+1) = t2-\/t1}
+\DoxyCodeLine{25   104 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{26       modn = mod(n,2)}
+\DoxyCodeLine{27       \textcolor{keywordflow}{IF} (modn .NE. 0) x(ns2+2) = 4.0d0*xh(ns2+1)}
+\DoxyCodeLine{28       \textcolor{keyword}{CALL }\mbox{\hyperlink{rfftf1_8f_acdf9efa42dc73f90af444ee0da649a09}{rfftf1}} (np1,x,xh,war,ifac)}
+\DoxyCodeLine{29       xh(1) = 0.5d0*x(1)}
+\DoxyCodeLine{30       \textcolor{keywordflow}{DO} 105 i=3,n,2}
+\DoxyCodeLine{31          xh(i-\/1) = -\/x(i)}
+\DoxyCodeLine{32          xh(i) = xh(i-\/2)+x(i-\/1)}
+\DoxyCodeLine{33   105 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{34       \textcolor{keywordflow}{IF} (modn .NE. 0) \textcolor{keywordflow}{GO TO} 106}
+\DoxyCodeLine{35       xh(n) = -\/x(n+1)}
+\DoxyCodeLine{36   106 \textcolor{keywordflow}{DO} 107 i=1,n}
+\DoxyCodeLine{37       x(i) = war(i)}
+\DoxyCodeLine{38       war(i) = xh(i)}
+\DoxyCodeLine{39   107 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{40       \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

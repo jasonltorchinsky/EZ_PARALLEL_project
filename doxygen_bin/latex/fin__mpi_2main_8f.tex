@@ -1,0 +1,47 @@
+\hypertarget{fin__mpi_2main_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/unit\+\_\+tests/fin\+\_\+mpi/main.f File Reference}
+\label{fin__mpi_2main_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/fin\_mpi/main.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/fin\_mpi/main.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+program \mbox{\hyperlink{fin__mpi_2main_8f_adc238d5e15465cc62d78ae9120b49326}{fin\+\_\+mpi\+\_\+unit\+\_\+test}}
+\item 
+subroutine \mbox{\hyperlink{fin__mpi_2main_8f_aa76f038d69ce18583c7aaa6fcf7040f7}{main}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{fin__mpi_2main_8f_adc238d5e15465cc62d78ae9120b49326}\label{fin__mpi_2main_8f_adc238d5e15465cc62d78ae9120b49326}} 
+\index{main.f@{main.f}!fin\_mpi\_unit\_test@{fin\_mpi\_unit\_test}}
+\index{fin\_mpi\_unit\_test@{fin\_mpi\_unit\_test}!main.f@{main.f}}
+\doxysubsubsection{\texorpdfstring{fin\_mpi\_unit\_test()}{fin\_mpi\_unit\_test()}}
+{\footnotesize\ttfamily program fin\+\_\+mpi\+\_\+unit\+\_\+test}
+
+\mbox{\Hypertarget{fin__mpi_2main_8f_aa76f038d69ce18583c7aaa6fcf7040f7}\label{fin__mpi_2main_8f_aa76f038d69ce18583c7aaa6fcf7040f7}} 
+\index{main.f@{main.f}!main@{main}}
+\index{main@{main}!main.f@{main.f}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily subroutine fin\+\_\+mpi\+\_\+unit\+\_\+test\+::main}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{36 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keywordtype}{INTEGER(qb)} :: proc\_id, \&}
+\DoxyCodeLine{43 \& ierror, \&}
+\DoxyCodeLine{44 \& i}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{CALL }\mbox{\hyperlink{init__mpi_8f_a9f981f068ebbfa17378e60c81aeb0056}{init\_mpi\_ezp}}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{CALL }\mbox{\hyperlink{fin__mpi_8f_ad9592fceaa187ad8c5d3e5ec6844d22f}{fin\_mpi\_ezp}}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{comment}{! This line will prompt an error.}}
+\DoxyCodeLine{51 \textcolor{keyword}{CALL }mpi\_comm\_rank(mpi\_comm\_world, proc\_id, ierror)}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{54 }
+
+\end{DoxyCode}

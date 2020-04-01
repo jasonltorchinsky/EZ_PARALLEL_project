@@ -1,0 +1,76 @@
+\hypertarget{radb4_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/radb4.f File Reference}
+\label{radb4_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/radb4.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/radb4.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{radb4_8f_a3b5aab129020968eaf92f2e6ca0785ef}{radb4}} (I\+DO, L1, CC, CH, W\+A1, W\+A2, W\+A3)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{radb4_8f_a3b5aab129020968eaf92f2e6ca0785ef}\label{radb4_8f_a3b5aab129020968eaf92f2e6ca0785ef}} 
+\index{radb4.f@{radb4.f}!radb4@{radb4}}
+\index{radb4@{radb4}!radb4.f@{radb4.f}}
+\doxysubsubsection{\texorpdfstring{radb4()}{radb4()}}
+{\footnotesize\ttfamily subroutine radb4 (\begin{DoxyParamCaption}\item[{}]{I\+DO,  }\item[{}]{L1,  }\item[{dimension(ido,4,l1)}]{CC,  }\item[{dimension(ido,l1,4)}]{CH,  }\item[{dimension(1)}]{W\+A1,  }\item[{dimension(1)}]{W\+A2,  }\item[{dimension(1)}]{W\+A3 }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z)}
+\DoxyCodeLine{3       dimension       cc(ido,4,l1)           ,ch(ido,l1,4)           ,}
+\DoxyCodeLine{4      1                wa1(1)     ,wa2(1)     ,wa3(1)}
+\DoxyCodeLine{5       \textcolor{keyword}{DATA} sqrt2 /1.41421356237309504880d0/}
+\DoxyCodeLine{6       \textcolor{keywordflow}{DO} 101 k=1,l1}
+\DoxyCodeLine{7          tr1 = cc(1,1,k)-\/cc(ido,4,k)}
+\DoxyCodeLine{8          tr2 = cc(1,1,k)+cc(ido,4,k)}
+\DoxyCodeLine{9          tr3 = cc(ido,2,k)+cc(ido,2,k)}
+\DoxyCodeLine{10          tr4 = cc(1,3,k)+cc(1,3,k)}
+\DoxyCodeLine{11          ch(1,k,1) = tr2+tr3}
+\DoxyCodeLine{12          ch(1,k,2) = tr1-\/tr4}
+\DoxyCodeLine{13          ch(1,k,3) = tr2-\/tr3}
+\DoxyCodeLine{14          ch(1,k,4) = tr1+tr4}
+\DoxyCodeLine{15   101 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{16       \textcolor{keywordflow}{IF} (ido-\/2) 107,105,102}
+\DoxyCodeLine{17   102 idp2 = ido+2}
+\DoxyCodeLine{18       \textcolor{keywordflow}{DO} 104 k=1,l1}
+\DoxyCodeLine{19          \textcolor{keywordflow}{DO} 103 i=3,ido,2}
+\DoxyCodeLine{20             ic = idp2-\/i}
+\DoxyCodeLine{21             ti1 = cc(i,1,k)+cc(ic,4,k)}
+\DoxyCodeLine{22             ti2 = cc(i,1,k)-\/cc(ic,4,k)}
+\DoxyCodeLine{23             ti3 = cc(i,3,k)-\/cc(ic,2,k)}
+\DoxyCodeLine{24             tr4 = cc(i,3,k)+cc(ic,2,k)}
+\DoxyCodeLine{25             tr1 = cc(i-\/1,1,k)-\/cc(ic-\/1,4,k)}
+\DoxyCodeLine{26             tr2 = cc(i-\/1,1,k)+cc(ic-\/1,4,k)}
+\DoxyCodeLine{27             ti4 = cc(i-\/1,3,k)-\/cc(ic-\/1,2,k)}
+\DoxyCodeLine{28             tr3 = cc(i-\/1,3,k)+cc(ic-\/1,2,k)}
+\DoxyCodeLine{29             ch(i-\/1,k,1) = tr2+tr3}
+\DoxyCodeLine{30             cr3 = tr2-\/tr3}
+\DoxyCodeLine{31             ch(i,k,1) = ti2+ti3}
+\DoxyCodeLine{32             ci3 = ti2-\/ti3}
+\DoxyCodeLine{33             cr2 = tr1-\/tr4}
+\DoxyCodeLine{34             cr4 = tr1+tr4}
+\DoxyCodeLine{35             ci2 = ti1+ti4}
+\DoxyCodeLine{36             ci4 = ti1-\/ti4}
+\DoxyCodeLine{37             ch(i-\/1,k,2) = wa1(i-\/2)*cr2-\/wa1(i-\/1)*ci2}
+\DoxyCodeLine{38             ch(i,k,2) = wa1(i-\/2)*ci2+wa1(i-\/1)*cr2}
+\DoxyCodeLine{39             ch(i-\/1,k,3) = wa2(i-\/2)*cr3-\/wa2(i-\/1)*ci3}
+\DoxyCodeLine{40             ch(i,k,3) = wa2(i-\/2)*ci3+wa2(i-\/1)*cr3}
+\DoxyCodeLine{41             ch(i-\/1,k,4) = wa3(i-\/2)*cr4-\/wa3(i-\/1)*ci4}
+\DoxyCodeLine{42             ch(i,k,4) = wa3(i-\/2)*ci4+wa3(i-\/1)*cr4}
+\DoxyCodeLine{43   103    \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{44   104 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{45       \textcolor{keywordflow}{IF} (mod(ido,2) .EQ. 1) \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{46   105 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{47       \textcolor{keywordflow}{DO} 106 k=1,l1}
+\DoxyCodeLine{48          ti1 = cc(1,2,k)+cc(1,4,k)}
+\DoxyCodeLine{49          ti2 = cc(1,4,k)-\/cc(1,2,k)}
+\DoxyCodeLine{50          tr1 = cc(ido,1,k)-\/cc(ido,3,k)}
+\DoxyCodeLine{51          tr2 = cc(ido,1,k)+cc(ido,3,k)}
+\DoxyCodeLine{52          ch(ido,k,1) = tr2+tr2}
+\DoxyCodeLine{53          ch(ido,k,2) = sqrt2*(tr1-\/ti1)}
+\DoxyCodeLine{54          ch(ido,k,3) = ti2+ti2}
+\DoxyCodeLine{55          ch(ido,k,4) = -\/sqrt2*(tr1+ti1)}
+\DoxyCodeLine{56   106 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{57   107 \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

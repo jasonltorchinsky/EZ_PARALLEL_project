@@ -1,0 +1,61 @@
+\hypertarget{dcost_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/dcost.f File Reference}
+\label{dcost_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/dcost.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/dcost.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{dcost_8f_aa08ecb67a65fdca81ee9674b15746766}{dcost}} (N, X, W\+S\+A\+VE)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{dcost_8f_aa08ecb67a65fdca81ee9674b15746766}\label{dcost_8f_aa08ecb67a65fdca81ee9674b15746766}} 
+\index{dcost.f@{dcost.f}!dcost@{dcost}}
+\index{dcost@{dcost}!dcost.f@{dcost.f}}
+\doxysubsubsection{\texorpdfstring{dcost()}{dcost()}}
+{\footnotesize\ttfamily subroutine dcost (\begin{DoxyParamCaption}\item[{}]{N,  }\item[{dimension($\ast$)}]{X,  }\item[{dimension($\ast$)}]{W\+S\+A\+VE }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z)}
+\DoxyCodeLine{3       dimension       x(*)       ,wsave(*)}
+\DoxyCodeLine{4       nm1 = n-\/1}
+\DoxyCodeLine{5       np1 = n+1}
+\DoxyCodeLine{6       ns2 = n/2}
+\DoxyCodeLine{7       \textcolor{keywordflow}{IF} (n-\/2) 106,101,102}
+\DoxyCodeLine{8   101 x1h = x(1)+x(2)}
+\DoxyCodeLine{9       x(2) = x(1)-\/x(2)}
+\DoxyCodeLine{10       x(1) = x1h}
+\DoxyCodeLine{11       \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{12   102 \textcolor{keywordflow}{IF} (n .GT. 3) \textcolor{keywordflow}{GO TO} 103}
+\DoxyCodeLine{13       x1p3 = x(1)+x(3)}
+\DoxyCodeLine{14       tx2 = x(2)+x(2)}
+\DoxyCodeLine{15       x(2) = x(1)-\/x(3)}
+\DoxyCodeLine{16       x(1) = x1p3+tx2}
+\DoxyCodeLine{17       x(3) = x1p3-\/tx2}
+\DoxyCodeLine{18       \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{19   103 c1 = x(1)-\/x(n)}
+\DoxyCodeLine{20       x(1) = x(1)+x(n)}
+\DoxyCodeLine{21       \textcolor{keywordflow}{DO} 104 k=2,ns2}
+\DoxyCodeLine{22          kc = np1-\/k}
+\DoxyCodeLine{23          t1 = x(k)+x(kc)}
+\DoxyCodeLine{24          t2 = x(k)-\/x(kc)}
+\DoxyCodeLine{25          c1 = c1+wsave(kc)*t2}
+\DoxyCodeLine{26          t2 = wsave(k)*t2}
+\DoxyCodeLine{27          x(k) = t1-\/t2}
+\DoxyCodeLine{28          x(kc) = t1+t2}
+\DoxyCodeLine{29   104 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{30       modn = mod(n,2)}
+\DoxyCodeLine{31       \textcolor{keywordflow}{IF} (modn .NE. 0) x(ns2+1) = x(ns2+1)+x(ns2+1)}
+\DoxyCodeLine{32       \textcolor{keyword}{CALL }\mbox{\hyperlink{dfftf_8f_aaf347957b1cdc55c98f29b4daa9dae2d}{dfftf}} (nm1,x,wsave(n+1))}
+\DoxyCodeLine{33       xim2 = x(2)}
+\DoxyCodeLine{34       x(2) = c1}
+\DoxyCodeLine{35       \textcolor{keywordflow}{DO} 105 i=4,n,2}
+\DoxyCodeLine{36          xi = x(i)}
+\DoxyCodeLine{37          x(i) = x(i-\/2)-\/x(i-\/1)}
+\DoxyCodeLine{38          x(i-\/1) = xim2}
+\DoxyCodeLine{39          xim2 = xi}
+\DoxyCodeLine{40   105 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{41       \textcolor{keywordflow}{IF} (modn .NE. 0) x(n) = xim2}
+\DoxyCodeLine{42   106 \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

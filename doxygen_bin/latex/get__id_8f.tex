@@ -1,0 +1,30 @@
+\hypertarget{get__id_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/get\+\_\+id.f File Reference}
+\label{get__id_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/get\_id.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/get\_id.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{get__id_8f_a091a155bf3e810603ef253fa4be15bb2}{get\+\_\+id\+\_\+ezp}} (proc\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{get__id_8f_a091a155bf3e810603ef253fa4be15bb2}\label{get__id_8f_a091a155bf3e810603ef253fa4be15bb2}} 
+\index{get\_id.f@{get\_id.f}!get\_id\_ezp@{get\_id\_ezp}}
+\index{get\_id\_ezp@{get\_id\_ezp}!get\_id.f@{get\_id.f}}
+\doxysubsubsection{\texorpdfstring{get\_id\_ezp()}{get\_id\_ezp()}}
+{\footnotesize\ttfamily subroutine get\+\_\+id\+\_\+ezp (\begin{DoxyParamCaption}\item[{integer}]{proc\+\_\+id }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{15 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keywordtype}{INTEGER} :: proc\_id, ierror}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{CALL }mpi\_comm\_rank(mpi\_comm\_world, proc\_id, ierror)}
+\DoxyCodeLine{24 }
+
+\end{DoxyCode}

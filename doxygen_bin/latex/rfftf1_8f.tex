@@ -1,0 +1,78 @@
+\hypertarget{rfftf1_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\+D\+F\+F\+T\+P\+A\+C\+K/rfftf1.f File Reference}
+\label{rfftf1_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/rfftf1.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/DFFTPACK/rfftf1.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{rfftf1_8f_acdf9efa42dc73f90af444ee0da649a09}{rfftf1}} (N, C, CH, WA, I\+F\+AC)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{rfftf1_8f_acdf9efa42dc73f90af444ee0da649a09}\label{rfftf1_8f_acdf9efa42dc73f90af444ee0da649a09}} 
+\index{rfftf1.f@{rfftf1.f}!rfftf1@{rfftf1}}
+\index{rfftf1@{rfftf1}!rfftf1.f@{rfftf1.f}}
+\doxysubsubsection{\texorpdfstring{rfftf1()}{rfftf1()}}
+{\footnotesize\ttfamily subroutine rfftf1 (\begin{DoxyParamCaption}\item[{}]{N,  }\item[{dimension($\ast$)}]{C,  }\item[{dimension($\ast$)}]{CH,  }\item[{dimension($\ast$)}]{WA,  }\item[{dimension($\ast$)}]{I\+F\+AC }\end{DoxyParamCaption})}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{2       \textcolor{keywordtype}{IMPLICIT DOUBLE PRECISION} (a-\/h,o-\/z)}
+\DoxyCodeLine{3       dimension       ch(*)      ,c(*)       ,wa(*)      ,ifac(*)}
+\DoxyCodeLine{4       nf = ifac(2)}
+\DoxyCodeLine{5       na = 1}
+\DoxyCodeLine{6       l2 = n}
+\DoxyCodeLine{7       iw = n}
+\DoxyCodeLine{8       \textcolor{keywordflow}{DO} 111 k1=1,nf}
+\DoxyCodeLine{9          kh = nf-\/k1}
+\DoxyCodeLine{10          ip = ifac(kh+3)}
+\DoxyCodeLine{11          l1 = l2/ip}
+\DoxyCodeLine{12          ido = n/l2}
+\DoxyCodeLine{13          idl1 = ido*l1}
+\DoxyCodeLine{14          iw = iw-\/(ip-\/1)*ido}
+\DoxyCodeLine{15          na = 1-\/na}
+\DoxyCodeLine{16          \textcolor{keywordflow}{IF} (ip .NE. 4) \textcolor{keywordflow}{GO TO} 102}
+\DoxyCodeLine{17          ix2 = iw+ido}
+\DoxyCodeLine{18          ix3 = ix2+ido}
+\DoxyCodeLine{19          \textcolor{keywordflow}{IF} (na .NE. 0) \textcolor{keywordflow}{GO TO} 101}
+\DoxyCodeLine{20          \textcolor{keyword}{CALL }\mbox{\hyperlink{radf4_8f_ae9910ca606fd0cdb03b5b3b98533f486}{radf4}} (ido,l1,c,ch,wa(iw),wa(ix2),wa(ix3))}
+\DoxyCodeLine{21          \textcolor{keywordflow}{GO TO} 110}
+\DoxyCodeLine{22   101    \textcolor{keyword}{CALL }\mbox{\hyperlink{radf4_8f_ae9910ca606fd0cdb03b5b3b98533f486}{radf4}} (ido,l1,ch,c,wa(iw),wa(ix2),wa(ix3))}
+\DoxyCodeLine{23          \textcolor{keywordflow}{GO TO} 110}
+\DoxyCodeLine{24   102    \textcolor{keywordflow}{IF} (ip .NE. 2) \textcolor{keywordflow}{GO TO} 104}
+\DoxyCodeLine{25          \textcolor{keywordflow}{IF} (na .NE. 0) \textcolor{keywordflow}{GO TO} 103}
+\DoxyCodeLine{26          \textcolor{keyword}{CALL }\mbox{\hyperlink{radf2_8f_a70e2420dd5bee9e41eb6c15bbad5eef6}{radf2}} (ido,l1,c,ch,wa(iw))}
+\DoxyCodeLine{27          \textcolor{keywordflow}{GO TO} 110}
+\DoxyCodeLine{28   103    \textcolor{keyword}{CALL }\mbox{\hyperlink{radf2_8f_a70e2420dd5bee9e41eb6c15bbad5eef6}{radf2}} (ido,l1,ch,c,wa(iw))}
+\DoxyCodeLine{29          \textcolor{keywordflow}{GO TO} 110}
+\DoxyCodeLine{30   104    \textcolor{keywordflow}{IF} (ip .NE. 3) \textcolor{keywordflow}{GO TO} 106}
+\DoxyCodeLine{31          ix2 = iw+ido}
+\DoxyCodeLine{32          \textcolor{keywordflow}{IF} (na .NE. 0) \textcolor{keywordflow}{GO TO} 105}
+\DoxyCodeLine{33          \textcolor{keyword}{CALL }\mbox{\hyperlink{radf3_8f_a51374398f8edd5701987ce483c739592}{radf3}} (ido,l1,c,ch,wa(iw),wa(ix2))}
+\DoxyCodeLine{34          \textcolor{keywordflow}{GO TO} 110}
+\DoxyCodeLine{35   105    \textcolor{keyword}{CALL }\mbox{\hyperlink{radf3_8f_a51374398f8edd5701987ce483c739592}{radf3}} (ido,l1,ch,c,wa(iw),wa(ix2))}
+\DoxyCodeLine{36          \textcolor{keywordflow}{GO TO} 110}
+\DoxyCodeLine{37   106    \textcolor{keywordflow}{IF} (ip .NE. 5) \textcolor{keywordflow}{GO TO} 108}
+\DoxyCodeLine{38          ix2 = iw+ido}
+\DoxyCodeLine{39          ix3 = ix2+ido}
+\DoxyCodeLine{40          ix4 = ix3+ido}
+\DoxyCodeLine{41          \textcolor{keywordflow}{IF} (na .NE. 0) \textcolor{keywordflow}{GO TO} 107}
+\DoxyCodeLine{42          \textcolor{keyword}{CALL }\mbox{\hyperlink{radf5_8f_a6d852c36924b038f77a24b8e22205add}{radf5}} (ido,l1,c,ch,wa(iw),wa(ix2),wa(ix3),wa(ix4))}
+\DoxyCodeLine{43          \textcolor{keywordflow}{GO TO} 110}
+\DoxyCodeLine{44   107    \textcolor{keyword}{CALL }\mbox{\hyperlink{radf5_8f_a6d852c36924b038f77a24b8e22205add}{radf5}} (ido,l1,ch,c,wa(iw),wa(ix2),wa(ix3),wa(ix4))}
+\DoxyCodeLine{45          \textcolor{keywordflow}{GO TO} 110}
+\DoxyCodeLine{46   108    \textcolor{keywordflow}{IF} (ido .EQ. 1) na = 1-\/na}
+\DoxyCodeLine{47          \textcolor{keywordflow}{IF} (na .NE. 0) \textcolor{keywordflow}{GO TO} 109}
+\DoxyCodeLine{48          \textcolor{keyword}{CALL }\mbox{\hyperlink{radfg_8f_ad5dbca6bb6ee7c0a86a1e140627de1b2}{radfg}} (ido,ip,l1,idl1,c,c,c,ch,ch,wa(iw))}
+\DoxyCodeLine{49          na = 1}
+\DoxyCodeLine{50          \textcolor{keywordflow}{GO TO} 110}
+\DoxyCodeLine{51   109    \textcolor{keyword}{CALL }\mbox{\hyperlink{radfg_8f_ad5dbca6bb6ee7c0a86a1e140627de1b2}{radfg}} (ido,ip,l1,idl1,ch,ch,ch,c,c,wa(iw))}
+\DoxyCodeLine{52          na = 0}
+\DoxyCodeLine{53   110    l2 = l1}
+\DoxyCodeLine{54   111 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{55       \textcolor{keywordflow}{IF} (na .EQ. 1) \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{56       \textcolor{keywordflow}{DO} 112 i=1,n}
+\DoxyCodeLine{57          c(i) = ch(i)}
+\DoxyCodeLine{58   112 \textcolor{keywordflow}{CONTINUE}}
+\DoxyCodeLine{59       \textcolor{keywordflow}{RETURN}}
+
+\end{DoxyCode}

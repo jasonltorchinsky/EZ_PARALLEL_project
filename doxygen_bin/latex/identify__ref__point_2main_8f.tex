@@ -1,0 +1,95 @@
+\hypertarget{identify__ref__point_2main_8f}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/unit\+\_\+tests/identify\+\_\+ref\+\_\+point/main.f File Reference}
+\label{identify__ref__point_2main_8f}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/identify\_ref\_point/main.f@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/unit\_tests/identify\_ref\_point/main.f}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+program \mbox{\hyperlink{identify__ref__point_2main_8f_a1a505adc15357813e60af5dc4cce0b3a}{identify\+\_\+ref\+\_\+point\+\_\+unit\+\_\+test}}
+\item 
+subroutine \mbox{\hyperlink{identify__ref__point_2main_8f_a2eb306b1fc012a09e604c403a0df0477}{main}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{identify__ref__point_2main_8f_a1a505adc15357813e60af5dc4cce0b3a}\label{identify__ref__point_2main_8f_a1a505adc15357813e60af5dc4cce0b3a}} 
+\index{main.f@{main.f}!identify\_ref\_point\_unit\_test@{identify\_ref\_point\_unit\_test}}
+\index{identify\_ref\_point\_unit\_test@{identify\_ref\_point\_unit\_test}!main.f@{main.f}}
+\doxysubsubsection{\texorpdfstring{identify\_ref\_point\_unit\_test()}{identify\_ref\_point\_unit\_test()}}
+{\footnotesize\ttfamily program identify\+\_\+ref\+\_\+point\+\_\+unit\+\_\+test}
+
+\mbox{\Hypertarget{identify__ref__point_2main_8f_a2eb306b1fc012a09e604c403a0df0477}\label{identify__ref__point_2main_8f_a2eb306b1fc012a09e604c403a0df0477}} 
+\index{main.f@{main.f}!main@{main}}
+\index{main@{main}!main.f@{main.f}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily subroutine identify\+\_\+ref\+\_\+point\+\_\+unit\+\_\+test\+::main}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{36 \textcolor{comment}{!\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~\string~}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keywordtype}{USE }mpi}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keywordtype}{IMPLICIT NONE}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keywordtype}{INTEGER(qb)} :: dim1\_len, \&}
+\DoxyCodeLine{43 \& dim2\_len, \&}
+\DoxyCodeLine{44 \& overlap, \&}
+\DoxyCodeLine{45 \& i, \&}
+\DoxyCodeLine{46 \& proc\_id, \&}
+\DoxyCodeLine{47 \& proc\_count, \&}
+\DoxyCodeLine{48 \& ierror}
+\DoxyCodeLine{49 \textcolor{keywordtype}{REAL(dp)} :: dim1\_ref, \&}
+\DoxyCodeLine{50 \& dim2\_ref, \&}
+\DoxyCodeLine{51 \& dim1\_spc, \&}
+\DoxyCodeLine{52 \& dim2\_spc}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 namelist /test\_params/ dim1\_len, dim2\_len, overlap, dim1\_ref, dim2\_ref, \&}
+\DoxyCodeLine{55 \& dim1\_spc, dim2\_spc}
+\DoxyCodeLine{56 \textcolor{keyword}{OPEN}(1000, file = \textcolor{stringliteral}{'NAMELIST'})}
+\DoxyCodeLine{57 \textcolor{keyword}{READ}(1000, nml = test\_params)}
+\DoxyCodeLine{58 \textcolor{keyword}{CLOSE}(1000)}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{CALL }\mbox{\hyperlink{init__mpi_8f_a9f981f068ebbfa17378e60c81aeb0056}{init\_mpi\_ezp}}}
+\DoxyCodeLine{62 \textcolor{keyword}{CALL }\mbox{\hyperlink{get__id_8f_a091a155bf3e810603ef253fa4be15bb2}{get\_id\_ezp}}(proc\_id)}
+\DoxyCodeLine{63 \textcolor{keyword}{CALL }mpi\_comm\_size(mpi\_comm\_world, proc\_count, ierror)}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{comment}{! Output dimensions of grid using processor 0.}}
+\DoxyCodeLine{66 \textcolor{keywordflow}{IF} (proc\_id .EQ. 0\_qb) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{67   print *, \textcolor{stringliteral}{'dim1\_len\_total: '}, dim1\_len, \textcolor{stringliteral}{' dim2\_len\_total: '}, dim2\_len, \&}
+\DoxyCodeLine{68   \& \textcolor{stringliteral}{' overlap: '}, overlap}
+\DoxyCodeLine{69   print *, \textcolor{stringliteral}{'dim1\_ref: '}, dim1\_ref, \textcolor{stringliteral}{' dim2\_ref: '}, dim2\_ref, \textcolor{stringliteral}{' dim1\_spc: '}, \&}
+\DoxyCodeLine{70   \& dim1\_spc, \textcolor{stringliteral}{' dim2\_spc: '}, dim2\_spc}
+\DoxyCodeLine{71 \textcolor{keywordflow}{END IF}}
+\DoxyCodeLine{72 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{comment}{! Decompose the grid and identify the reference point.}}
+\DoxyCodeLine{75 \textcolor{keyword}{CALL }\mbox{\hyperlink{decomp__grid_8f_a3d23c951820c059e318e5c68e781e165}{decomp\_grid\_ezp}}(dim2\_len, overlap)}
+\DoxyCodeLine{76 \textcolor{comment}{! Each processor prints out its dim2\_len.}}
+\DoxyCodeLine{77 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{78   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{79     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' dim2\_len: '}, dim2\_len}
+\DoxyCodeLine{80     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{81   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{82     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{83 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{84 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{85 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{keyword}{CALL }\mbox{\hyperlink{identify__ref__point_8f_ac016bc84d13cb001edb3210843abc4c2}{identify\_ref\_point\_ezp}}(dim2\_len, dim2\_ref, dim2\_spc, overlap)}
+\DoxyCodeLine{88 \textcolor{comment}{! Each processor prints out its reference point.}}
+\DoxyCodeLine{89 \textcolor{keywordflow}{DO} i = 0, proc\_count-\/1}
+\DoxyCodeLine{90   \textcolor{keywordflow}{IF} (proc\_id .EQ. i) \textcolor{keywordflow}{THEN}}
+\DoxyCodeLine{91     print *, \textcolor{stringliteral}{'proc\_id: '}, proc\_id, \textcolor{stringliteral}{' dim1\_ref: '}, dim1\_ref, \textcolor{stringliteral}{' dim2\_ref: '}, \&}
+\DoxyCodeLine{92     \& dim2\_ref}
+\DoxyCodeLine{93   \textcolor{keywordflow}{ELSE}}
+\DoxyCodeLine{94     \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{95 \textcolor{keywordflow}{  END IF}}
+\DoxyCodeLine{96 \textcolor{keywordflow}{END DO}}
+\DoxyCodeLine{97 \textcolor{keyword}{CALL }mpi\_barrier(mpi\_comm\_world, ierror)}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keyword}{CALL }\mbox{\hyperlink{fin__mpi_8f_ad9592fceaa187ad8c5d3e5ec6844d22f}{fin\_mpi\_ezp}}}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{keywordflow}{RETURN}}
+\DoxyCodeLine{102 }
+
+\end{DoxyCode}
