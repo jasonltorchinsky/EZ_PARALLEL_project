@@ -1,5 +1,5 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# This is the makefile for compiling the EZ_PARALLEL module. It contains two 
+# This is the makefile for compiling the EZ_PARALLEL library. It contains two 
 # sets of options: Command-Line System options and Fortran Compiler (FC) 
 # options. The Command-Line System options determine the 'make clean' and 
 # 'make tidy' commands that will be executed, (e.g., 'rm' for Linux and 'del'
@@ -11,40 +11,40 @@
 # to other directories to be used with other programs.
 #
 # Created by - Jason Turner
-# Last Edited - April 2nd, 2020
+# Last Edited - January 28th, 2020
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MOD = EZ_PARALLEL
+LIB = EZ_PARALLEL
 
 # Command-Line System options: Linux, Windows.
 CMD = Linux
-# FC options: mpifort, gfortran.
-FC = gfortran
+# FC options: mpifort, gfortran (with msmpi).
+FC = mpifort
 
 # Set the compiler flags, dependent on the compiler.
 ifeq ($(FC), gfortran)
   # Path to msmpi include.
-  MPIPTHINC = $(MSMPI_INC)
+  MPIPTHINC = C:/lib/mpi/include
   # Path to msmpi lib.
-  MPIPTHLIB = $(MSMPI_LIB64)
+  MPIPTHLIB = C:/lib/mpi/lib 
   # Compiler flags.
-  FCFLAGS = 
+  FCFLAGS = -ffree-form
   # Include file search path, e.g., C:/lib/mpi/include.
-  INCPTHS = $(MPIPTHINC) ./DFFTPACK
+  INCPTHS = $(MPIPTHINC)
   # Library search path, e.g., C:/lib/mpi/lib.
-  INCLIBS = $(MPIPTHLIB) ./DFFTPACK
+  INCLIBS = $(MPIPTHLIB) 
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
-  LIBNAMES = msmpi DFFTPACK
-
+  LIBNAMES = msmpi
+  
 else ifeq ($(FC), mpifort)
   # Compiler flags.
-  FCFLAGS = 
+  FCFLAGS = -ffree-form
   # Include file search paths, e.g., /usr/include/.
-  INCPTHS = ./DFFTPACK
+  INCPTHS = 
   # Library search path, e.g., ../../EZ_PARALLEL.
-  INCLIBS = ./DFFTPACK
+  INCLIBS =  
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
-  LIBNAMES = DFFTPACK
+  LIBNAMES = 
 endif
 
 # Add appropriate prefixes to include file search paths, library search paths,
@@ -54,15 +54,32 @@ INCLIBFLAGS = $(addprefix -L,$(INCLIBS))
 LKLIBFLAGS = $(addprefix -l,$(LIBNAMES))
 
 # Souce file names.
-EZPARSRCS = $(wildcard *.f90)
+EZPARSRCS = $(wildcard *.f)
 # EZ_PARALLEL object file names.
-EZPAROBJS = $(patsubst %.f90, %.o, $(EZPARSRCS))
+EZPAROBJS = $(patsubst %.f, %.o, $(EZPARSRCS))
+
+# DFFTPACK source file names.
+DFFTPACKSRCS = $(wildcard ./DFFTPACK/*.f)
+# EZ_PARALLEL object file names.
+DFFTPACKOBJS = $(patsubst %.f, %.o, $(DFFTPACKSRCS))
+
+# The build directory to hold all .o files.
+OBJS = $(DFFTPACKOBJS) $(EZPAROBJS)
 
 # Compilation rules.
-# Compile the EZ_PARALLEL source code
-EZ_PARALLEL.o, EZ_PARALLEL.mod: ez_parallel.f90
+# Archive all .o files to library.
+lib$(LIB).a: $(OBJS)
+	ar crv lib$(LIB).a $(OBJS)
+
+# Compile all DFFTPACK source code.
+./DFFTPACK/%.o: ./DFFTPACK/%.f 
+	$(FC) -c $< -w -o $@ -O3
+
+# Compile all EZ_PARALLEL source code
+%.o: %.f
 	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS) 
 
+	
 .PHONY : clean tidy
 # Clean deletes everything besides source code.
 clean:
@@ -79,3 +96,4 @@ ifeq ($(CMD), Windows)
 else ifeq ($(CMD), Linux)
 	rm -rf *.o ./DFFTPACK/*.o
 endif
+	

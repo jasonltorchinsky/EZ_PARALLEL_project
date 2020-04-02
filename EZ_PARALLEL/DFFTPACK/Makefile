@@ -1,96 +1,81 @@
-# Several changes made by HCP so this would build without trouble 
-# on a Linux/g77 system.
-# (1) changed step to build library to use ar instead of update
-#     (update must mean something different on someone elses Unix.)
-# (2) Added make clean step 
-# (3) In test step, changed a.out to ./a.out for cautious folk who don't 
-#     have "." in their PATH.
-# (4) Change FFLAGS from -O to -O2 -funroll-loops
-# (5) Specify FC=gcc in case /usr/bin/f77 is not a link to g77 
-#     (as it won't be if you have f77reorder installed)
-# (6) Added targets shared and installshared to make and install a shared 
-#     version of the library. You need /usr/local/lib in /etc/ld.so.conf 
-#     for this to work   
-# (7) Modified names for dble prec version
-LIB=dfftpack
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# This is the makefile for compiling the DFFTPACK library. It contains two 
+# sets of options: Command-Line System options and Fortran Compiler (FC) 
+# options. The Command-Line System options determine the 'make clean' and 
+# 'make tidy' commands that will be executed, (e.g., 'rm' for Linux and 'del'
+# for Windows. The FC options determine which compiler will be used, and
+# it is assumed that msmpi will be used with gfortran. File paths used in 
+# this makefile are either standard installation paths.
+#
+# After running 'make', the archive file libEZ_PARALLEL.a produced can be moved
+# to other directories to be used with other programs.
+#
+# Created by - Jason Turner
+# Last Edited - April 2nd, 2020
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Use these lines for Linux/g77
-FC=g77
-FFLAGS=-O2 -funroll-loops -fexpensive-optimizations
+LIB = DFFTPACK
 
-# Use these lines for Solaris
-#FC=f77
-#FFLAGS=-fast -O5
+# Command-Line System options: Linux, Windows.
+CMD = Linux
+# FC options: mpifort, gfortran (MPI not required)
+FC = gfortran
 
-OBJ=\
-zfftb.o\
-cfftb1.o\
-zfftf.o\
-cfftf1.o\
-zffti.o\
-cffti1.o\
-dcosqb.o\
-cosqb1.o\
-dcosqf.o\
-cosqf1.o\
-dcosqi.o\
-dcost.o\
-dcosti.o\
-ezfft1.o\
-dzfftb.o\
-dzfftf.o\
-dzffti.o\
-passb.o\
-passb2.o\
-passb3.o\
-passb4.o\
-passb5.o\
-passf.o\
-passf2.o\
-passf3.o\
-passf4.o\
-passf5.o\
-radb2.o\
-radb3.o\
-radb4.o\
-radb5.o\
-radbg.o\
-radf2.o\
-radf3.o\
-radf4.o\
-radf5.o\
-radfg.o\
-dfftb.o\
-rfftb1.o\
-dfftf.o\
-rfftf1.o\
-dffti.o\
-rffti1.o\
-dsinqb.o\
-dsinqf.o\
-dsinqi.o\
-dsint.o\
-sint1.o\
-dsinti.o
+# Set the compiler flags, dependent on the compiler.
+ifeq ($(FC), gfortran)
+  # Compiler flags.
+  FCFLAGS = -O2 -funroll-loops -fexpensive-optimizations -std=f95 -w
+  # Include file search path, e.g., C:/lib/mpi/include.
+  INCPTHS = 
+  # Library search path, e.g., C:/lib/mpi/lib.
+  INCLIBS = 
+  # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
+  LIBNAMES = 
 
-lib$(LIB).a:	$(OBJ)
-	ar -rcs lib$(LIB).a $(OBJ)
+else ifeq ($(FC), mpifort)
+  # Compiler flags.
+  FCFLAGS = -O2 -funroll-loops -fexpensive-optimizations -std=f95 -w
+  # Include file search paths, e.g., /usr/include/.
+  INCPTHS = 
+  # Library search path, e.g., ../../EZ_PARALLEL.
+  INCLIBS =  
+  # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
+  LIBNAMES = 
+endif
 
-shared:$(OBJ)
-	$(FC)  -shared -o lib$(LIB).so $(OBJ)
+# Add appropriate prefixes to include file search paths, library search paths,
+# and include libraries.
+INCFLAGS = $(addprefix -I,$(INCPTHS))
+INCLIBFLAGS = $(addprefix -L,$(INCLIBS))
+LKLIBFLAGS = $(addprefix -l,$(LIBNAMES))
 
-install:	lib$(LIB).a
-	mv lib$(LIB).a /usr/local/lib
-	rm *.o
+# Souce file names.
+SRCS = $(wildcard *.f)
+# Object file names.
+OBJS = $(patsubst %.f, %.o, $(SRCS))
 
-installshared:lib$(LIB).so
-	mv lib$(LIB).so /usr/local/lib
-	rm *.o
-	ldconfig 
+# Compilation rules.
+# Archive all .o files to library.
+lib$(LIB).a: $(OBJS)
+	ar -rcs lib$(LIB).a $(OBJS)
 
-test: test.o
-	$(FC) test.o -L./ -l$(LIB)
-	time ./a.out
+# Compile all .o files.
+%.o: %.f
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
-clean: 
-	 rm -f -r *.o *.a *.so
+.PHONY : clean tidy
+# Clean deletes everything besides source code.
+clean:
+ifeq ($(CMD), Windows)
+	del *.o *.a
+else ifeq ($(CMD), Linux)
+	rm -rf *.o *.a
+endif
+
+# Tidy deletes all .o files, keeping the .a file.
+tidy:
+ifeq ($(CMD), Windows)
+	del *.o 
+else ifeq ($(CMD), Linux)
+	rm -rf *.o 
+endif

@@ -42,9 +42,11 @@ MODULE EZ_PARALLEL
   !! grid decompositions used by the user.
 
   PUBLIC :: INIT_EZP !< Initialization subroutine for the EZ_PARALLEL module.
+  PUBLIC :: FIN_EZP !< Finalization subroutine for the EZ_PARALLEL module.
 
 CONTAINS
 
   INCLUDE 'init_ezp.f90'
+  INCLUDE 'fin_ezp.f90'
  
 END MODULE EZ_PARALLEL
