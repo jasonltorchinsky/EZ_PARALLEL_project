@@ -24,7 +24,7 @@ FC = gfortran
 # Set the compiler flags, dependent on the compiler.
 ifeq ($(FC), gfortran)
   # Compiler flags.
-  FCFLAGS = -O2 -funroll-loops -fexpensive-optimizations -std=f95 -w
+  FCFLAGS = -O3 -funroll-loops -fexpensive-optimizations -std=f95 -w
   # Include file search path, e.g., C:/lib/mpi/include.
   INCPTHS = 
   # Library search path, e.g., C:/lib/mpi/lib.
@@ -34,7 +34,7 @@ ifeq ($(FC), gfortran)
 
 else ifeq ($(FC), mpifort)
   # Compiler flags.
-  FCFLAGS = -O2 -funroll-loops -fexpensive-optimizations -std=f95 -w
+  FCFLAGS = -O3 -funroll-loops -fexpensive-optimizations -std=f95 -w
   # Include file search paths, e.g., /usr/include/.
   INCPTHS = 
   # Library search path, e.g., ../../EZ_PARALLEL.

@@ -1,0 +1,8 @@
+&test_params
+decomp_count = 1
+row_count = 6
+col_count = 7
+overlap = 1
+decomp_id = 8
+/
+

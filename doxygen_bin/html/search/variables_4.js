@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['j_377',['j',['../cfft2df__unit__test__MATLAB_8m.html#ac86694252f8dfdb19aaeadc4b7c342c6',1,'cfft2df_unit_test_MATLAB.m']]]
+  ['proc_5fcount_42',['proc_count',['../namespaceez__parallel.html#aaa581384cd20bbada0a4c3f3cc5765c2',1,'ez_parallel']]],
+  ['proc_5fid_43',['proc_id',['../namespaceez__parallel.html#a5c16c79dc384827b3dba59da7e8083e0',1,'ez_parallel']]]
 ];

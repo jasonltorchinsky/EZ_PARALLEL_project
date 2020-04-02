@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['proc_5fcount_378',['proc_count',['../namespaceez__parallel.html#aaa581384cd20bbada0a4c3f3cc5765c2',1,'ez_parallel']]],
-  ['proc_5fid_379',['proc_id',['../namespaceez__parallel.html#a5c16c79dc384827b3dba59da7e8083e0',1,'ez_parallel']]]
+  ['row_5fcount_5fg_44',['row_count_g',['../structez__parallel_1_1grid__decomposition.html#aa091135664c2e411d38969f4f8e5a5d4',1,'ez_parallel::grid_decomposition']]],
+  ['row_5fdecomp_45',['row_decomp',['../structez__parallel_1_1grid__decomposition.html#ac430e5a9776f8e32aef386900dd35955',1,'ez_parallel::grid_decomposition']]]
 ];

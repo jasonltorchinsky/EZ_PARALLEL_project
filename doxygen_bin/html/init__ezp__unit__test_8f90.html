@@ -79,11 +79,34 @@ Functions/Subroutines</h2></td></tr>
 <tr class="memitem:a2f4987bdc4086081f7739118460b0a34"><td class="memItemLeft" align="right" valign="top">program&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init__ezp__unit__test_8f90.html#a2f4987bdc4086081f7739118460b0a34">init_ezp_unit_test</a></td></tr>
 <tr class="memdesc:a2f4987bdc4086081f7739118460b0a34"><td class="mdescLeft">&#160;</td><td class="mdescRight">The unit test for the INIT_EZP subroutine.  <a href="init__ezp__unit__test_8f90.html#a2f4987bdc4086081f7739118460b0a34">More...</a><br /></td></tr>
 <tr class="separator:a2f4987bdc4086081f7739118460b0a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06ab5e346d45c178c7cf4ee180521557"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init__ezp__unit__test_8f90.html#a06ab5e346d45c178c7cf4ee180521557">main</a></td></tr>
-<tr class="memdesc:a06ab5e346d45c178c7cf4ee180521557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit test for the EZ_PARALLEL initialization subroutine.  <a href="init__ezp__unit__test_8f90.html#a06ab5e346d45c178c7cf4ee180521557">More...</a><br /></td></tr>
-<tr class="separator:a06ab5e346d45c178c7cf4ee180521557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a322d59abc0ebd40ef21ab414b4ef8702"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init__ezp__unit__test_8f90.html#a322d59abc0ebd40ef21ab414b4ef8702">init_ezp_test</a></td></tr>
+<tr class="memdesc:a322d59abc0ebd40ef21ab414b4ef8702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit test for the EZ_PARALLEL initialization subroutine.  <a href="init__ezp__unit__test_8f90.html#a322d59abc0ebd40ef21ab414b4ef8702">More...</a><br /></td></tr>
+<tr class="separator:a322d59abc0ebd40ef21ab414b4ef8702"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
+<a id="a322d59abc0ebd40ef21ab414b4ef8702"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a322d59abc0ebd40ef21ab414b4ef8702">&#9670;&nbsp;</a></span>init_ezp_test()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine init_ezp_unit_test::init_ezp_test</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Unit test for the EZ_PARALLEL initialization subroutine. </p>
+<dl class="section author"><dt>Author</dt><dd>Jason Turner, University of Wisconsin-Madison </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">grid_count</td><td>Number of unique grids the user wishes to decompose, "unique" being in terms of size and overlap. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a2f4987bdc4086081f7739118460b0a34"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2f4987bdc4086081f7739118460b0a34">&#9670;&nbsp;</a></span>init_ezp_unit_test()</h2>
 
@@ -101,50 +124,7 @@ Functions/Subroutines</h2></td></tr>
 
 </div>
 </div>
-<a id="a06ab5e346d45c178c7cf4ee180521557"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06ab5e346d45c178c7cf4ee180521557">&#9670;&nbsp;</a></span>main()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">subroutine init_ezp_unit_test::main</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Unit test for the EZ_PARALLEL initialization subroutine. </p>
-<dl class="section author"><dt>Author</dt><dd>Jason Turner, University of Wisconsin-Madison STRUCTURE: 1) Reads the NAMELIST. Initializes MPI, prints the processor ID, and finalizes MPI. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">grid_count</td><td>Number of unique grids the user wishes to decompose, </td></tr>
-  </table>
-  </dd>
-</dl>
-<div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">USE </span>mpi</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">IMPLICIT NONE</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">INTEGER(qb)</span> :: grid_count, &amp;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;         ierror</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    grid_count = 10</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">CALL </span><a class="code" href="init__ezp_8f90.html#ae2dd1e20a6b99e89a073a1b2ef520f99">init_ezp</a>(grid_count)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">! Each processor prints out its processor ID.</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    print *, <span class="stringliteral">&quot;proc_id: &quot;</span>, proc_id, <span class="stringliteral">&quot; of &quot;</span>, proc_count, <span class="stringliteral">&quot; processors.&quot;</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">CALL </span>mpi_finalize(ierror)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">RETURN</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-</div><!-- fragment -->
-</div>
-</div>
 </div><!-- contents -->
-<div class="ttc" id="ainit__ezp_8f90_html_ae2dd1e20a6b99e89a073a1b2ef520f99"><div class="ttname"><a href="init__ezp_8f90.html#ae2dd1e20a6b99e89a073a1b2ef520f99">init_ezp</a></div><div class="ttdeci">subroutine init_ezp(grid_count)</div><div class="ttdoc">The EZ_PARALLEL initialization subroutine. Initializes MPI, allocates memory for the grid decompositi...</div><div class="ttdef"><b>Definition:</b> init_ezp.f90:13</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

@@ -76,13 +76,50 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
-<tr class="memitem:ae2dd1e20a6b99e89a073a1b2ef520f99"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init__ezp_8f90.html#ae2dd1e20a6b99e89a073a1b2ef520f99">init_ezp</a> (grid_count)</td></tr>
-<tr class="memdesc:ae2dd1e20a6b99e89a073a1b2ef520f99"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EZ_PARALLEL initialization subroutine. Initializes MPI, allocates memory for the grid decomposition list, and stores frequenctly used variables.  <a href="init__ezp_8f90.html#ae2dd1e20a6b99e89a073a1b2ef520f99">More...</a><br /></td></tr>
-<tr class="separator:ae2dd1e20a6b99e89a073a1b2ef520f99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abecd6abdd1e24040276232b453ab01fc"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init__ezp_8f90.html#abecd6abdd1e24040276232b453ab01fc">init_ezp</a> (decomp_count_L)</td></tr>
+<tr class="memdesc:abecd6abdd1e24040276232b453ab01fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EZ_PARALLEL initialization subroutine. Initializes MPI, allocates memory for the grid decomposition list, and stores frequenctly used variables.  <a href="init__ezp_8f90.html#abecd6abdd1e24040276232b453ab01fc">More...</a><br /></td></tr>
+<tr class="separator:abecd6abdd1e24040276232b453ab01fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd13d7bbc8bf28899097d728f92dc693"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="init__ezp_8f90.html#abd13d7bbc8bf28899097d728f92dc693">error_handling</a> (decomp_count_L)</td></tr>
+<tr class="memdesc:abd13d7bbc8bf28899097d728f92dc693"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EZ_PARALLEL initialization error handling subroutine. Aborts the program if the grid decompositions parameters trigger any of the following errors:  <a href="init__ezp_8f90.html#abd13d7bbc8bf28899097d728f92dc693">More...</a><br /></td></tr>
+<tr class="separator:abd13d7bbc8bf28899097d728f92dc693"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
-<a id="ae2dd1e20a6b99e89a073a1b2ef520f99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2dd1e20a6b99e89a073a1b2ef520f99">&#9670;&nbsp;</a></span>init_ezp()</h2>
+<a id="abd13d7bbc8bf28899097d728f92dc693"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd13d7bbc8bf28899097d728f92dc693">&#9670;&nbsp;</a></span>error_handling()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine init_ezp::error_handling </td>
+          <td>(</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>decomp_count_L</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The EZ_PARALLEL initialization error handling subroutine. Aborts the program if the grid decompositions parameters trigger any of the following errors: </p>
+<ul>
+<li>
+decomp_count_L... <ol>
+<li>
+is not positive </li>
+</ol>
+</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">decomp_count_L</td><td>Number of unique grid decompositions (local to subroutine). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abecd6abdd1e24040276232b453ab01fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abecd6abdd1e24040276232b453ab01fc">&#9670;&nbsp;</a></span>init_ezp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -90,8 +127,8 @@ Functions/Subroutines</h2></td></tr>
         <tr>
           <td class="memname">subroutine init_ezp </td>
           <td>(</td>
-          <td class="paramtype">integer&#160;</td>
-          <td class="paramname"><em>grid_count</em></td><td>)</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>decomp_count_L</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -101,25 +138,11 @@ Functions/Subroutines</h2></td></tr>
 <dl class="section author"><dt>Author</dt><dd>Jason Turner, University of Wisconsin-Madison </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">grid_count</td><td>Number of unique grids the user wishes to decompose, </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">decomp_count_L</td><td>Number of unique grid decompositions, </td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <span class="keywordtype">USE </span>mpi</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keywordtype">IMPLICIT NONE</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keywordtype">INTEGER</span> :: grid_count</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  <span class="keywordtype">INTEGER</span> :: ierror</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keyword">CALL </span>mpi_init(ierror)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  <span class="keyword">CALL </span>mpi_comm_rank(mpi_comm_world, proc_id, ierror)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <span class="keyword">CALL </span>mpi_comm_size(mpi_comm_world, proc_count, ierror)</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keyword">ALLOCATE</span>(grid_decomps(grid_count))</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-</div><!-- fragment -->
+
 </div>
 </div>
 </div><!-- contents -->

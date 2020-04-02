@@ -21,17 +21,3 @@ The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL finalization subroutine. Deallocates memory
 \begin{DoxyAuthor}{Author}
 Jason Turner, University of Wisconsin-\/\+Madison 
 \end{DoxyAuthor}
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{9   }
-\DoxyCodeLine{10   \textcolor{keywordtype}{USE }mpi}
-\DoxyCodeLine{11   }
-\DoxyCodeLine{12   \textcolor{keywordtype}{IMPLICIT NONE}}
-\DoxyCodeLine{13 }
-\DoxyCodeLine{14   \textcolor{keywordtype}{INTEGER} :: ierror}
-\DoxyCodeLine{15 }
-\DoxyCodeLine{16   \textcolor{keyword}{DEALLOCATE}(grid\_decomps)}
-\DoxyCodeLine{17   \textcolor{keyword}{CALL }mpi\_finalize(ierror)}
-\DoxyCodeLine{18  }
-
-\end{DoxyCode}

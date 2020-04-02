@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['proc_5fcount_11',['proc_count',['../namespaceez__parallel.html#aaa581384cd20bbada0a4c3f3cc5765c2',1,'ez_parallel']]],
-  ['proc_5fid_12',['proc_id',['../namespaceez__parallel.html#a5c16c79dc384827b3dba59da7e8083e0',1,'ez_parallel']]]
+  ['grid_5fdecomposition_12',['grid_decomposition',['../structez__parallel_1_1grid__decomposition.html',1,'ez_parallel']]],
+  ['grid_5fdecomps_13',['grid_decomps',['../namespaceez__parallel.html#a6659146bbf9b35d6bd2852b0e575923c',1,'ez_parallel']]]
 ];

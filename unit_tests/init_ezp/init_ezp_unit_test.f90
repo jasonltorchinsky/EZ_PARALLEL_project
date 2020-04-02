@@ -29,7 +29,7 @@ PROGRAM INIT_EZP_UNIT_TEST
      end_time !< End time of the unit test.
 
   CALL CPU_TIME(start_time)
-  CALL MAIN
+  CALL INIT_EZP_TEST
   CALL CPU_TIME(end_time)
 
   PRINT *, 'Execution time: ', end_time - start_time, '.'
@@ -42,25 +42,22 @@ CONTAINS
   !> @brief
   !> Unit test for the EZ_PARALLEL initialization subroutine
   !
-  !> STRUCTURE: 1) Reads the NAMELIST. Initializes MPI, prints the processor ID,
-  !! and finalizes MPI.
-  !
   !> \param[in] grid_count Number of unique grids the user wishes to decompose,
-  ! "unique" being in terms of size and overlap.
+  !! "unique" being in terms of size and overlap.
   !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  SUBROUTINE MAIN
+  SUBROUTINE INIT_EZP_TEST
     
     USE MPI
 
     IMPLICIT NONE
 
-    INTEGER(qb) :: grid_count, &
+    INTEGER(qb) :: decomp_count, &
          ierror
 
-    grid_count = 10
+    decomp_count = 10_qb
     
-    CALL INIT_EZP(grid_count)
+    CALL INIT_EZP(decomp_count)
 
     ! Each processor prints out its processor ID.
     PRINT *, "proc_id: ", proc_id, " of ", proc_count, " processors."
@@ -69,6 +66,6 @@ CONTAINS
 
     RETURN
 
-  END SUBROUTINE MAIN
+  END SUBROUTINE INIT_EZP_TEST
   
 END PROGRAM INIT_EZP_UNIT_TEST

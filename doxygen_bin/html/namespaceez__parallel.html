@@ -74,19 +74,63 @@ $(function() {
 <p>The main file for the EZ_PARALLEL module. Contains all derived datatypes and includes the files containing the module subroutines.  
 <a href="namespaceez__parallel.html#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Types</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structez__parallel_1_1grid__decomposition.html">grid_decomposition</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GRID_DECOMPOSITION derived datatype. It contains all information about the grid and the sub-grid decomposition of the grid.  <a href="structez__parallel_1_1grid__decomposition.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:a95a33182359edd437e95aadf9293dce4"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceez__parallel.html#a95a33182359edd437e95aadf9293dce4">decomp_count</a></td></tr>
+<tr class="memdesc:a95a33182359edd437e95aadf9293dce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of "unique" grid decompositions.  <a href="namespaceez__parallel.html#a95a33182359edd437e95aadf9293dce4">More...</a><br /></td></tr>
+<tr class="separator:a95a33182359edd437e95aadf9293dce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c16c79dc384827b3dba59da7e8083e0"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceez__parallel.html#a5c16c79dc384827b3dba59da7e8083e0">proc_id</a></td></tr>
 <tr class="memdesc:a5c16c79dc384827b3dba59da7e8083e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The local processor ID.  <a href="namespaceez__parallel.html#a5c16c79dc384827b3dba59da7e8083e0">More...</a><br /></td></tr>
 <tr class="separator:a5c16c79dc384827b3dba59da7e8083e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa581384cd20bbada0a4c3f3cc5765c2"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceez__parallel.html#aaa581384cd20bbada0a4c3f3cc5765c2">proc_count</a></td></tr>
 <tr class="memdesc:aaa581384cd20bbada0a4c3f3cc5765c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of processors called by the user.  <a href="namespaceez__parallel.html#aaa581384cd20bbada0a4c3f3cc5765c2">More...</a><br /></td></tr>
 <tr class="separator:aaa581384cd20bbada0a4c3f3cc5765c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6659146bbf9b35d6bd2852b0e575923c"><td class="memItemLeft" align="right" valign="top">type(<a class="el" href="structez__parallel_1_1grid__decomposition.html">grid_decomposition</a>), dimension(:), allocatable, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceez__parallel.html#a6659146bbf9b35d6bd2852b0e575923c">grid_decomps</a></td></tr>
+<tr class="memdesc:a6659146bbf9b35d6bd2852b0e575923c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of all grid decompositions.  <a href="namespaceez__parallel.html#a6659146bbf9b35d6bd2852b0e575923c">More...</a><br /></td></tr>
+<tr class="separator:a6659146bbf9b35d6bd2852b0e575923c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The main file for the EZ_PARALLEL module. Contains all derived datatypes and includes the files containing the module subroutines. </p>
 <dl class="section author"><dt>Author</dt><dd>Jason Turner </dd></dl>
 </div><h2 class="groupheader">Variable Documentation</h2>
+<a id="a95a33182359edd437e95aadf9293dce4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95a33182359edd437e95aadf9293dce4">&#9670;&nbsp;</a></span>decomp_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">integer, public ez_parallel::decomp_count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of "unique" grid decompositions. </p>
+
+</div>
+</div>
+<a id="a6659146bbf9b35d6bd2852b0e575923c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6659146bbf9b35d6bd2852b0e575923c">&#9670;&nbsp;</a></span>grid_decomps</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">type(<a class="el" href="structez__parallel_1_1grid__decomposition.html">grid_decomposition</a>), dimension(:), allocatable, public ez_parallel::grid_decomps</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A list of all grid decompositions. </p>
+
+</div>
+</div>
 <a id="aaa581384cd20bbada0a4c3f3cc5765c2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaa581384cd20bbada0a4c3f3cc5765c2">&#9670;&nbsp;</a></span>proc_count</h2>
 
@@ -100,8 +144,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The total number of processors called by the user. </p>
-<div class="fragment"><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PUBLIC</span> :: proc_count</div>
-</div><!-- fragment -->
+
 </div>
 </div>
 <a id="a5c16c79dc384827b3dba59da7e8083e0"></a>
@@ -117,8 +160,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The local processor ID. </p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordtype">INTEGER</span>, <span class="keywordtype">PUBLIC</span> :: proc_id</div>
-</div><!-- fragment -->
+
 </div>
 </div>
 </div><!-- contents -->

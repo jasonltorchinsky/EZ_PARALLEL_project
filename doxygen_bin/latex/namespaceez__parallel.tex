@@ -5,13 +5,22 @@
 The main file for the E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL module. Contains all derived datatypes and includes the files containing the module subroutines.  
 
 
+\doxysubsection*{Data Types}
+\begin{DoxyCompactItemize}
+\item 
+type \mbox{\hyperlink{structez__parallel_1_1grid__decomposition}{grid\+\_\+decomposition}}
+\begin{DoxyCompactList}\small\item\em The G\+R\+I\+D\+\_\+\+D\+E\+C\+O\+M\+P\+O\+S\+I\+T\+I\+ON derived datatype. It contains all information about the grid and the sub-\/grid decomposition of the grid. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
+integer, public \mbox{\hyperlink{namespaceez__parallel_a95a33182359edd437e95aadf9293dce4}{decomp\+\_\+count}}
+\begin{DoxyCompactList}\small\item\em Number of \char`\"{}unique\char`\"{} grid decompositions. \end{DoxyCompactList}\item 
 integer, public \mbox{\hyperlink{namespaceez__parallel_a5c16c79dc384827b3dba59da7e8083e0}{proc\+\_\+id}}
 \begin{DoxyCompactList}\small\item\em The local processor ID. \end{DoxyCompactList}\item 
 integer, public \mbox{\hyperlink{namespaceez__parallel_aaa581384cd20bbada0a4c3f3cc5765c2}{proc\+\_\+count}}
-\begin{DoxyCompactList}\small\item\em The total number of processors called by the user. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The total number of processors called by the user. \end{DoxyCompactList}\item 
+type(\mbox{\hyperlink{structez__parallel_1_1grid__decomposition}{grid\+\_\+decomposition}}), dimension(\+:), allocatable, public \mbox{\hyperlink{namespaceez__parallel_a6659146bbf9b35d6bd2852b0e575923c}{grid\+\_\+decomps}}
+\begin{DoxyCompactList}\small\item\em A list of all grid decompositions. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -23,6 +32,26 @@ Jason Turner
 
 
 \doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceez__parallel_a95a33182359edd437e95aadf9293dce4}\label{namespaceez__parallel_a95a33182359edd437e95aadf9293dce4}} 
+\index{ez\_parallel@{ez\_parallel}!decomp\_count@{decomp\_count}}
+\index{decomp\_count@{decomp\_count}!ez\_parallel@{ez\_parallel}}
+\doxysubsubsection{\texorpdfstring{decomp\_count}{decomp\_count}}
+{\footnotesize\ttfamily integer, public ez\+\_\+parallel\+::decomp\+\_\+count}
+
+
+
+Number of \char`\"{}unique\char`\"{} grid decompositions. 
+
+\mbox{\Hypertarget{namespaceez__parallel_a6659146bbf9b35d6bd2852b0e575923c}\label{namespaceez__parallel_a6659146bbf9b35d6bd2852b0e575923c}} 
+\index{ez\_parallel@{ez\_parallel}!grid\_decomps@{grid\_decomps}}
+\index{grid\_decomps@{grid\_decomps}!ez\_parallel@{ez\_parallel}}
+\doxysubsubsection{\texorpdfstring{grid\_decomps}{grid\_decomps}}
+{\footnotesize\ttfamily type(\mbox{\hyperlink{structez__parallel_1_1grid__decomposition}{grid\+\_\+decomposition}}), dimension(\+:), allocatable, public ez\+\_\+parallel\+::grid\+\_\+decomps}
+
+
+
+A list of all grid decompositions. 
+
 \mbox{\Hypertarget{namespaceez__parallel_aaa581384cd20bbada0a4c3f3cc5765c2}\label{namespaceez__parallel_aaa581384cd20bbada0a4c3f3cc5765c2}} 
 \index{ez\_parallel@{ez\_parallel}!proc\_count@{proc\_count}}
 \index{proc\_count@{proc\_count}!ez\_parallel@{ez\_parallel}}
@@ -33,11 +62,6 @@ Jason Turner
 
 The total number of processors called by the user. 
 
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{40   \textcolor{keywordtype}{INTEGER}, \textcolor{keywordtype}{PUBLIC} :: proc\_count}
-
-\end{DoxyCode}
 \mbox{\Hypertarget{namespaceez__parallel_a5c16c79dc384827b3dba59da7e8083e0}\label{namespaceez__parallel_a5c16c79dc384827b3dba59da7e8083e0}} 
 \index{ez\_parallel@{ez\_parallel}!proc\_id@{proc\_id}}
 \index{proc\_id@{proc\_id}!ez\_parallel@{ez\_parallel}}
@@ -48,8 +72,3 @@ The total number of processors called by the user.
 
 The local processor ID. 
 
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{39   \textcolor{keywordtype}{INTEGER}, \textcolor{keywordtype}{PUBLIC} :: proc\_id}
-
-\end{DoxyCode}

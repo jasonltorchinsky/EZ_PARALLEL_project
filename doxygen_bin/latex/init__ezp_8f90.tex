@@ -3,16 +3,39 @@
 \doxysubsection*{Functions/\+Subroutines}
 \begin{DoxyCompactItemize}
 \item 
-subroutine \mbox{\hyperlink{init__ezp_8f90_ae2dd1e20a6b99e89a073a1b2ef520f99}{init\+\_\+ezp}} (grid\+\_\+count)
-\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL initialization subroutine. Initializes M\+PI, allocates memory for the grid decomposition list, and stores frequenctly used variables. \end{DoxyCompactList}\end{DoxyCompactItemize}
+subroutine \mbox{\hyperlink{init__ezp_8f90_abecd6abdd1e24040276232b453ab01fc}{init\+\_\+ezp}} (decomp\+\_\+count\+\_\+L)
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL initialization subroutine. Initializes M\+PI, allocates memory for the grid decomposition list, and stores frequenctly used variables. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{init__ezp_8f90_abd13d7bbc8bf28899097d728f92dc693}{error\+\_\+handling}} (decomp\+\_\+count\+\_\+L)
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL initialization error handling subroutine. Aborts the program if the grid decompositions parameters trigger any of the following errors\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function/\+Subroutine Documentation}
-\mbox{\Hypertarget{init__ezp_8f90_ae2dd1e20a6b99e89a073a1b2ef520f99}\label{init__ezp_8f90_ae2dd1e20a6b99e89a073a1b2ef520f99}} 
+\mbox{\Hypertarget{init__ezp_8f90_abd13d7bbc8bf28899097d728f92dc693}\label{init__ezp_8f90_abd13d7bbc8bf28899097d728f92dc693}} 
+\index{init\_ezp.f90@{init\_ezp.f90}!error\_handling@{error\_handling}}
+\index{error\_handling@{error\_handling}!init\_ezp.f90@{init\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{error\_handling()}{error\_handling()}}
+{\footnotesize\ttfamily subroutine init\+\_\+ezp\+::error\+\_\+handling (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+count\+\_\+L }\end{DoxyParamCaption})}
+
+
+
+The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL initialization error handling subroutine. Aborts the program if the grid decompositions parameters trigger any of the following errors\+: 
+
+
+\begin{DoxyItemize}
+\item decomp\+\_\+count\+\_\+L... 
+\begin{DoxyEnumerate}
+\item is not positive 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+count\+\_\+L} & Number of unique grid decompositions (local to subroutine). \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{init__ezp_8f90_abecd6abdd1e24040276232b453ab01fc}\label{init__ezp_8f90_abecd6abdd1e24040276232b453ab01fc}} 
 \index{init\_ezp.f90@{init\_ezp.f90}!init\_ezp@{init\_ezp}}
 \index{init\_ezp@{init\_ezp}!init\_ezp.f90@{init\_ezp.f90}}
 \doxysubsubsection{\texorpdfstring{init\_ezp()}{init\_ezp()}}
-{\footnotesize\ttfamily subroutine init\+\_\+ezp (\begin{DoxyParamCaption}\item[{integer}]{grid\+\_\+count }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily subroutine init\+\_\+ezp (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+count\+\_\+L }\end{DoxyParamCaption})}
 
 
 
@@ -23,24 +46,6 @@ Jason Turner, University of Wisconsin-\/\+Madison
 \end{DoxyAuthor}
 
 \begin{DoxyParams}[1]{Parameters}
-\mbox{\texttt{ in}}  & {\em grid\+\_\+count} & Number of unique grids the user wishes to decompose, \\
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+count\+\_\+L} & Number of unique grid decompositions, \\
 \hline
 \end{DoxyParams}
-
-\begin{DoxyCode}{0}
-\DoxyCodeLine{13   }
-\DoxyCodeLine{14   \textcolor{keywordtype}{USE }mpi}
-\DoxyCodeLine{15   }
-\DoxyCodeLine{16   \textcolor{keywordtype}{IMPLICIT NONE}}
-\DoxyCodeLine{17 }
-\DoxyCodeLine{18   \textcolor{keywordtype}{INTEGER} :: grid\_count}
-\DoxyCodeLine{19   \textcolor{keywordtype}{INTEGER} :: ierror}
-\DoxyCodeLine{20 }
-\DoxyCodeLine{21   \textcolor{keyword}{CALL }mpi\_init(ierror)}
-\DoxyCodeLine{22   \textcolor{keyword}{CALL }mpi\_comm\_rank(mpi\_comm\_world, proc\_id, ierror)}
-\DoxyCodeLine{23   \textcolor{keyword}{CALL }mpi\_comm\_size(mpi\_comm\_world, proc\_count, ierror)}
-\DoxyCodeLine{24 }
-\DoxyCodeLine{25   \textcolor{keyword}{ALLOCATE}(grid\_decomps(grid\_count))}
-\DoxyCodeLine{26  }
-
-\end{DoxyCode}
