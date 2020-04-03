@@ -52,11 +52,14 @@ MODULE EZ_PARALLEL
   PUBLIC :: INIT_EZP !< Initialization subroutine for the EZ_PARALLEL module.
   PUBLIC :: FIN_EZP !< Finalization subroutine for the EZ_PARALLEL module.
   PUBLIC :: DECOMP_GRID_EZP !< Grid decomposition for the EZ_PARALLEL module.
+  PUBLIC :: IDENTIFY_REF_POINT_EZP !< Sub-grid reference point identification
+  !! for the EZ_PARALLEL module.
 
 CONTAINS
 
   INCLUDE 'init_ezp.f90'
   INCLUDE 'fin_ezp.f90'
   INCLUDE 'decomp_grid_ezp.f90'
+  INCLUDE 'identify_ref_point_ezp.f90'
  
 END MODULE EZ_PARALLEL
