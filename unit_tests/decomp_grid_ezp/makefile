@@ -24,7 +24,7 @@ TRGT = decomp_grid_ezp_unit_test.exe
 # .f files.
 SRCS = $(wildcard *.f90)
 # .o files.
-OBJS = $(patsubst %.f90, %.o, $(SRCS)) $(EZPPTH)/ez_parallel.o
+OBJS = $(patsubst %.f90, %.o, $(SRCS)) $(EZPPTH)/ez_parallel.o $(EZPPTH)/ez_parallel_structs.o
 # .mod files.
 MODS = $(patsubst %.f90, %.mod, $(SRCS))
 
@@ -35,7 +35,7 @@ ifeq ($(FC), gfortran)
   # Path to msmpi lib.
   MPIPTHLIB = $(MSMPI_LIB64)
   # Compiler flags.
-  FCFLAGS = 
+  FCFLAGS = -g
   # Include file search path, e.g., C:\lib\mpi\include.
   INCPTHS = $(EZPPTH) $(MPIPTHINC)
   # Library search path, e.g., C:\lib\mpi\lib.

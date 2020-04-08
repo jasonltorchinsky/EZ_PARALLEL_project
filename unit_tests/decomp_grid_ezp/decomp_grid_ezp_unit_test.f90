@@ -17,7 +17,9 @@
 
 PROGRAM DECOMP_GRID_UNIT_TEST
 
+  USE MPI
   USE EZ_PARALLEL
+  USE EZ_PARALLEL_STRUCTS
   
   IMPLICIT NONE
 
@@ -46,48 +48,77 @@ CONTAINS
   SUBROUTINE DECOMP_GRID_TEST
 
     USE MPI
+    USE EZ_PARALLEL
+    USE EZ_PARALLEL_STRUCTS
 
     IMPLICIT NONE
 
-    INTEGER(qb) :: decomp_count, &
-         row_count, &
-         col_count, &
-         overlap, &
-         decomp_id, &
-         ierror, &
-         i
+    INTEGER(qb) :: decomp_count_L
+    INTEGER(qb) :: row_count_dble
+    INTEGER(qb) :: col_count_dble
+    INTEGER(qb) :: overlap_dble
+    INTEGER(qb) :: decomp_id_dble
+    INTEGER(qb) :: row_count_dcmplx
+    INTEGER(qb) :: col_count_dcmplx
+    INTEGER(qb) :: overlap_dcmplx
+    INTEGER(qb) :: decomp_id_dcmplx
+    INTEGER(qb) :: ierror
+    INTEGER(qb) :: i
+    REAL(dp), ALLOCATABLE :: grid_dble(:,:)
+    COMPLEX(dp), ALLOCATABLE :: grid_dcmplx(:,:)
 
-    NAMELIST /test_params/ decomp_count, row_count, col_count, overlap, decomp_id
+    NAMELIST /test_params/ decomp_count_L, row_count_dble, col_count_dble, &
+         overlap_dble, decomp_id_dble, row_count_dcmplx, col_count_dcmplx, &
+         overlap_dcmplx, decomp_id_dcmplx
     OPEN(1000, file = 'NAMELIST')
     READ(1000, nml = test_params)
     CLOSE(1000)
 
-
-    CALL INIT_EZP(decomp_count)
-
+    CALL INIT_EZP(decomp_count_L)
+    
     ! Print the input parameters.
     IF (proc_id .EQ. 0_qb) THEN
-       PRINT *, "decomp_count: ", decomp_count
-       PRINT *, "row_count: ", row_count, " col_count: ", col_count, &
-            " overlap: ", overlap, " decomp_id: ", decomp_id
+       PRINT *, "decomp_count_L: ", decomp_count_L
+       PRINT *, "row_count_dble: ", row_count_dble, " col_count_dble: ", &
+            col_count_dble, " overlap_dble: ", overlap_dble, &
+            " decomp_id_dble: ", decomp_id_dble
+       PRINT *, "row_count_dcmplx: ", row_count_dcmplx, " col_count_dcmplx: ", &
+            col_count_dcmplx, " overlap_dcmplx: ", overlap_dcmplx, &
+            " decomp_id_dcmplx: ", decomp_id_dcmplx
     END IF
+    
     CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
 
-    ! Make decomposition decomp_id of grid.
-    CALL DECOMP_GRID_EZP(row_count, col_count, overlap, decomp_id)
+    ! Make decomposition decomp_id of DBLE and DCMPLX grids.
+    CALL DECOMP_GRID_EZP(row_count_dble, col_count_dble, overlap_dble, &
+         decomp_id_dble, grid_dble)
+    CALL DECOMP_GRID_EZP(row_count_dcmplx, col_count_dcmplx, overlap_dcmplx, &
+         decomp_id_dcmplx, grid_dcmplx)
     
     ! Output decomposition parameters.
     IF (proc_id .EQ. 0) THEN
-       PRINT *, "Grid decomposition parameters: "
-       PRINT *, "decomp_id: ", grid_decomps(1)%decomp_id
-       PRINT *, "row_count_g: ", grid_decomps(1)%row_count_g
-       PRINT *, "col_count_g: ", grid_decomps(1)%col_count_g
-       PRINT *, "overlap: ", grid_decomps(1)%overlap
-       PRINT *, "row_decomp(:): ", grid_decomps(1)%row_decomp
-       PRINT *, "col_decomp(:): ", grid_decomps(1)%col_decomp
-       PRINT *, "col_decomp_ovlp(:): ", grid_decomps(1)%col_decomp_ovlp
-       PRINT *, "New col_count: ", col_count
+       PRINT *, "DBLE grid decomposition parameters: "
+       PRINT *, "decomp_id: ", grid_decomps(decomp_id_dble)%decomp_id
+       PRINT *, "row_count_g: ", grid_decomps(decomp_id_dble)%row_count_g
+       PRINT *, "col_count_g: ", grid_decomps(decomp_id_dble)%col_count_g
+       PRINT *, "overlap: ", grid_decomps(decomp_id_dble)%overlap
+       PRINT *, "row_decomp(:): ", grid_decomps(decomp_id_dble)%row_decomp
+       PRINT *, "col_decomp(:): ", grid_decomps(decomp_id_dble)%col_decomp
+       PRINT *, "col_decomp_ovlp(:): ", grid_decomps(decomp_id_dble)%col_decomp_ovlp
+
+       PRINT *, "DCMPLX grid decomposition parameters: "
+       PRINT *, "decomp_id: ", grid_decomps(decomp_id_dcmplx)%decomp_id
+       PRINT *, "row_count_g: ", grid_decomps(decomp_id_dcmplx)%row_count_g
+       PRINT *, "col_count_g: ", grid_decomps(decomp_id_dcmplx)%col_count_g
+       PRINT *, "overlap: ", grid_decomps(decomp_id_dcmplx)%overlap
+       PRINT *, "row_decomp(:): ", grid_decomps(decomp_id_dcmplx)%row_decomp
+       PRINT *, "col_decomp(:): ", grid_decomps(decomp_id_dcmplx)%col_decomp
+       PRINT *, "col_decomp_ovlp(:): ", grid_decomps(decomp_id_dcmplx)%col_decomp_ovlp
     END IF
+
+    CALL MPI_BARRIER(MPI_COMM_WORLD, ierror)
+    PRINT *, "proc_id: ", proc_id, " new col_count_dble: ", col_count_dble, &
+         " new col_count_dcmplx: ", col_count_dcmplx
 
     CALL FIN_EZP
 
