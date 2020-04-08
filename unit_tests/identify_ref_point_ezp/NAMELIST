@@ -1,0 +1,16 @@
+&test_params
+decomp_count_L = 2
+row_count_dble = 6
+col_count_dble = 7
+overlap_dble = 2
+decomp_id_dble = 1
+row_count_dcmplx = 2
+col_count_dcmplx = 5
+overlap_dcmplx = 1
+decomp_id_dcmplx = 2
+col_spc_dble = 0.25
+col_ref_dble = 0.1
+col_spc_dcmplx = (0.03,0.7)
+col_ref_dcmplx = (0.1,0.15)
+/
+
