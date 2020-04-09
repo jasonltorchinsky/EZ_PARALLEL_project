@@ -60,8 +60,11 @@ EZPAROBJS = $(patsubst %.f90, %.o, $(EZPARSRCS))
 
 # Compilation rules.
 # Compile the EZ_PARALLEL source code
-EZ_PARALLEL.o, EZ_PARALLEL.mod: ez_parallel.f90
-	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS) 
+$(MOD).o: ez_parallel.f90 ez_parallel_structs.o
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
+
+ez_parallel_structs.o: ez_parallel_structs.f90
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 .PHONY : clean tidy
 # Clean deletes everything besides source code.

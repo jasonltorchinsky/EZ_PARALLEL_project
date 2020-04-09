@@ -5,9 +5,10 @@
 !> Deallocates memory for the grid decomposition list, and finalzies MPI.
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-SUBROUTINE FIN_EZP
+SUBROUTINE FIN
   
   USE MPI
+  USE EZ_PARALLEL_STRUCTS
   
   IMPLICIT NONE
 
@@ -16,7 +17,7 @@ SUBROUTINE FIN_EZP
   DEALLOCATE(grid_decomps)
   CALL MPI_FINALIZE(ierror)
  
-END SUBROUTINE FIN_EZP
+END SUBROUTINE FIN
 
 
 

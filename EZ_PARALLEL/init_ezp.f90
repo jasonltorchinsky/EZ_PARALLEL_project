@@ -6,24 +6,24 @@
 !! frequenctly used variables.
 !
 !> \param[in] decomp_count_L Number of unique grid decompositions,
-! "unique" being in terms of size and overlap (local to subroutine).
+!! "unique" being in terms of size and overlap (local to subroutine).
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-SUBROUTINE INIT_EZP(decomp_count_L)
+SUBROUTINE INIT(decomp_count_L)
   
   USE MPI
+  USE EZ_PARALLEL_STRUCTS
   
   IMPLICIT NONE
 
   INTEGER, INTENT(IN) :: decomp_count_L
   INTEGER :: ierror
-
   
   CALL MPI_INIT(ierror)
 
   ! Check for errors in user input.
   CALL ERROR_HANDLING(decomp_count_L)
-
+  
   CALL MPI_COMM_RANK(MPI_COMM_WORLD, proc_id, ierror)
   CALL MPI_COMM_SIZE(MPI_COMM_WORLD, proc_count, ierror)
   
@@ -51,6 +51,7 @@ CONTAINS
   SUBROUTINE ERROR_HANDLING(decomp_count_L)
 
     USE MPI
+    USE EZ_PARALLEL_STRUCTS
 
     IMPLICIT NONE
 
@@ -76,6 +77,6 @@ CONTAINS
 
   END SUBROUTINE ERROR_HANDLING
  
-END SUBROUTINE INIT_EZP
+END SUBROUTINE INIT
 
 
