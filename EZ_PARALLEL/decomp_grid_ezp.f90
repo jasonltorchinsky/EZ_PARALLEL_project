@@ -15,7 +15,7 @@
 !> \param[in] decomp_id ID number of the grid decomposition, between 1 and the
 !! number of "unique" grid decompositions.
 !> \param[in] grid The grid to be allocated and decomposed, for use in
-!! identifying what datatype it is.
+!! identifying what datatype it is. NOTE: It must not yet be allocated.
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 SUBROUTINE DECOMP_GRID_DBLE(row_count, col_count, overlap, decomp_id, grid)
@@ -29,14 +29,14 @@ SUBROUTINE DECOMP_GRID_DBLE(row_count, col_count, overlap, decomp_id, grid)
   INTEGER, INTENT(IN) :: overlap
   INTEGER, INTENT(IN) :: decomp_id
   INTEGER, INTENT(INOUT) :: col_count
-  DOUBLE PRECISION, ALLOCATABLE :: grid(:,:)
+  DOUBLE PRECISION, ALLOCATABLE, INTENT(IN) :: grid(:,:)
 
   ! Check for errors in user input.
   CALL ERROR_HANDLING_DBLE(row_count, col_count, overlap, decomp_id)
 
   IF (proc_count .EQ. 1) THEN
      ! Run in serial is there is only one processor.
-     CALL SERIAL_DBLE
+     CALL SERIAL_DBLE(row_count, col_count, decomp_id)
   ELSE
      ! Run in parallel if there is more than one processor.
      CALL PARALLEL_DBLE(row_count, col_count, overlap, decomp_id)
@@ -48,18 +48,85 @@ CONTAINS
   !> @brief
   !> The serial EZ_PARALLEL grid decomposition subroutine for DOUBLE PRECISION
   !! grids.
-  !> When running in serial, no grid decomposition occurs. This subroutine is
-  !! included for file consistency, and may be depreciated in the future.
+  !> When running in serial, no grid decomposition occurs. We define the grid
+  !! decompositon for usage in future subroutines.
+  !
+  !> \param[in] row_count Number of rows in the grid.
+  !> \param[inout] col_count Number of columns in the grid, changes to number of
+  !! columns in the sub-grid including overlap, so that the user's time-stepping
+  !! code may remain unchanged.
+  !> \param[in] decomp_id ID number of the grid decomposition, between 1 and the
+  !! number of "unique" grid decompositions.
   !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  SUBROUTINE SERIAL_DBLE
+  SUBROUTINE SERIAL_DBLE(row_count, col_count, decomp_id)
 
     USE MPI
     USE EZ_PARALLEL_STRUCTS
 
     IMPLICIT NONE
 
-    CONTINUE
+    INTEGER, INTENT(IN) :: row_count
+    INTEGER, INTENT(INOUT) :: col_count
+    INTEGER, INTENT(IN) :: decomp_id
+    INTEGER :: SEND_BOUNDARIES(2) !< MPI derived datatype for sending sub-grid
+    !! boundaries to neighboring sub-grids (1 = left, 2 = right).
+    INTEGER :: RECV_BOUNDARIES(2) !< MPI derived datatype for recieving sub-grid
+    !! boundaries from neighboring sub-grids (1 = left, 2 = right).
+    INTEGER :: ierror
+    TYPE(GRID_DECOMPOSITION) :: grid_decomp !< The grid decomposition.
+
+    ! Store grid data in the grid.
+    grid_decomp%row_count_g = row_count
+    grid_decomp%col_count_g = col_count
+    grid_decomp%overlap = 0 ! Force 0 overlap, since there is only 1 sub-grid.
+    grid_decomp%decomp_id = decomp_id
+    
+    ! Generate the horzontal-slab decomposition.
+    ALLOCATE(grid_decomp%row_decomp(proc_count))
+    grid_decomp%row_decomp(1) = row_count
+
+    ! Generate the vertical-slab decomposition without overlap.
+    ALLOCATE(grid_decomp%col_decomp(proc_count))
+    ! Divide col_count as evenly as possible among all the processors, ignoring
+    ! overlap.
+    grid_decomp%col_decomp(1) = col_count
+
+    ! Generate the vertical-slab decomposition with overlap.
+    ALLOCATE(grid_decomp%col_decomp_ovlp(proc_count))
+    grid_decomp%col_decomp_ovlp(1) = col_count
+
+    ! Create the SEND BOUNDARY datatypes, to be committed later. (EMPTY FOR SERIAL)
+    CALL MPI_TYPE_CREATE_SUBARRAY(2, (/row_count, col_count/), &
+         (/0, 0/), (/0,0/), MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, &
+         SEND_BOUNDARIES(1), ierror)
+    CALL MPI_TYPE_CREATE_SUBARRAY(2, (/row_count, col_count/), &
+         (/0, 0/), (/0,0/), MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, &
+         SEND_BOUNDARIES(2), ierror)
+    grid_decomp%SEND_BOUNDARIES = SEND_BOUNDARIES
+
+    ! Create the RECV BOUNDARY datatypes, to be committed later.
+    CALL MPI_TYPE_CREATE_SUBARRAY(2, (/row_count, col_count/), &
+         (/0, 0/), (/0,0/), MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, &
+         RECV_BOUNDARIES(1), ierror)
+    CALL MPI_TYPE_CREATE_SUBARRAY(2, (/row_count, col_count/), &
+         (/0, 0/), (/0,0/), MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, &
+         RECV_BOUNDARIES(2), ierror)
+    grid_decomp%RECV_BOUNDARIES = RECV_BOUNDARIES
+    
+    ! Put grid_decomp into the list of unique grid_decomps
+    grid_decomps(decomp_id) = grid_decomp
+
+    ! Commit the MPI derived datatypes
+    CALL MPI_TYPE_COMMIT(grid_decomps(decomp_id)%SEND_BOUNDARIES(1), ierror)
+    CALL MPI_TYPE_COMMIT(grid_decomps(decomp_id)%SEND_BOUNDARIES(2), ierror)
+    CALL MPI_TYPE_COMMIT(grid_decomps(decomp_id)%RECV_BOUNDARIES(1), ierror)
+    CALL MPI_TYPE_COMMIT(grid_decomps(decomp_id)%RECV_BOUNDARIES(2), ierror)
+    
+    ! Free allocated arrays
+    DEALLOCATE(grid_decomp%row_decomp)
+    DEALLOCATE(grid_decomp%col_decomp)
+    DEALLOCATE(grid_decomp%col_decomp_ovlp)
 
   END SUBROUTINE SERIAL_DBLE
 
@@ -340,14 +407,14 @@ SUBROUTINE DECOMP_GRID_DCMPLX(row_count, col_count, overlap, decomp_id, grid)
   INTEGER, INTENT(IN) :: overlap
   INTEGER, INTENT(IN) :: decomp_id
   INTEGER, INTENT(INOUT) :: col_count
-  DOUBLE COMPLEX, ALLOCATABLE :: grid(:,:)
+  DOUBLE COMPLEX, ALLOCATABLE, INTENT(IN) :: grid(:,:)
   
   ! Check for errors in user input.
   CALL ERROR_HANDLING_DCMPLX(row_count, col_count, overlap, decomp_id)
 
   IF (proc_count .EQ. 1) THEN
      ! Run in serial is there is only one processor.
-     CALL SERIAL_DCMPLX
+     CALL SERIAL_DCMPLX(row_count, col_count, decomp_id)
   ELSE
      ! Run in parallel if there is more than one processor.
      CALL PARALLEL_DCMPLX(row_count, col_count, overlap, decomp_id)
@@ -359,18 +426,85 @@ CONTAINS
   !> @brief
   !> The serial EZ_PARALLEL grid decomposition subroutine for DOUBLE COMPLEX
   !! grids.
-  !> When running in serial, no grid decomposition occurs. This subroutine is
-  !! included for file consistency, and may be depreciated in the future.
+  !> When running in serial, no grid decomposition occurs. We define the grid
+  !! decompositon for usage in future subroutines.
+  !
+  !> \param[in] row_count Number of rows in the grid.
+  !> \param[inout] col_count Number of columns in the grid, changes to number of
+  !! columns in the sub-grid including overlap, so that the user's time-stepping
+  !! code may remain unchanged.
+  !> \param[in] decomp_id ID number of the grid decomposition, between 1 and the
+  !! number of "unique" grid decompositions.
   !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  SUBROUTINE SERIAL_DCMPLX
+  SUBROUTINE SERIAL_DCMPLX(row_count, col_count, decomp_id)
 
     USE MPI
     USE EZ_PARALLEL_STRUCTS
 
     IMPLICIT NONE
 
-    CONTINUE
+    INTEGER, INTENT(IN) :: row_count
+    INTEGER, INTENT(INOUT) :: col_count
+    INTEGER, INTENT(IN) :: decomp_id
+    INTEGER :: SEND_BOUNDARIES(2) !< MPI derived datatype for sending sub-grid
+    !! boundaries to neighboring sub-grids (1 = left, 2 = right).
+    INTEGER :: RECV_BOUNDARIES(2) !< MPI derived datatype for recieving sub-grid
+    !! boundaries from neighboring sub-grids (1 = left, 2 = right).
+    INTEGER :: ierror
+    TYPE(GRID_DECOMPOSITION) :: grid_decomp !< The grid decomposition.
+
+    ! Store grid data in the grid.
+    grid_decomp%row_count_g = row_count
+    grid_decomp%col_count_g = col_count
+    grid_decomp%overlap = 0 ! Force 0 overlap, since there is only 1 sub-grid.
+    grid_decomp%decomp_id = decomp_id
+    
+    ! Generate the horzontal-slab decomposition.
+    ALLOCATE(grid_decomp%row_decomp(proc_count))
+    grid_decomp%row_decomp(1) = row_count
+
+    ! Generate the vertical-slab decomposition without overlap.
+    ALLOCATE(grid_decomp%col_decomp(proc_count))
+    ! Divide col_count as evenly as possible among all the processors, ignoring
+    ! overlap.
+    grid_decomp%col_decomp(1) = col_count
+
+    ! Generate the vertical-slab decomposition with overlap.
+    ALLOCATE(grid_decomp%col_decomp_ovlp(proc_count))
+    grid_decomp%col_decomp_ovlp(1) = col_count
+
+    ! Create the SEND BOUNDARY datatypes, to be committed later. (EMPTY FOR SERIAL)
+    CALL MPI_TYPE_CREATE_SUBARRAY(2, (/row_count, col_count/), &
+         (/0, 0/), (/0,0/), MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, &
+         SEND_BOUNDARIES(1), ierror)
+    CALL MPI_TYPE_CREATE_SUBARRAY(2, (/row_count, col_count/), &
+         (/0, 0/), (/0,0/), MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, &
+         SEND_BOUNDARIES(2), ierror)
+    grid_decomp%SEND_BOUNDARIES = SEND_BOUNDARIES
+
+    ! Create the RECV BOUNDARY datatypes, to be committed later.
+    CALL MPI_TYPE_CREATE_SUBARRAY(2, (/row_count, col_count/), &
+         (/0, 0/), (/0,0/), MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, &
+         RECV_BOUNDARIES(1), ierror)
+    CALL MPI_TYPE_CREATE_SUBARRAY(2, (/row_count, col_count/), &
+         (/0, 0/), (/0,0/), MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, &
+         RECV_BOUNDARIES(2), ierror)
+    grid_decomp%RECV_BOUNDARIES = RECV_BOUNDARIES
+    
+    ! Put grid_decomp into the list of unique grid_decomps
+    grid_decomps(decomp_id) = grid_decomp
+
+    ! Commit the MPI derived datatypes
+    CALL MPI_TYPE_COMMIT(grid_decomps(decomp_id)%SEND_BOUNDARIES(1), ierror)
+    CALL MPI_TYPE_COMMIT(grid_decomps(decomp_id)%SEND_BOUNDARIES(2), ierror)
+    CALL MPI_TYPE_COMMIT(grid_decomps(decomp_id)%RECV_BOUNDARIES(1), ierror)
+    CALL MPI_TYPE_COMMIT(grid_decomps(decomp_id)%RECV_BOUNDARIES(2), ierror)
+    
+    ! Free allocated arrays
+    DEALLOCATE(grid_decomp%row_decomp)
+    DEALLOCATE(grid_decomp%col_decomp)
+    DEALLOCATE(grid_decomp%col_decomp_ovlp)
 
   END SUBROUTINE SERIAL_DCMPLX
 

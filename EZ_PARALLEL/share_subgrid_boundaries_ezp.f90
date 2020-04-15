@@ -1,10 +1,10 @@
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !> @author Jason Turner, University of Wisconsin-Madison
 !> @brief
-!> The EZ_PARALLEL sub-grid boundary communication subroutine for DOUBLE
-!! PRECISION sub-grids.
-!> Communicates the sub-grid boundary to neighboring sub-grids, for DOUBLE
-!! PRECISION sub-grids.
+!> The <tt>EZ_PARALLEL</tt> sub-grid boundary communication subroutine for
+!! <tt>DOUBLE PRECISION</tt> sub-grids.
+!> Communicates the sub-grid boundary to neighboring sub-grids, for <tt>DOUBLE
+!! PRECISION</tt> sub-grids.
 !
 !> \param[in] decomp_id ID number of the grid decomposition, between 1 and the
 !! number of "unique" grid decompositions.
@@ -38,8 +38,8 @@ CONTAINS
 
   !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   !> @brief
-  !> The serial EZ_PARALLEL sub-grid boundary communication subroutine for
-  !! DOUBLE PRECISION sub-grids. 
+  !> The serial <tt>EZ_PARALLEL</tt> sub-grid boundary communication subroutine
+  !! for <tt>DOUBLE PRECISION</tt> sub-grids. 
   !> When running in serial, no sub-grid boundary communication occurs. This
   !! subroutine is included for file consistency, and may be depreciated in the
   !! future.
@@ -57,8 +57,8 @@ CONTAINS
 
   !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   !> @brief
-  !> The parallel EZ_PARALLEL sub-grid boundary communication subroutine for
-  !! DOUBLE PRECISION sub-grids.
+  !> The parallel <tt>EZ_PARALLEL</tt> sub-grid boundary communication
+  !! subroutine for <tt>DOUBLE PRECISION</tt> sub-grids.
   !> Communicates sub-grid boundary to neighboring sub-grids. Note, since
   !! we are not using periodic boundary conditions, the first and last
   !! sub-grids only have one neighbor.
@@ -142,14 +142,14 @@ CONTAINS
 
   !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   !> @brief
-  !> The EZ_PARALLEL sub-grid boundary communication error handling subroutine
-  !! for DOUBLE PRECISION sub-grids.
+  !> The <tt>EZ_PARALLEL</tt> sub-grid boundary communication error handling
+  !! subroutine for <tt>DOUBLE PRECISION</tt> sub-grids.
   !> Aborts the program if the grid decomposition parameters trigger any of the
   !!following errors:
   !! <ul>
   !! <li> decomp_id...
   !!    <ol>
-  !!    <li> is outside of (1, ..., decomp_count)
+  !!    <li> is outside of (1, ..., <tt>decomp_count</tt>)
   !!    </ol>
   !! </ul>
   !
@@ -194,10 +194,10 @@ END SUBROUTINE SHARE_SUBGRID_BOUNDARIES_DBLE
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !> @author Jason Turner, University of Wisconsin-Madison
 !> @brief
-!> The EZ_PARALLEL sub-grid boundary communication subroutine for DOUBLE COMLPEX
-!! sub-grids.
-!> Communicates the sub-grid boundary to neighboring sub-grids, for DOUBLE
-!! COMPLEX sub-grids.
+!> The <tt>EZ_PARALLEL</tt> sub-grid boundary communication subroutine for
+!! <tt>DOUBLE COMLPEX</tt> sub-grids.
+!> Communicates the sub-grid boundary to neighboring sub-grids, for <tt>DOUBLE
+!! COMPLEX</tt> sub-grids.
 !
 !> \param[in] decomp_id ID number of the grid decomposition, between 1 and the
 !! number of "unique" grid decompositions.
@@ -231,8 +231,8 @@ CONTAINS
 
   !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   !> @brief
-  !> The serial EZ_PARALLEL sub-grid boundary communication subroutine for
-  !! DOUBLE COMPLEX sub-grids. 
+  !> The serial <tt>EZ_PARALLEL</tt> sub-grid boundary communication subroutine
+  !! for <tt>DOUBLE COMPLEX</tt> sub-grids. 
   !> When running in serial, no sub-grid boundary communication occurs. This
   !! subroutine is included for file consistency, and may be depreciated in the
   !! future.
@@ -250,8 +250,8 @@ CONTAINS
 
   !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   !> @brief
-  !> The parallel EZ_PARALLEL sub-grid boundary communication subroutine for
-  !! DOUBLE COMPLEX sub-grids.
+  !> The parallel <tt>EZ_PARALLEL</tt> sub-grid boundary communication
+  !! subroutine for <tt>DOUBLE COMPLEX</tt> sub-grids.
   !> Communicates sub-grid boundary to neighboring sub-grids. Note, since
   !! we are not using periodic boundary conditions, the first and last
   !! sub-grids only have one neighbor.
@@ -281,7 +281,7 @@ CONTAINS
        CALL MPI_SEND(sub_grid, 1, grid_decomps(decomp_id)%SEND_BOUNDARIES(2), &
             proc_id+1, proc_id+1, MPI_COMM_WORLD, ierror)
        CALL MPI_RECV(sub_grid, 1, grid_decomps(decomp_id)%RECV_BOUNDARIES(2), &
-            proc_id+1, proc_id, MPI_COMM_WORLD, ierror)
+            proc_id+1, proc_id, MPI_COMM_WORLD, status, ierror)
        
     ! Last sub-grid only SEND/RECV to/from one neighbor.
     ELSE IF (proc_id .EQ. proc_count-1) THEN
@@ -291,12 +291,12 @@ CONTAINS
                proc_id-1, proc_id-1, MPI_COMM_WORLD, ierror)
           
           CALL MPI_RECV(sub_grid, 1, grid_decomps(decomp_id)%RECV_BOUNDARIES(1), &
-               proc_id-1, proc_id, MPI_COMM_WORLD, ierror)
+               proc_id-1, proc_id, MPI_COMM_WORLD, status, ierror)
           
        ! If proc_id odd, RECV then SEND.
        ELSE
           CALL MPI_RECV(sub_grid, 1, grid_decomps(decomp_id)%RECV_BOUNDARIES(1), &
-               proc_id-1, proc_id, MPI_COMM_WORLD, ierror)
+               proc_id-1, proc_id, MPI_COMM_WORLD, status, ierror)
           
           CALL MPI_SEND(sub_grid, 1, grid_decomps(decomp_id)%SEND_BOUNDARIES(1), &
                proc_id-1, proc_id-1, MPI_COMM_WORLD, ierror)
@@ -312,16 +312,16 @@ CONTAINS
                proc_id+1, proc_id+1, MPI_COMM_WORLD, ierror)
           
           CALL MPI_RECV(sub_grid, 1, grid_decomps(decomp_id)%RECV_BOUNDARIES(1), &
-               proc_id-1, proc_id, MPI_COMM_WORLD, ierror)
+               proc_id-1, proc_id, MPI_COMM_WORLD, status, ierror)
           CALL MPI_RECV(sub_grid, 1, grid_decomps(decomp_id)%RECV_BOUNDARIES(2), &
-               proc_id-1, proc_id, MPI_COMM_WORLD, ierror)
+               proc_id-1, proc_id, MPI_COMM_WORLD, status, ierror)
           
        ! If proc_id odd, RECV then SEND
        ELSE
           CALL MPI_RECV(sub_grid, 1, grid_decomps(decomp_id)%RECV_BOUNDARIES(1), &
-               proc_id-1, proc_id, MPI_COMM_WORLD, ierror)
+               proc_id-1, proc_id, MPI_COMM_WORLD, status, ierror)
           CALL MPI_RECV(sub_grid, 1, grid_decomps(decomp_id)%RECV_BOUNDARIES(2), &
-               proc_id-1, proc_id, MPI_COMM_WORLD, ierror)
+               proc_id-1, proc_id, MPI_COMM_WORLD, status, ierror)
           
           CALL MPI_SEND(sub_grid, 1, grid_decomps(decomp_id)%SEND_BOUNDARIES(1), &
                proc_id-1, proc_id-1, MPI_COMM_WORLD, ierror)
@@ -334,14 +334,14 @@ CONTAINS
 
   !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   !> @brief
-  !> The EZ_PARALLEL sub-grid boundary communication error handling subroutine
-  !! for DOUBLE COMPLEX sub-grids.
+  !> The <tt>EZ_PARALLEL</tt> sub-grid boundary communication error handling
+  !! subroutine for <tt>DOUBLE COMPLEX</tt> sub-grids.
   !> Aborts the program if the grid decomposition parameters trigger any of the
-  !!following errors:
+  !! following errors:
   !! <ul>
   !! <li> decomp_id...
   !!    <ol>
-  !!    <li> is outside of (1, ..., decomp_count)
+  !!    <li> is outside of (1, ..., <tt>decomp_count</tt>)
   !!    </ol>
   !! </ul>
   !

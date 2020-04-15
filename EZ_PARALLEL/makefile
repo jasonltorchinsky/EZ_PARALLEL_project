@@ -28,7 +28,7 @@ ifeq ($(FC), gfortran)
   # Path to msmpi lib.
   MPIPTHLIB = $(MSMPI_LIB64)
   # Compiler flags.
-  FCFLAGS = 
+  FCFLAGS = -g -Wall
   # Include file search path, e.g., C:/lib/mpi/include.
   INCPTHS = $(MPIPTHINC) ./DFFTPACK
   # Library search path, e.g., C:/lib/mpi/lib.

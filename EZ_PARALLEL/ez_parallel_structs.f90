@@ -6,7 +6,7 @@
 ! MODULE           : STRUCTS
 ! URL              : https://github.com/jasonlturner/EZ_PARALLEL_project
 ! AFFILIATION      : University of Wisconsin-Madison
-! DATE             : April, 2020
+! DATE             : Spring 2020
 ! REVISION         : ALPHA 1.01
 !
 !> @author
