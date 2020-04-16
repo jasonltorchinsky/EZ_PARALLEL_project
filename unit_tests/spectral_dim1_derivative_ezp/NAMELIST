@@ -1,0 +1,14 @@
+&test_params
+decomp_count_L = 2
+row_count_dble = 6
+col_count_dble = 1
+overlap_dble = 2
+decomp_id_dble = 1
+row_count_dcmplx = 4
+col_count_dcmplx = 1
+overlap_dcmplx = 1
+decomp_id_dcmplx = 2
+order_dble = 1
+order_dcmplx = 3
+/
+
