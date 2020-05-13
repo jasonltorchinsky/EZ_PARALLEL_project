@@ -1,0 +1,192 @@
+\hypertarget{share__subgrid__boundaries__ezp_8f90}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.f90 File Reference}
+\label{share__subgrid__boundaries__ezp_8f90}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/share\_subgrid\_boundaries\_ezp.f90@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/share\_subgrid\_boundaries\_ezp.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{share__subgrid__boundaries__ezp_8f90_af492041c8add3a05da0f563cb6b44067}{share\+\_\+subgrid\+\_\+boundaries\+\_\+dble}} (decomp\+\_\+id, sub\+\_\+grid)
+\begin{DoxyCompactList}\small\item\em The {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. Communicates the sub-\/grid boundary to neighboring sub-\/grids, for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{share__subgrid__boundaries__ezp_8f90_a555781dc803e441e0bf13eed64d3655b}{serial\+\_\+dble}}
+\begin{DoxyCompactList}\small\item\em The serial {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. When running in serial, no sub-\/grid boundary communication occurs. This subroutine is included for file consistency, and may be depreciated in the future. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{share__subgrid__boundaries__ezp_8f90_a41574888fcfa0c2851c45ff03c70f292}{parallel\+\_\+dble}} (decomp\+\_\+id, sub\+\_\+grid)
+\begin{DoxyCompactList}\small\item\em The parallel {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. Communicates sub-\/grid boundary to neighboring sub-\/grids. Note, since we are not using periodic boundary conditions, the first and last sub-\/grids only have one neighbor. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{share__subgrid__boundaries__ezp_8f90_a9e8fdc0902b7defad96f9a9617319658}{error\+\_\+handling\+\_\+dble}} (decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication error handling subroutine for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. Aborts the program if the grid decomposition parameters trigger any of the following errors\+: \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{share__subgrid__boundaries__ezp_8f90_adce38aa68fe3c25904c74f026be48982}{share\+\_\+subgrid\+\_\+boundaries\+\_\+dcmplx}} (decomp\+\_\+id, sub\+\_\+grid)
+\begin{DoxyCompactList}\small\item\em The {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+L\+P\+EX} sub-\/grids. Communicates the sub-\/grid boundary to neighboring sub-\/grids, for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX} sub-\/grids. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{share__subgrid__boundaries__ezp_8f90_a5cf5a3e84b70714c1e4131f4bdd4a16d}{serial\+\_\+dcmplx}}
+\begin{DoxyCompactList}\small\item\em The serial {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX} sub-\/grids. When running in serial, no sub-\/grid boundary communication occurs. This subroutine is included for file consistency, and may be depreciated in the future. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{share__subgrid__boundaries__ezp_8f90_aabec7772330ad32a81d10b262b0a89b2}{parallel\+\_\+dcmplx}} (decomp\+\_\+id, sub\+\_\+grid)
+\begin{DoxyCompactList}\small\item\em The parallel {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX} sub-\/grids. Communicates sub-\/grid boundary to neighboring sub-\/grids. Note, since we are not using periodic boundary conditions, the first and last sub-\/grids only have one neighbor. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{share__subgrid__boundaries__ezp_8f90_a302fdc56858863eccf37bef46d601eab}{error\+\_\+handling\+\_\+dcmplx}} (decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication error handling subroutine for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX} sub-\/grids. Aborts the program if the grid decomposition parameters trigger any of the following errors\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{share__subgrid__boundaries__ezp_8f90_a9e8fdc0902b7defad96f9a9617319658}\label{share__subgrid__boundaries__ezp_8f90_a9e8fdc0902b7defad96f9a9617319658}} 
+\index{share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}!error\_handling\_dble@{error\_handling\_dble}}
+\index{error\_handling\_dble@{error\_handling\_dble}!share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{error\_handling\_dble()}{error\_handling\_dble()}}
+{\footnotesize\ttfamily subroutine share\+\_\+subgrid\+\_\+boundaries\+\_\+dble\+::error\+\_\+handling\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication error handling subroutine for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. Aborts the program if the grid decomposition parameters trigger any of the following errors\+: 
+
+
+\begin{DoxyItemize}
+\item decomp\+\_\+id... 
+\begin{DoxyEnumerate}
+\item is outside of (1, ..., {\ttfamily decomp\+\_\+count}) 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 161 of file share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{share__subgrid__boundaries__ezp_8f90_a302fdc56858863eccf37bef46d601eab}\label{share__subgrid__boundaries__ezp_8f90_a302fdc56858863eccf37bef46d601eab}} 
+\index{share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}!error\_handling\_dcmplx@{error\_handling\_dcmplx}}
+\index{error\_handling\_dcmplx@{error\_handling\_dcmplx}!share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{error\_handling\_dcmplx()}{error\_handling\_dcmplx()}}
+{\footnotesize\ttfamily subroutine share\+\_\+subgrid\+\_\+boundaries\+\_\+dcmplx\+::error\+\_\+handling\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication error handling subroutine for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX} sub-\/grids. Aborts the program if the grid decomposition parameters trigger any of the following errors\+: 
+
+
+\begin{DoxyItemize}
+\item decomp\+\_\+id... 
+\begin{DoxyEnumerate}
+\item is outside of (1, ..., {\ttfamily decomp\+\_\+count}) 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 353 of file share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{share__subgrid__boundaries__ezp_8f90_a41574888fcfa0c2851c45ff03c70f292}\label{share__subgrid__boundaries__ezp_8f90_a41574888fcfa0c2851c45ff03c70f292}} 
+\index{share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}!parallel\_dble@{parallel\_dble}}
+\index{parallel\_dble@{parallel\_dble}!share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{parallel\_dble()}{parallel\_dble()}}
+{\footnotesize\ttfamily subroutine share\+\_\+subgrid\+\_\+boundaries\+\_\+dble\+::parallel\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double precision, dimension(\+:,\+:), intent(inout)}]{sub\+\_\+grid }\end{DoxyParamCaption})}
+
+
+
+The parallel {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. Communicates sub-\/grid boundary to neighboring sub-\/grids. Note, since we are not using periodic boundary conditions, the first and last sub-\/grids only have one neighbor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sub\+\_\+grid} & The sub-\/grid belonging to the processor. This is stored under the original variable for the grid, e.\+g., if the serial code uses heat\+\_\+grid as the grid, then the heat\+\_\+grid should be passed to this subroutine as the sub\+\_\+grid argument. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 75 of file share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{share__subgrid__boundaries__ezp_8f90_aabec7772330ad32a81d10b262b0a89b2}\label{share__subgrid__boundaries__ezp_8f90_aabec7772330ad32a81d10b262b0a89b2}} 
+\index{share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}!parallel\_dcmplx@{parallel\_dcmplx}}
+\index{parallel\_dcmplx@{parallel\_dcmplx}!share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{parallel\_dcmplx()}{parallel\_dcmplx()}}
+{\footnotesize\ttfamily subroutine share\+\_\+subgrid\+\_\+boundaries\+\_\+dcmplx\+::parallel\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double complex, dimension(\+:,\+:), intent(inout)}]{sub\+\_\+grid }\end{DoxyParamCaption})}
+
+
+
+The parallel {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX} sub-\/grids. Communicates sub-\/grid boundary to neighboring sub-\/grids. Note, since we are not using periodic boundary conditions, the first and last sub-\/grids only have one neighbor. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sub\+\_\+grid} & The sub-\/grid belonging to the processor. This is stored under the original variable for the grid, e.\+g., if the serial code uses heat\+\_\+grid as the grid, then the heat\+\_\+grid should be passed to this subroutine as the sub\+\_\+grid argument. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 268 of file share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{share__subgrid__boundaries__ezp_8f90_a555781dc803e441e0bf13eed64d3655b}\label{share__subgrid__boundaries__ezp_8f90_a555781dc803e441e0bf13eed64d3655b}} 
+\index{share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}!serial\_dble@{serial\_dble}}
+\index{serial\_dble@{serial\_dble}!share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{serial\_dble()}{serial\_dble()}}
+{\footnotesize\ttfamily subroutine share\+\_\+subgrid\+\_\+boundaries\+\_\+dble\+::serial\+\_\+dble}
+
+
+
+The serial {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. When running in serial, no sub-\/grid boundary communication occurs. This subroutine is included for file consistency, and may be depreciated in the future. 
+
+
+
+Definition at line 49 of file share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{share__subgrid__boundaries__ezp_8f90_a5cf5a3e84b70714c1e4131f4bdd4a16d}\label{share__subgrid__boundaries__ezp_8f90_a5cf5a3e84b70714c1e4131f4bdd4a16d}} 
+\index{share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}!serial\_dcmplx@{serial\_dcmplx}}
+\index{serial\_dcmplx@{serial\_dcmplx}!share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{serial\_dcmplx()}{serial\_dcmplx()}}
+{\footnotesize\ttfamily subroutine share\+\_\+subgrid\+\_\+boundaries\+\_\+dcmplx\+::serial\+\_\+dcmplx}
+
+
+
+The serial {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX} sub-\/grids. When running in serial, no sub-\/grid boundary communication occurs. This subroutine is included for file consistency, and may be depreciated in the future. 
+
+
+
+Definition at line 242 of file share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{share__subgrid__boundaries__ezp_8f90_af492041c8add3a05da0f563cb6b44067}\label{share__subgrid__boundaries__ezp_8f90_af492041c8add3a05da0f563cb6b44067}} 
+\index{share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}!share\_subgrid\_boundaries\_dble@{share\_subgrid\_boundaries\_dble}}
+\index{share\_subgrid\_boundaries\_dble@{share\_subgrid\_boundaries\_dble}!share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{share\_subgrid\_boundaries\_dble()}{share\_subgrid\_boundaries\_dble()}}
+{\footnotesize\ttfamily subroutine share\+\_\+subgrid\+\_\+boundaries\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double precision, dimension(\+:,\+:), intent(inout)}]{sub\+\_\+grid }\end{DoxyParamCaption})}
+
+
+
+The {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. Communicates the sub-\/grid boundary to neighboring sub-\/grids, for {\ttfamily D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON} sub-\/grids. 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sub\+\_\+grid} & The sub-\/grid belonging to the processor. This is stored under the original variable for the grid, e.\+g., if the serial code uses heat\+\_\+grid as the grid, then the heat\+\_\+grid should be passed to this subroutine as the sub\+\_\+grid argument. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 18 of file share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{share__subgrid__boundaries__ezp_8f90_adce38aa68fe3c25904c74f026be48982}\label{share__subgrid__boundaries__ezp_8f90_adce38aa68fe3c25904c74f026be48982}} 
+\index{share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}!share\_subgrid\_boundaries\_dcmplx@{share\_subgrid\_boundaries\_dcmplx}}
+\index{share\_subgrid\_boundaries\_dcmplx@{share\_subgrid\_boundaries\_dcmplx}!share\_subgrid\_boundaries\_ezp.f90@{share\_subgrid\_boundaries\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{share\_subgrid\_boundaries\_dcmplx()}{share\_subgrid\_boundaries\_dcmplx()}}
+{\footnotesize\ttfamily subroutine share\+\_\+subgrid\+\_\+boundaries\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double complex, dimension(\+:,\+:), intent(inout)}]{sub\+\_\+grid }\end{DoxyParamCaption})}
+
+
+
+The {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} sub-\/grid boundary communication subroutine for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+L\+P\+EX} sub-\/grids. Communicates the sub-\/grid boundary to neighboring sub-\/grids, for {\ttfamily D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX} sub-\/grids. 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sub\+\_\+grid} & The sub-\/grid belonging to the processor. This is stored under the original variable for the grid, e.\+g., if the serial code uses heat\+\_\+grid as the grid, then the heat\+\_\+grid should be passed to this subroutine as the sub\+\_\+grid argument. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 211 of file share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.\+f90.
+

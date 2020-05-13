@@ -3,26 +3,34 @@
 \doxysubsection*{Functions/\+Subroutines}
 \begin{DoxyCompactItemize}
 \item 
-subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_a25aae121c18bbdf1c593eb793e18d0d9}{decomp\+\_\+grid\+\_\+ezp}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id)
-\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. \end{DoxyCompactList}\item 
-subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_a5cbc50f5cff5618e0d801aa64e54461e}{serial}}
-\begin{DoxyCompactList}\small\item\em The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine. When running in serial, no grid decomposition occurs. This subroutine is included for file consistency, and may be depreciated in the future. \end{DoxyCompactList}\item 
-subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_ac514d51ffda4733aaf31dda8c3d0afad}{parallel}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id)
-\begin{DoxyCompactList}\small\item\em The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. \end{DoxyCompactList}\item 
-subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_a09f0f11cf844f9451d8a4e86340b4269}{error\+\_\+handling}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id)
+subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_a0e08e078eafef58af820c2b261073aad}{decomp\+\_\+grid\+\_\+dble}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id, grid)
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON grids. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_abacfc36bee423b9f861e5fae4694f421}{serial\+\_\+dble}} (row\+\_\+count, col\+\_\+count, decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON grids. When running in serial, no grid decomposition occurs. We define the grid decompositon for usage in future subroutines. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_ad6c2a42b87b474034b6835d16022cd08}{parallel\+\_\+dble}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON grids. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_ad33e1e9619cf1f7eff9e723a47796eff}{error\+\_\+handling\+\_\+dble}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition error handling subroutine. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors\+: \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_adbff2f398da6f557148a69d9e5d0180e}{decomp\+\_\+grid\+\_\+dcmplx}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id, grid)
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX grids. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_a078ffe1900bcefc81893863060751a08}{serial\+\_\+dcmplx}} (row\+\_\+count, col\+\_\+count, decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX grids. When running in serial, no grid decomposition occurs. We define the grid decompositon for usage in future subroutines. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_a7983946380157a2178a3ef5f2527429e}{parallel\+\_\+dcmplx}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX grids. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{decomp__grid__ezp_8f90_a2b870539e0f2c69535db643b31bc6004}{error\+\_\+handling\+\_\+dcmplx}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id)
 \begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition error handling subroutine. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Function/\+Subroutine Documentation}
-\mbox{\Hypertarget{decomp__grid__ezp_8f90_a25aae121c18bbdf1c593eb793e18d0d9}\label{decomp__grid__ezp_8f90_a25aae121c18bbdf1c593eb793e18d0d9}} 
-\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!decomp\_grid\_ezp@{decomp\_grid\_ezp}}
-\index{decomp\_grid\_ezp@{decomp\_grid\_ezp}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
-\doxysubsubsection{\texorpdfstring{decomp\_grid\_ezp()}{decomp\_grid\_ezp()}}
-{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+ezp (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+\mbox{\Hypertarget{decomp__grid__ezp_8f90_a0e08e078eafef58af820c2b261073aad}\label{decomp__grid__ezp_8f90_a0e08e078eafef58af820c2b261073aad}} 
+\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!decomp\_grid\_dble@{decomp\_grid\_dble}}
+\index{decomp\_grid\_dble@{decomp\_grid\_dble}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{decomp\_grid\_dble()}{decomp\_grid\_dble()}}
+{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double precision, dimension(\+:,\+:), intent(in), allocatable}]{grid }\end{DoxyParamCaption})}
 
 
 
-The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. 
+The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON grids. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. 
 
 \begin{DoxyAuthor}{Author}
 Jason Turner, University of Wisconsin-\/\+Madison 
@@ -37,12 +45,48 @@ Jason Turner, University of Wisconsin-\/\+Madison
 \hline
 \mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
 \hline
+\mbox{\texttt{ in}}  & {\em grid} & The grid to be allocated and decomposed, for use in identifying what datatype it is. N\+O\+TE\+: It must not yet be allocated. \\
+\hline
 \end{DoxyParams}
-\mbox{\Hypertarget{decomp__grid__ezp_8f90_a09f0f11cf844f9451d8a4e86340b4269}\label{decomp__grid__ezp_8f90_a09f0f11cf844f9451d8a4e86340b4269}} 
-\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!error\_handling@{error\_handling}}
-\index{error\_handling@{error\_handling}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
-\doxysubsubsection{\texorpdfstring{error\_handling()}{error\_handling()}}
-{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+ezp\+::error\+\_\+handling (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(in)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+Definition at line 22 of file decomp\+\_\+grid\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{decomp__grid__ezp_8f90_adbff2f398da6f557148a69d9e5d0180e}\label{decomp__grid__ezp_8f90_adbff2f398da6f557148a69d9e5d0180e}} 
+\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!decomp\_grid\_dcmplx@{decomp\_grid\_dcmplx}}
+\index{decomp\_grid\_dcmplx@{decomp\_grid\_dcmplx}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{decomp\_grid\_dcmplx()}{decomp\_grid\_dcmplx()}}
+{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double complex, dimension(\+:,\+:), intent(in), allocatable}]{grid }\end{DoxyParamCaption})}
+
+
+
+The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX grids. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em row\+\_\+count} & Number of rows in the grid. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+count} & Number of columns in the grid, changes to number of columns in the sub-\/grid including overlap, so that the user\textquotesingle{}s time-\/stepping code may remain unchanged. \\
+\hline
+\mbox{\texttt{ in}}  & {\em overlap} & Number of extra columns needed by each sub-\/grid to successfully step forward in time. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\mbox{\texttt{ in}}  & {\em grid} & The grid to be allocated and decomposed, for use in identifying what datatype it is. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 400 of file decomp\+\_\+grid\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{decomp__grid__ezp_8f90_ad33e1e9619cf1f7eff9e723a47796eff}\label{decomp__grid__ezp_8f90_ad33e1e9619cf1f7eff9e723a47796eff}} 
+\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!error\_handling\_dble@{error\_handling\_dble}}
+\index{error\_handling\_dble@{error\_handling\_dble}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{error\_handling\_dble()}{error\_handling\_dble()}}
+{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+dble\+::error\+\_\+handling\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(in)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
 
 
 
@@ -79,15 +123,64 @@ The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition error handling subroutin
 \mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{decomp__grid__ezp_8f90_ac514d51ffda4733aaf31dda8c3d0afad}\label{decomp__grid__ezp_8f90_ac514d51ffda4733aaf31dda8c3d0afad}} 
-\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!parallel@{parallel}}
-\index{parallel@{parallel}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
-\doxysubsubsection{\texorpdfstring{parallel()}{parallel()}}
-{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+ezp\+::parallel (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+Definition at line 294 of file decomp\+\_\+grid\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{decomp__grid__ezp_8f90_a2b870539e0f2c69535db643b31bc6004}\label{decomp__grid__ezp_8f90_a2b870539e0f2c69535db643b31bc6004}} 
+\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!error\_handling\_dcmplx@{error\_handling\_dcmplx}}
+\index{error\_handling\_dcmplx@{error\_handling\_dcmplx}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{error\_handling\_dcmplx()}{error\_handling\_dcmplx()}}
+{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+dcmplx\+::error\+\_\+handling\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(in)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
 
 
 
-The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. 
+The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition error handling subroutine. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors\+: 
+
+
+\begin{DoxyItemize}
+\item row\+\_\+count... 
+\begin{DoxyEnumerate}
+\item is not positive 
+\end{DoxyEnumerate}
+\item col\+\_\+count... 
+\begin{DoxyEnumerate}
+\item is not positive 
+\item is too small to be divided among the processors, ignoring the overlap 
+\item is too small to be divided among the processors, including overlap 
+\end{DoxyEnumerate}
+\item overlap... 
+\begin{DoxyEnumerate}
+\item is negative 
+\end{DoxyEnumerate}
+\item decomp\+\_\+id... 
+\begin{DoxyEnumerate}
+\item is outside of (1, ..., decomp\+\_\+count) 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em row\+\_\+count} & Number of rows in the grid. \\
+\hline
+\mbox{\texttt{ in}}  & {\em col\+\_\+count} & Number of columns in the grid, changes to number of columns in the sub-\/grid including overlap, so that the user\textquotesingle{}s time-\/stepping code may remain unchanged. \\
+\hline
+\mbox{\texttt{ in}}  & {\em overlap} & Number of extra columns needed by each sub-\/grid to successfully step forward in time. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 672 of file decomp\+\_\+grid\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{decomp__grid__ezp_8f90_ad6c2a42b87b474034b6835d16022cd08}\label{decomp__grid__ezp_8f90_ad6c2a42b87b474034b6835d16022cd08}} 
+\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!parallel\_dble@{parallel\_dble}}
+\index{parallel\_dble@{parallel\_dble}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{parallel\_dble()}{parallel\_dble()}}
+{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+dble\+::parallel\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON grids. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. 
 
 
 \begin{DoxyParams}[1]{Parameters}
@@ -100,13 +193,78 @@ The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine. Giv
 \mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{decomp__grid__ezp_8f90_a5cbc50f5cff5618e0d801aa64e54461e}\label{decomp__grid__ezp_8f90_a5cbc50f5cff5618e0d801aa64e54461e}} 
-\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!serial@{serial}}
-\index{serial@{serial}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
-\doxysubsubsection{\texorpdfstring{serial()}{serial()}}
-{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+ezp\+::serial}
+
+
+Definition at line 152 of file decomp\+\_\+grid\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{decomp__grid__ezp_8f90_a7983946380157a2178a3ef5f2527429e}\label{decomp__grid__ezp_8f90_a7983946380157a2178a3ef5f2527429e}} 
+\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!parallel\_dcmplx@{parallel\_dcmplx}}
+\index{parallel\_dcmplx@{parallel\_dcmplx}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{parallel\_dcmplx()}{parallel\_dcmplx()}}
+{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+dcmplx\+::parallel\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
 
 
 
-The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine. When running in serial, no grid decomposition occurs. This subroutine is included for file consistency, and may be depreciated in the future. 
+The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX grids. Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em row\+\_\+count} & Number of rows in the grid. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+count} & Number of columns in the grid, changes to number of columns in the sub-\/grid including overlap, so that the user\textquotesingle{}s time-\/stepping code may remain unchanged. \\
+\hline
+\mbox{\texttt{ in}}  & {\em overlap} & Number of extra columns needed by each sub-\/grid to successfully step forward in time. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 530 of file decomp\+\_\+grid\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{decomp__grid__ezp_8f90_abacfc36bee423b9f861e5fae4694f421}\label{decomp__grid__ezp_8f90_abacfc36bee423b9f861e5fae4694f421}} 
+\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!serial\_dble@{serial\_dble}}
+\index{serial\_dble@{serial\_dble}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{serial\_dble()}{serial\_dble()}}
+{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+dble\+::serial\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON grids. When running in serial, no grid decomposition occurs. We define the grid decompositon for usage in future subroutines. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em row\+\_\+count} & Number of rows in the grid. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+count} & Number of columns in the grid, changes to number of columns in the sub-\/grid including overlap, so that the user\textquotesingle{}s time-\/stepping code may remain unchanged. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 63 of file decomp\+\_\+grid\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{decomp__grid__ezp_8f90_a078ffe1900bcefc81893863060751a08}\label{decomp__grid__ezp_8f90_a078ffe1900bcefc81893863060751a08}} 
+\index{decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}!serial\_dcmplx@{serial\_dcmplx}}
+\index{serial\_dcmplx@{serial\_dcmplx}!decomp\_grid\_ezp.f90@{decomp\_grid\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{serial\_dcmplx()}{serial\_dcmplx()}}
+{\footnotesize\ttfamily subroutine decomp\+\_\+grid\+\_\+dcmplx\+::serial\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL grid decomposition subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX grids. When running in serial, no grid decomposition occurs. We define the grid decompositon for usage in future subroutines. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em row\+\_\+count} & Number of rows in the grid. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+count} & Number of columns in the grid, changes to number of columns in the sub-\/grid including overlap, so that the user\textquotesingle{}s time-\/stepping code may remain unchanged. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 441 of file decomp\+\_\+grid\+\_\+ezp.\+f90.
 

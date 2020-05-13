@@ -1,0 +1,200 @@
+\hypertarget{identify__ref__point__ezp_8f90}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/identify\+\_\+ref\+\_\+point\+\_\+ezp.f90 File Reference}
+\label{identify__ref__point__ezp_8f90}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/identify\_ref\_point\_ezp.f90@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/identify\_ref\_point\_ezp.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{identify__ref__point__ezp_8f90_aa956156eb50e5ebad462fb8a8b4373d7}{identify\+\_\+ref\+\_\+point\+\_\+dble}} (col\+\_\+spc, col\+\_\+ref, decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON column spacing and column reference point. Assuming a linear spacing of grid points, adjusts the physical position of the reference point in the physical direction corresponding to the second dimension of the grid. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{identify__ref__point__ezp_8f90_a854ffdca6bcb7333da1863b233634f2f}{serial\+\_\+dble}}
+\begin{DoxyCompactList}\small\item\em The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON column spacing and column reference point. When running in serial, no change in reference point occurs. This subroutine is included for file consistency, and may be depreciated in the future. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{identify__ref__point__ezp_8f90_a1fefd36141bd985e7673755d8a99aafb}{parallel\+\_\+dble}} (col\+\_\+spc, col\+\_\+ref, decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON column spacing and column reference point. Assuming a linear spacing of grid points, calculates the physical position of the sub-\/grid reference point in the physical direction corresponding to the first dimension of the grid. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{identify__ref__point__ezp_8f90_ad6cd0655140345436e59f9ec7435c807}{error\+\_\+handling\+\_\+dble}} (decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification error handling subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON column spacing and column reference point. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors\+: \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{identify__ref__point__ezp_8f90_a795eb945ba6d1a2d017c5946813baff5}{identify\+\_\+ref\+\_\+point\+\_\+dcmplx}} (col\+\_\+spc, col\+\_\+ref, decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX column spacing and column reference point. Assuming a linear spacing of grid points, adjusts the physical position of the reference point in the physical direction corresponding to the second dimension of the grid. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{identify__ref__point__ezp_8f90_a7bd4a191b39fc6eb4edf2af49c208e24}{serial\+\_\+dcmplx}}
+\begin{DoxyCompactList}\small\item\em The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX column spacing and column reference point. When running in serial, no change in reference point occurs. This subroutine is included for file consistency, and may be depreciated in the future. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{identify__ref__point__ezp_8f90_aab37563b752e34972ca49ad18c618c05}{parallel\+\_\+dcmplx}} (col\+\_\+spc, col\+\_\+ref, decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX column spacing and column reference point. Assuming a linear spacing of grid points, calculates the physical position of the sub-\/grid reference point in the physical direction corresponding to the first dimension of the grid. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{identify__ref__point__ezp_8f90_a8004df5d674d3c99a0b1b469960731db}{error\+\_\+handling\+\_\+dcmplx}} (decomp\+\_\+id)
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification error handling subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX column spacing and column reference point. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{identify__ref__point__ezp_8f90_ad6cd0655140345436e59f9ec7435c807}\label{identify__ref__point__ezp_8f90_ad6cd0655140345436e59f9ec7435c807}} 
+\index{identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}!error\_handling\_dble@{error\_handling\_dble}}
+\index{error\_handling\_dble@{error\_handling\_dble}!identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{error\_handling\_dble()}{error\_handling\_dble()}}
+{\footnotesize\ttfamily subroutine identify\+\_\+ref\+\_\+point\+\_\+dble\+::error\+\_\+handling\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification error handling subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON column spacing and column reference point. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors\+: 
+
+
+\begin{DoxyItemize}
+\item decomp\+\_\+id... 
+\begin{DoxyEnumerate}
+\item is outside of (1, ..., decomp\+\_\+count) 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 122 of file identify\+\_\+ref\+\_\+point\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{identify__ref__point__ezp_8f90_a8004df5d674d3c99a0b1b469960731db}\label{identify__ref__point__ezp_8f90_a8004df5d674d3c99a0b1b469960731db}} 
+\index{identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}!error\_handling\_dcmplx@{error\_handling\_dcmplx}}
+\index{error\_handling\_dcmplx@{error\_handling\_dcmplx}!identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{error\_handling\_dcmplx()}{error\_handling\_dcmplx()}}
+{\footnotesize\ttfamily subroutine identify\+\_\+ref\+\_\+point\+\_\+dcmplx\+::error\+\_\+handling\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification error handling subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX column spacing and column reference point. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors\+: 
+
+
+\begin{DoxyItemize}
+\item decomp\+\_\+id... 
+\begin{DoxyEnumerate}
+\item is outside of (1, ..., decomp\+\_\+count) 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 275 of file identify\+\_\+ref\+\_\+point\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{identify__ref__point__ezp_8f90_aa956156eb50e5ebad462fb8a8b4373d7}\label{identify__ref__point__ezp_8f90_aa956156eb50e5ebad462fb8a8b4373d7}} 
+\index{identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}!identify\_ref\_point\_dble@{identify\_ref\_point\_dble}}
+\index{identify\_ref\_point\_dble@{identify\_ref\_point\_dble}!identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{identify\_ref\_point\_dble()}{identify\_ref\_point\_dble()}}
+{\footnotesize\ttfamily subroutine identify\+\_\+ref\+\_\+point\+\_\+dble (\begin{DoxyParamCaption}\item[{double precision, intent(in)}]{col\+\_\+spc,  }\item[{double precision, intent(inout)}]{col\+\_\+ref,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON column spacing and column reference point. Assuming a linear spacing of grid points, adjusts the physical position of the reference point in the physical direction corresponding to the second dimension of the grid. 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em col\+\_\+spc} & Physical spacing of columns in the grid, e.\+g., if the second dimension of the grid represents the z-\/direction, then col\+\_\+spc corresponds to the spacing of grid points in the z-\/direction. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+ref} & Physical position of the reference point in the second dimension of the grid, e.\+g., the z-\/coordinate. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 20 of file identify\+\_\+ref\+\_\+point\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{identify__ref__point__ezp_8f90_a795eb945ba6d1a2d017c5946813baff5}\label{identify__ref__point__ezp_8f90_a795eb945ba6d1a2d017c5946813baff5}} 
+\index{identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}!identify\_ref\_point\_dcmplx@{identify\_ref\_point\_dcmplx}}
+\index{identify\_ref\_point\_dcmplx@{identify\_ref\_point\_dcmplx}!identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{identify\_ref\_point\_dcmplx()}{identify\_ref\_point\_dcmplx()}}
+{\footnotesize\ttfamily subroutine identify\+\_\+ref\+\_\+point\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{double complex, intent(in)}]{col\+\_\+spc,  }\item[{double complex, intent(inout)}]{col\+\_\+ref,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX column spacing and column reference point. Assuming a linear spacing of grid points, adjusts the physical position of the reference point in the physical direction corresponding to the second dimension of the grid. 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em col\+\_\+spc} & Physical spacing of columns in the grid, e.\+g., if the second dimension of the grid represents the z-\/direction, then col\+\_\+spc corresponds to the spacing of grid points in the z-\/direction. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+ref} & Physical position of the reference point in the second dimension of the grid, e.\+g., the z-\/coordinate. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 173 of file identify\+\_\+ref\+\_\+point\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{identify__ref__point__ezp_8f90_a1fefd36141bd985e7673755d8a99aafb}\label{identify__ref__point__ezp_8f90_a1fefd36141bd985e7673755d8a99aafb}} 
+\index{identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}!parallel\_dble@{parallel\_dble}}
+\index{parallel\_dble@{parallel\_dble}!identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{parallel\_dble()}{parallel\_dble()}}
+{\footnotesize\ttfamily subroutine identify\+\_\+ref\+\_\+point\+\_\+dble\+::parallel\+\_\+dble (\begin{DoxyParamCaption}\item[{double precision, intent(in)}]{col\+\_\+spc,  }\item[{double precision, intent(inout)}]{col\+\_\+ref,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON column spacing and column reference point. Assuming a linear spacing of grid points, calculates the physical position of the sub-\/grid reference point in the physical direction corresponding to the first dimension of the grid. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em col\+\_\+spc} & Physical spacing of columns in the grid, e.\+g., if the second dimension of the grid represents the z-\/direction, then col\+\_\+spc corresponds to the spacing of grid points in the z-\/direction. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+ref} & Physical position of the reference point in the second dimension of the grid, e.\+g., the z-\/coordinate. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 81 of file identify\+\_\+ref\+\_\+point\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{identify__ref__point__ezp_8f90_aab37563b752e34972ca49ad18c618c05}\label{identify__ref__point__ezp_8f90_aab37563b752e34972ca49ad18c618c05}} 
+\index{identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}!parallel\_dcmplx@{parallel\_dcmplx}}
+\index{parallel\_dcmplx@{parallel\_dcmplx}!identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{parallel\_dcmplx()}{parallel\_dcmplx()}}
+{\footnotesize\ttfamily subroutine identify\+\_\+ref\+\_\+point\+\_\+dcmplx\+::parallel\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{double complex, intent(in)}]{col\+\_\+spc,  }\item[{double complex, intent(inout)}]{col\+\_\+ref,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})}
+
+
+
+The parallel E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX column spacing and column reference point. Assuming a linear spacing of grid points, calculates the physical position of the sub-\/grid reference point in the physical direction corresponding to the first dimension of the grid. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em col\+\_\+spc} & Physical spacing of columns in the grid, e.\+g., if the second dimension of the grid represents the z-\/direction, then col\+\_\+spc corresponds to the spacing of grid points in the z-\/direction. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+ref} & Physical position of the reference point in the second dimension of the grid, e.\+g., the z-\/coordinate. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 234 of file identify\+\_\+ref\+\_\+point\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{identify__ref__point__ezp_8f90_a854ffdca6bcb7333da1863b233634f2f}\label{identify__ref__point__ezp_8f90_a854ffdca6bcb7333da1863b233634f2f}} 
+\index{identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}!serial\_dble@{serial\_dble}}
+\index{serial\_dble@{serial\_dble}!identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{serial\_dble()}{serial\_dble()}}
+{\footnotesize\ttfamily subroutine identify\+\_\+ref\+\_\+point\+\_\+dble\+::serial\+\_\+dble}
+
+
+
+The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON column spacing and column reference point. When running in serial, no change in reference point occurs. This subroutine is included for file consistency, and may be depreciated in the future. 
+
+
+
+Definition at line 53 of file identify\+\_\+ref\+\_\+point\+\_\+ezp.\+f90.
+
+\mbox{\Hypertarget{identify__ref__point__ezp_8f90_a7bd4a191b39fc6eb4edf2af49c208e24}\label{identify__ref__point__ezp_8f90_a7bd4a191b39fc6eb4edf2af49c208e24}} 
+\index{identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}!serial\_dcmplx@{serial\_dcmplx}}
+\index{serial\_dcmplx@{serial\_dcmplx}!identify\_ref\_point\_ezp.f90@{identify\_ref\_point\_ezp.f90}}
+\doxysubsubsection{\texorpdfstring{serial\_dcmplx()}{serial\_dcmplx()}}
+{\footnotesize\ttfamily subroutine identify\+\_\+ref\+\_\+point\+\_\+dcmplx\+::serial\+\_\+dcmplx}
+
+
+
+The serial E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL reference point identification subroutine for D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX column spacing and column reference point. When running in serial, no change in reference point occurs. This subroutine is included for file consistency, and may be depreciated in the future. 
+
+
+
+Definition at line 206 of file identify\+\_\+ref\+\_\+point\+\_\+ezp.\+f90.
+

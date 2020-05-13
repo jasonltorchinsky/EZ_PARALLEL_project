@@ -1,0 +1,76 @@
+\hypertarget{interfaceez__parallel_1_1execute__scheme__izero__pad}{}\doxysection{ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+izero\+\_\+pad Interface Reference}
+\label{interfaceez__parallel_1_1execute__scheme__izero__pad}\index{ez\_parallel::execute\_scheme\_izero\_pad@{ez\_parallel::execute\_scheme\_izero\_pad}}
+
+
+The interface for the {\ttfamily S\+C\+H\+E\+ME} zero-\/padding removal subroutine.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__izero__pad_a9044317bcb87df5829df75caa1afa8af}{execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dcmpx\+\_\+sbr}} (arr, sch, arr\+ZP, sch\+ZP)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__izero__pad_a3dfc7ce51c43b8afab850f833c326ebe}{execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dble\+\_\+sbr}} (arr, sch, arr\+ZP, sch\+ZP)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The interface for the {\ttfamily S\+C\+H\+E\+ME} zero-\/padding removal subroutine. 
+
+The {\ttfamily E\+X\+E\+C\+U\+T\+E\+\_\+\+S\+C\+H\+E\+M\+E\+\_\+\+I\+Z\+E\+R\+O\+\_\+\+P\+AD} subroutine returns a non-\/zero-\/padded version of the array. For greater detail on the {\ttfamily S\+C\+H\+E\+ME} zero-\/padding removal subroutine, see \mbox{\hyperlink{execute__scheme__izero__pad_8f90}{execute\+\_\+scheme\+\_\+izero\+\_\+pad.\+f90}}. For greater detail on the {\ttfamily S\+C\+H\+E\+ME} datatype, see \mbox{\hyperlink{ez__parallel__structs_8f90}{ez\+\_\+parallel\+\_\+structs.\+f90}}. 
+
+Definition at line 364 of file ez\+\_\+parallel.\+f90.
+
+
+
+\doxysubsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfaceez__parallel_1_1execute__scheme__izero__pad_a3dfc7ce51c43b8afab850f833c326ebe}\label{interfaceez__parallel_1_1execute__scheme__izero__pad_a3dfc7ce51c43b8afab850f833c326ebe}} 
+\index{ez\_parallel::execute\_scheme\_izero\_pad@{ez\_parallel::execute\_scheme\_izero\_pad}!execute\_scheme\_izero\_pad\_dble\_sbr@{execute\_scheme\_izero\_pad\_dble\_sbr}}
+\index{execute\_scheme\_izero\_pad\_dble\_sbr@{execute\_scheme\_izero\_pad\_dble\_sbr}!ez\_parallel::execute\_scheme\_izero\_pad@{ez\_parallel::execute\_scheme\_izero\_pad}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_izero\_pad\_dble\_sbr()}{execute\_scheme\_izero\_pad\_dble\_sbr()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+izero\+\_\+pad\+::execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dble\+\_\+sbr (\begin{DoxyParamCaption}\item[{double precision, dimension(\+:,\+:), intent(inout)}]{arr,  }\item[{type(scheme), intent(in)}]{sch,  }\item[{double precision, dimension(\+:,\+:), intent(in)}]{arr\+ZP,  }\item[{type(scheme), intent(in)}]{sch\+ZP }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em arr} & Array to be un-\/zero-\/padded. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & Scheme associated with arr. \\
+\hline
+\mbox{\texttt{ in}}  & {\em arr\+ZP} & Allocatable array that will hold the zero-\/padded arr. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch\+ZP} & {\ttfamily S\+C\+H\+E\+ME} associated with arr\+ZP. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 370 of file ez\+\_\+parallel.\+f90.
+
+\mbox{\Hypertarget{interfaceez__parallel_1_1execute__scheme__izero__pad_a9044317bcb87df5829df75caa1afa8af}\label{interfaceez__parallel_1_1execute__scheme__izero__pad_a9044317bcb87df5829df75caa1afa8af}} 
+\index{ez\_parallel::execute\_scheme\_izero\_pad@{ez\_parallel::execute\_scheme\_izero\_pad}!execute\_scheme\_izero\_pad\_dcmpx\_sbr@{execute\_scheme\_izero\_pad\_dcmpx\_sbr}}
+\index{execute\_scheme\_izero\_pad\_dcmpx\_sbr@{execute\_scheme\_izero\_pad\_dcmpx\_sbr}!ez\_parallel::execute\_scheme\_izero\_pad@{ez\_parallel::execute\_scheme\_izero\_pad}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_izero\_pad\_dcmpx\_sbr()}{execute\_scheme\_izero\_pad\_dcmpx\_sbr()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+izero\+\_\+pad\+::execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dcmpx\+\_\+sbr (\begin{DoxyParamCaption}\item[{double complex, dimension(\+:,\+:), intent(inout)}]{arr,  }\item[{type(scheme), intent(in)}]{sch,  }\item[{double complex, dimension(\+:,\+:), intent(in)}]{arr\+ZP,  }\item[{type(scheme), intent(in)}]{sch\+ZP }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em arr} & Array to be un-\/zero-\/padded. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & Scheme associated with arr. \\
+\hline
+\mbox{\texttt{ in}}  & {\em arr\+ZP} & Allocatable array that will hold the zero-\/padded arr. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch\+ZP} & {\ttfamily S\+C\+H\+E\+ME} associated with arr\+ZP. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 382 of file ez\+\_\+parallel.\+f90.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\mbox{\hyperlink{ez__parallel_8f90}{ez\+\_\+parallel.\+f90}}\end{DoxyCompactItemize}

@@ -1,0 +1,74 @@
+\hypertarget{interfaceez__parallel_1_1identify__ref__point__ezp}{}\doxysection{ez\+\_\+parallel\+::identify\+\_\+ref\+\_\+point\+\_\+ezp Interface Reference}
+\label{interfaceez__parallel_1_1identify__ref__point__ezp}\index{ez\_parallel::identify\_ref\_point\_ezp@{ez\_parallel::identify\_ref\_point\_ezp}}
+
+
+The reference point identification interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module.  
+
+
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1identify__ref__point__ezp_a85793ec6094cdc4679eafce4bea9a7c1}{identify\+\_\+ref\+\_\+point\+\_\+dble}} (col\+\_\+spc, col\+\_\+ref, decomp\+\_\+id)
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1identify__ref__point__ezp_a39577f81a8759e6f823b9f2704389c7e}{identify\+\_\+ref\+\_\+point\+\_\+dcmplx}} (col\+\_\+spc, col\+\_\+ref, decomp\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The reference point identification interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. 
+
+Assuming a linear spacing of grid points, adjusts the physical position of the reference point in the physical direction corresponding to the second dimension of the grid. For greater detail on the reference point identification subroutine, please see \mbox{\hyperlink{identify__ref__point__ezp_8f90}{identify\+\_\+ref\+\_\+point\+\_\+ezp.\+f90}}. \begin{DoxyRemark}{Remarks}
+The reference point of the grid is the physical position of the first entry of the grid, i.\+e., the point in the top-\/left corner. This reference point is used to ensure the proper initialization of the initial condition for each sub-\/grid. 
+
+Continuing the example from the {\ttfamily decomp\+\_\+grid} interface, say that the physical spacing between columns of the grid is 0.\+25, and that the original reference point is at a physical position of 0.\+1 in the corresponding direction. Then the reference point of the sub-\/grids will be at 0.\+1, 0.\+35, and 1.\+1, respectively. 
+\end{DoxyRemark}
+
+
+Definition at line 160 of file ez\+\_\+parallel.\+f90.
+
+
+
+\doxysubsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfaceez__parallel_1_1identify__ref__point__ezp_a85793ec6094cdc4679eafce4bea9a7c1}\label{interfaceez__parallel_1_1identify__ref__point__ezp_a85793ec6094cdc4679eafce4bea9a7c1}} 
+\index{ez\_parallel::identify\_ref\_point\_ezp@{ez\_parallel::identify\_ref\_point\_ezp}!identify\_ref\_point\_dble@{identify\_ref\_point\_dble}}
+\index{identify\_ref\_point\_dble@{identify\_ref\_point\_dble}!ez\_parallel::identify\_ref\_point\_ezp@{ez\_parallel::identify\_ref\_point\_ezp}}
+\doxysubsubsection{\texorpdfstring{identify\_ref\_point\_dble()}{identify\_ref\_point\_dble()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::identify\+\_\+ref\+\_\+point\+\_\+ezp\+::identify\+\_\+ref\+\_\+point\+\_\+dble (\begin{DoxyParamCaption}\item[{double precision, intent(in)}]{col\+\_\+spc,  }\item[{double precision, intent(inout)}]{col\+\_\+ref,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em col\+\_\+spc} & Physical spacing of columns in the grid, e.\+g., if the second dimension of the grid represents the z-\/direction, then col\+\_\+spc corresponds to the spacing of grid points in the z-\/direction. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+ref} & Physical position of the reference point in the second dimension of the grid, e.\+g., the z-\/coordinate. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 169 of file ez\+\_\+parallel.\+f90.
+
+\mbox{\Hypertarget{interfaceez__parallel_1_1identify__ref__point__ezp_a39577f81a8759e6f823b9f2704389c7e}\label{interfaceez__parallel_1_1identify__ref__point__ezp_a39577f81a8759e6f823b9f2704389c7e}} 
+\index{ez\_parallel::identify\_ref\_point\_ezp@{ez\_parallel::identify\_ref\_point\_ezp}!identify\_ref\_point\_dcmplx@{identify\_ref\_point\_dcmplx}}
+\index{identify\_ref\_point\_dcmplx@{identify\_ref\_point\_dcmplx}!ez\_parallel::identify\_ref\_point\_ezp@{ez\_parallel::identify\_ref\_point\_ezp}}
+\doxysubsubsection{\texorpdfstring{identify\_ref\_point\_dcmplx()}{identify\_ref\_point\_dcmplx()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::identify\+\_\+ref\+\_\+point\+\_\+ezp\+::identify\+\_\+ref\+\_\+point\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{double complex, intent(in)}]{col\+\_\+spc,  }\item[{double complex, intent(inout)}]{col\+\_\+ref,  }\item[{integer, intent(in)}]{decomp\+\_\+id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em col\+\_\+spc} & Physical spacing of columns in the grid, e.\+g., if the second dimension of the grid represents the z-\/direction, then col\+\_\+spc corresponds to the spacing of grid points in the z-\/direction. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+ref} & Physical position of the reference point in the second dimension of the grid, e.\+g., the z-\/coordinate. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 181 of file ez\+\_\+parallel.\+f90.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\mbox{\hyperlink{ez__parallel_8f90}{ez\+\_\+parallel.\+f90}}\end{DoxyCompactItemize}

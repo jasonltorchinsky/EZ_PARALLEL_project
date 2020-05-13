@@ -1,0 +1,182 @@
+\hypertarget{execute__scheme__izero__pad_8f90}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/execute\+\_\+scheme\+\_\+izero\+\_\+pad.f90 File Reference}
+\label{execute__scheme__izero__pad_8f90}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/execute\_scheme\_izero\_pad.f90@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/execute\_scheme\_izero\_pad.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{execute__scheme__izero__pad_8f90_a1251bde81da0e91e51503b6a0015d9f0}{execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dble\+\_\+sbr}} (arr, sch, arr\+ZP, sch\+ZP)
+\begin{DoxyCompactList}\small\item\em The {\ttfamily S\+C\+H\+E\+ME} zero-\/padding execution subroutine (D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON). \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__izero__pad_8f90_a2b5ffa2d2938900577c1a7182ebfc096}{execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dble\+\_\+eh}} (sch, sch\+ZP)
+\begin{DoxyCompactList}\small\item\em The error handling subroutine for the {\ttfamily S\+C\+H\+E\+ME} creation subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__izero__pad_8f90_a4a3b67a73ae6939160e56e2de4e57b0f}{decompose}} (nelems, nparts, pidx, nelemspart, sidx)
+\begin{DoxyCompactList}\small\item\em Creates a decomposition of a single dimension of the 2-\/D array. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__izero__pad_8f90_a32b7b87235eaffb4094eb8443e1fed86}{subarray}} (sizes, axis, nparts, datatype, subarrays)
+\begin{DoxyCompactList}\small\item\em Creates the subarray datatypes for the local array. \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__izero__pad_8f90_a1c106b5c79fb9131cf89841d51c90483}{execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dcmpx\+\_\+sbr}} (arr, sch, arr\+ZP, sch\+ZP)
+\begin{DoxyCompactList}\small\item\em The {\ttfamily S\+C\+H\+E\+ME} zero-\/padding execution subroutine (D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX). \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__izero__pad_8f90_ae83bd5fc28b30dc6ce7e89d291c15173}{execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dcmpx\+\_\+eh}} (sch, sch\+ZP)
+\begin{DoxyCompactList}\small\item\em The error handling subroutine for the {\ttfamily S\+C\+H\+E\+ME} creation subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{execute__scheme__izero__pad_8f90_a4a3b67a73ae6939160e56e2de4e57b0f}\label{execute__scheme__izero__pad_8f90_a4a3b67a73ae6939160e56e2de4e57b0f}} 
+\index{execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}!decompose@{decompose}}
+\index{decompose@{decompose}!execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}}
+\doxysubsubsection{\texorpdfstring{decompose()}{decompose()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dble\+\_\+sbr\+::decompose (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{nelems,  }\item[{integer, intent(in)}]{nparts,  }\item[{integer, intent(in)}]{pidx,  }\item[{integer, intent(out)}]{nelemspart,  }\item[{integer, intent(out)}]{sidx }\end{DoxyParamCaption})}
+
+
+
+Creates a decomposition of a single dimension of the 2-\/D array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}\+I\+N\mbox{]}} & nelems Number of elements along the dimension of the array, $>$=0. \\
+\hline
+{\em \mbox{[}\+I\+N\mbox{]}} & nparts Number of parts to divide dimension into, $>$0. \\
+\hline
+{\em \mbox{[}\+I\+N\mbox{]}} & pidx Part index, $>$=0 and $<$nparts. \\
+\hline
+{\em \mbox{[}\+O\+U\+T\mbox{]}} & nelemspart Number of elements in part. \\
+\hline
+{\em \mbox{[}\+O\+U\+T\mbox{]}} & sidx Start index of part. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 192 of file execute\+\_\+scheme\+\_\+izero\+\_\+pad.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__izero__pad_8f90_a2b5ffa2d2938900577c1a7182ebfc096}\label{execute__scheme__izero__pad_8f90_a2b5ffa2d2938900577c1a7182ebfc096}} 
+\index{execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}!execute\_scheme\_izero\_pad\_dble\_eh@{execute\_scheme\_izero\_pad\_dble\_eh}}
+\index{execute\_scheme\_izero\_pad\_dble\_eh@{execute\_scheme\_izero\_pad\_dble\_eh}!execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_izero\_pad\_dble\_eh()}{execute\_scheme\_izero\_pad\_dble\_eh()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dble\+\_\+sbr\+::execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dble\+\_\+eh (\begin{DoxyParamCaption}\item[{type(scheme), intent(in)}]{sch,  }\item[{type(scheme), intent(in)}]{sch\+ZP }\end{DoxyParamCaption})}
+
+
+
+The error handling subroutine for the {\ttfamily S\+C\+H\+E\+ME} creation subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: 
+
+
+\begin{DoxyItemize}
+\item sch... 
+\begin{DoxyEnumerate}
+\item is not initialized 
+\item is not initialized for F\+F\+Ts 
+\item is not initialized for spectral derivatives 
+\end{DoxyEnumerate}
+\item sch\+ZP... 
+\begin{DoxyEnumerate}
+\item is not initialized 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+
+Definition at line 128 of file execute\+\_\+scheme\+\_\+izero\+\_\+pad.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__izero__pad_8f90_a1251bde81da0e91e51503b6a0015d9f0}\label{execute__scheme__izero__pad_8f90_a1251bde81da0e91e51503b6a0015d9f0}} 
+\index{execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}!execute\_scheme\_izero\_pad\_dble\_sbr@{execute\_scheme\_izero\_pad\_dble\_sbr}}
+\index{execute\_scheme\_izero\_pad\_dble\_sbr@{execute\_scheme\_izero\_pad\_dble\_sbr}!execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_izero\_pad\_dble\_sbr()}{execute\_scheme\_izero\_pad\_dble\_sbr()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dble\+\_\+sbr (\begin{DoxyParamCaption}\item[{double precision, dimension(0\+:,0\+:), intent(inout)}]{arr,  }\item[{type(scheme), intent(in)}]{sch,  }\item[{double precision, dimension(0\+:,0\+:), intent(in)}]{arr\+ZP,  }\item[{type(scheme), intent(in)}]{sch\+ZP }\end{DoxyParamCaption})}
+
+
+
+The {\ttfamily S\+C\+H\+E\+ME} zero-\/padding execution subroutine (D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON). 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em arr} & Sub-\/grid that will be zero padded. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that is used for arr. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em arr\+ZP} & Zero-\/padded sub-\/grid. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em sch\+ZP} & {\ttfamily S\+C\+H\+E\+ME} that is made for arr\+ZP. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 13 of file execute\+\_\+scheme\+\_\+izero\+\_\+pad.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__izero__pad_8f90_ae83bd5fc28b30dc6ce7e89d291c15173}\label{execute__scheme__izero__pad_8f90_ae83bd5fc28b30dc6ce7e89d291c15173}} 
+\index{execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}!execute\_scheme\_izero\_pad\_dcmpx\_eh@{execute\_scheme\_izero\_pad\_dcmpx\_eh}}
+\index{execute\_scheme\_izero\_pad\_dcmpx\_eh@{execute\_scheme\_izero\_pad\_dcmpx\_eh}!execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_izero\_pad\_dcmpx\_eh()}{execute\_scheme\_izero\_pad\_dcmpx\_eh()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dcmpx\+\_\+sbr\+::execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dcmpx\+\_\+eh (\begin{DoxyParamCaption}\item[{type(scheme), intent(in)}]{sch,  }\item[{type(scheme), intent(in)}]{sch\+ZP }\end{DoxyParamCaption})}
+
+
+
+The error handling subroutine for the {\ttfamily S\+C\+H\+E\+ME} creation subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: 
+
+
+\begin{DoxyItemize}
+\item sch... 
+\begin{DoxyEnumerate}
+\item is not initialized 
+\item is not initialized for F\+F\+Ts 
+\item is not initialized for spectral derivatives 
+\end{DoxyEnumerate}
+\item sch\+ZP... 
+\begin{DoxyEnumerate}
+\item is not initialized 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+
+Definition at line 382 of file execute\+\_\+scheme\+\_\+izero\+\_\+pad.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__izero__pad_8f90_a1c106b5c79fb9131cf89841d51c90483}\label{execute__scheme__izero__pad_8f90_a1c106b5c79fb9131cf89841d51c90483}} 
+\index{execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}!execute\_scheme\_izero\_pad\_dcmpx\_sbr@{execute\_scheme\_izero\_pad\_dcmpx\_sbr}}
+\index{execute\_scheme\_izero\_pad\_dcmpx\_sbr@{execute\_scheme\_izero\_pad\_dcmpx\_sbr}!execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_izero\_pad\_dcmpx\_sbr()}{execute\_scheme\_izero\_pad\_dcmpx\_sbr()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dcmpx\+\_\+sbr (\begin{DoxyParamCaption}\item[{double complex, dimension(0\+:,0\+:), intent(inout)}]{arr,  }\item[{type(scheme), intent(in)}]{sch,  }\item[{double complex, dimension(0\+:,0\+:), intent(in)}]{arr\+ZP,  }\item[{type(scheme), intent(in)}]{sch\+ZP }\end{DoxyParamCaption})}
+
+
+
+The {\ttfamily S\+C\+H\+E\+ME} zero-\/padding execution subroutine (D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX). 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em arr} & Sub-\/grid that will be zero padded. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that is used for arr. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em arr\+ZP} & Zero-\/padded sub-\/grid. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em sch\+ZP} & {\ttfamily S\+C\+H\+E\+ME} that is made for arr\+ZP. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 267 of file execute\+\_\+scheme\+\_\+izero\+\_\+pad.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__izero__pad_8f90_a32b7b87235eaffb4094eb8443e1fed86}\label{execute__scheme__izero__pad_8f90_a32b7b87235eaffb4094eb8443e1fed86}} 
+\index{execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}!subarray@{subarray}}
+\index{subarray@{subarray}!execute\_scheme\_izero\_pad.f90@{execute\_scheme\_izero\_pad.f90}}
+\doxysubsubsection{\texorpdfstring{subarray()}{subarray()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+izero\+\_\+pad\+\_\+dble\+\_\+sbr\+::subarray (\begin{DoxyParamCaption}\item[{integer, dimension(0\+:1), intent(in)}]{sizes,  }\item[{integer, intent(in)}]{axis,  }\item[{integer, intent(in)}]{nparts,  }\item[{integer, intent(in)}]{datatype,  }\item[{integer, dimension(0\+:nparts-\/1), intent(out)}]{subarrays }\end{DoxyParamCaption})}
+
+
+
+Creates the subarray datatypes for the local array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \mbox{[}\+I\+N\mbox{]}} & sizes Local sizes of array. \\
+\hline
+{\em \mbox{[}\+I\+N\mbox{]}} & axis Axis to partition, 0 $<$= axis $<$ 2. \\
+\hline
+{\em \mbox{[}\+I\+N\mbox{]}} & nparts Number of parts, nparts $>$ 0. \\
+\hline
+{\em \mbox{[}\+I\+N\mbox{]}} & datatype M\+PI datatype descriptor. \\
+\hline
+{\em \mbox{[}\+O\+U\+T\mbox{]}} & subarrays Subarray datatype descriptors. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 223 of file execute\+\_\+scheme\+\_\+izero\+\_\+pad.\+f90.
+

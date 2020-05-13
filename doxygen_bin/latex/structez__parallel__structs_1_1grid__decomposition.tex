@@ -1,0 +1,164 @@
+\hypertarget{structez__parallel__structs_1_1grid__decomposition}{}\doxysection{ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition Type Reference}
+\label{structez__parallel__structs_1_1grid__decomposition}\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+integer \mbox{\hyperlink{structez__parallel__structs_1_1grid__decomposition_a0bd1a085a710214274f5b95484d95f71}{decomp\+\_\+id}}
+\begin{DoxyCompactList}\small\item\em ID number of the grid decomposition, between 1 and the total number of \char`\"{}unique\char`\"{} grid decompositions. \end{DoxyCompactList}\item 
+integer \mbox{\hyperlink{structez__parallel__structs_1_1grid__decomposition_a19e4f4112ddd17c85919bee8422070e3}{row\+\_\+count\+\_\+g}}
+\begin{DoxyCompactList}\small\item\em Number of rows in the grid. \end{DoxyCompactList}\item 
+integer \mbox{\hyperlink{structez__parallel__structs_1_1grid__decomposition_af513a55ee6fbb0a55063baf490e6f330}{col\+\_\+count\+\_\+g}}
+\begin{DoxyCompactList}\small\item\em Number of columns in the grid. \end{DoxyCompactList}\item 
+integer \mbox{\hyperlink{structez__parallel__structs_1_1grid__decomposition_ad430a80c2635118d9dfb296276ed47e0}{overlap}}
+\begin{DoxyCompactList}\small\item\em Number of extra columns needed by each sub-\/grid to successfully step forward in time. \end{DoxyCompactList}\item 
+integer, dimension(\+:), allocatable \mbox{\hyperlink{structez__parallel__structs_1_1grid__decomposition_a7a5558abfe0c4935cd337bcf2278b4c2}{row\+\_\+decomp}}
+\begin{DoxyCompactList}\small\item\em Number of rows in each sub-\/grid of the horizontal-\/slab decomposition, excluding overlap. \end{DoxyCompactList}\item 
+integer, dimension(\+:), allocatable \mbox{\hyperlink{structez__parallel__structs_1_1grid__decomposition_ad70731f5036777be7bce5b9f1d6a3a5a}{col\+\_\+decomp}}
+\begin{DoxyCompactList}\small\item\em Number of columns in each sub-\/grid of the vertical-\/slab decomposition, excluding overlap. \end{DoxyCompactList}\item 
+integer, dimension(\+:), allocatable \mbox{\hyperlink{structez__parallel__structs_1_1grid__decomposition_a45efb2ca8ea7fd2f0284886133460abe}{col\+\_\+decomp\+\_\+ovlp}}
+\begin{DoxyCompactList}\small\item\em Number of columns in each sub-\/grid of the vertical slab decomposition, including overlap. \end{DoxyCompactList}\item 
+integer, dimension(2) \mbox{\hyperlink{structez__parallel__structs_1_1grid__decomposition_a750710475f3ea27e6282593773d31719}{send\+\_\+boundaries}}
+\begin{DoxyCompactList}\small\item\em M\+PI derived datatype for sending sub-\/grid boundaries to neightboring sub-\/grids (1 = left, 2 = right). \end{DoxyCompactList}\item 
+integer, dimension(2) \mbox{\hyperlink{structez__parallel__structs_1_1grid__decomposition_a3bd0122b73e4da99df943fc9ab42ce71}{recv\+\_\+boundaries}}
+\begin{DoxyCompactList}\small\item\em M\+PI derived datatype for recieving sub-\/grid boundaries from neightboring sub-\/grids (1 = left, 2 = right). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 28 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structez__parallel__structs_1_1grid__decomposition_af513a55ee6fbb0a55063baf490e6f330}\label{structez__parallel__structs_1_1grid__decomposition_af513a55ee6fbb0a55063baf490e6f330}} 
+\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}!col\_count\_g@{col\_count\_g}}
+\index{col\_count\_g@{col\_count\_g}!ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{col\_count\_g}{col\_count\_g}}
+{\footnotesize\ttfamily integer ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition\+::col\+\_\+count\+\_\+g}
+
+
+
+Number of columns in the grid. 
+
+
+
+Definition at line 32 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+\mbox{\Hypertarget{structez__parallel__structs_1_1grid__decomposition_ad70731f5036777be7bce5b9f1d6a3a5a}\label{structez__parallel__structs_1_1grid__decomposition_ad70731f5036777be7bce5b9f1d6a3a5a}} 
+\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}!col\_decomp@{col\_decomp}}
+\index{col\_decomp@{col\_decomp}!ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{col\_decomp}{col\_decomp}}
+{\footnotesize\ttfamily integer, dimension(\+:), allocatable ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition\+::col\+\_\+decomp}
+
+
+
+Number of columns in each sub-\/grid of the vertical-\/slab decomposition, excluding overlap. 
+
+
+
+Definition at line 37 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+\mbox{\Hypertarget{structez__parallel__structs_1_1grid__decomposition_a45efb2ca8ea7fd2f0284886133460abe}\label{structez__parallel__structs_1_1grid__decomposition_a45efb2ca8ea7fd2f0284886133460abe}} 
+\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}!col\_decomp\_ovlp@{col\_decomp\_ovlp}}
+\index{col\_decomp\_ovlp@{col\_decomp\_ovlp}!ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{col\_decomp\_ovlp}{col\_decomp\_ovlp}}
+{\footnotesize\ttfamily integer, dimension(\+:), allocatable ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition\+::col\+\_\+decomp\+\_\+ovlp}
+
+
+
+Number of columns in each sub-\/grid of the vertical slab decomposition, including overlap. 
+
+
+
+Definition at line 39 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+\mbox{\Hypertarget{structez__parallel__structs_1_1grid__decomposition_a0bd1a085a710214274f5b95484d95f71}\label{structez__parallel__structs_1_1grid__decomposition_a0bd1a085a710214274f5b95484d95f71}} 
+\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}!decomp\_id@{decomp\_id}}
+\index{decomp\_id@{decomp\_id}!ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{decomp\_id}{decomp\_id}}
+{\footnotesize\ttfamily integer ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition\+::decomp\+\_\+id}
+
+
+
+ID number of the grid decomposition, between 1 and the total number of \char`\"{}unique\char`\"{} grid decompositions. 
+
+
+
+Definition at line 29 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+\mbox{\Hypertarget{structez__parallel__structs_1_1grid__decomposition_ad430a80c2635118d9dfb296276ed47e0}\label{structez__parallel__structs_1_1grid__decomposition_ad430a80c2635118d9dfb296276ed47e0}} 
+\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}!overlap@{overlap}}
+\index{overlap@{overlap}!ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{overlap}{overlap}}
+{\footnotesize\ttfamily integer ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition\+::overlap}
+
+
+
+Number of extra columns needed by each sub-\/grid to successfully step forward in time. 
+
+
+
+Definition at line 33 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+\mbox{\Hypertarget{structez__parallel__structs_1_1grid__decomposition_a3bd0122b73e4da99df943fc9ab42ce71}\label{structez__parallel__structs_1_1grid__decomposition_a3bd0122b73e4da99df943fc9ab42ce71}} 
+\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}!recv\_boundaries@{recv\_boundaries}}
+\index{recv\_boundaries@{recv\_boundaries}!ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{recv\_boundaries}{recv\_boundaries}}
+{\footnotesize\ttfamily integer, dimension(2) ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition\+::recv\+\_\+boundaries}
+
+
+
+M\+PI derived datatype for recieving sub-\/grid boundaries from neightboring sub-\/grids (1 = left, 2 = right). 
+
+
+
+Definition at line 43 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+\mbox{\Hypertarget{structez__parallel__structs_1_1grid__decomposition_a19e4f4112ddd17c85919bee8422070e3}\label{structez__parallel__structs_1_1grid__decomposition_a19e4f4112ddd17c85919bee8422070e3}} 
+\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}!row\_count\_g@{row\_count\_g}}
+\index{row\_count\_g@{row\_count\_g}!ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{row\_count\_g}{row\_count\_g}}
+{\footnotesize\ttfamily integer ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition\+::row\+\_\+count\+\_\+g}
+
+
+
+Number of rows in the grid. 
+
+
+
+Definition at line 31 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+\mbox{\Hypertarget{structez__parallel__structs_1_1grid__decomposition_a7a5558abfe0c4935cd337bcf2278b4c2}\label{structez__parallel__structs_1_1grid__decomposition_a7a5558abfe0c4935cd337bcf2278b4c2}} 
+\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}!row\_decomp@{row\_decomp}}
+\index{row\_decomp@{row\_decomp}!ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{row\_decomp}{row\_decomp}}
+{\footnotesize\ttfamily integer, dimension(\+:), allocatable ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition\+::row\+\_\+decomp}
+
+
+
+Number of rows in each sub-\/grid of the horizontal-\/slab decomposition, excluding overlap. 
+
+
+
+Definition at line 35 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+\mbox{\Hypertarget{structez__parallel__structs_1_1grid__decomposition_a750710475f3ea27e6282593773d31719}\label{structez__parallel__structs_1_1grid__decomposition_a750710475f3ea27e6282593773d31719}} 
+\index{ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}!send\_boundaries@{send\_boundaries}}
+\index{send\_boundaries@{send\_boundaries}!ez\_parallel\_structs::grid\_decomposition@{ez\_parallel\_structs::grid\_decomposition}}
+\doxysubsubsection{\texorpdfstring{send\_boundaries}{send\_boundaries}}
+{\footnotesize\ttfamily integer, dimension(2) ez\+\_\+parallel\+\_\+structs\+::grid\+\_\+decomposition\+::send\+\_\+boundaries}
+
+
+
+M\+PI derived datatype for sending sub-\/grid boundaries to neightboring sub-\/grids (1 = left, 2 = right). 
+
+
+
+Definition at line 41 of file ez\+\_\+parallel\+\_\+structs.\+f90.
+
+
+
+The documentation for this type was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\mbox{\hyperlink{ez__parallel__structs_8f90}{ez\+\_\+parallel\+\_\+structs.\+f90}}\end{DoxyCompactItemize}

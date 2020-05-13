@@ -3,21 +3,36 @@
 \doxysubsection*{Data Types}
 \begin{DoxyCompactItemize}
 \item 
-type \mbox{\hyperlink{structez__parallel_1_1grid__decomposition}{ez\+\_\+parallel\+::grid\+\_\+decomposition}}
-\begin{DoxyCompactList}\small\item\em The G\+R\+I\+D\+\_\+\+D\+E\+C\+O\+M\+P\+O\+S\+I\+T\+I\+ON derived datatype. It contains all information about the grid and the sub-\/grid decomposition of the grid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+interface \mbox{\hyperlink{interfaceez__parallel_1_1create__scheme}{ez\+\_\+parallel\+::create\+\_\+scheme}}
+\begin{DoxyCompactList}\small\item\em The interface for the {\ttfamily S\+C\+H\+E\+ME} creation subroutine. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1create__scheme__fft}{ez\+\_\+parallel\+::create\+\_\+scheme\+\_\+fft}}
+\begin{DoxyCompactList}\small\item\em The interface for the {\ttfamily S\+C\+H\+E\+ME} F\+FT initialization subroutine. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1create__scheme__spec__drv}{ez\+\_\+parallel\+::create\+\_\+scheme\+\_\+spec\+\_\+drv}}
+\begin{DoxyCompactList}\small\item\em The interface for the {\ttfamily S\+C\+H\+E\+ME} spectral derivative initialization subroutine. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1create__scheme__zero__pad}{ez\+\_\+parallel\+::create\+\_\+scheme\+\_\+zero\+\_\+pad}}
+\begin{DoxyCompactList}\small\item\em The interface for the {\ttfamily S\+C\+H\+E\+ME} zero-\/padding initializtion subroutine. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1destroy__scheme}{ez\+\_\+parallel\+::destroy\+\_\+scheme}}
+\begin{DoxyCompactList}\small\item\em The interface for the {\ttfamily S\+C\+H\+E\+ME} destruction subroutine. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1share__subgrid__bdry}{ez\+\_\+parallel\+::share\+\_\+subgrid\+\_\+bdry}}
+\begin{DoxyCompactList}\small\item\em The sub-\/grid boundary communication interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__fft}{ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+fft}}
+\begin{DoxyCompactList}\small\item\em The F\+FT execution interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__ifft}{ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+ifft}}
+\begin{DoxyCompactList}\small\item\em The inverse F\+FT execution interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__spec__drv}{ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+spec\+\_\+drv}}
+\begin{DoxyCompactList}\small\item\em The spectral derivative execution interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__ispec__drv}{ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+ispec\+\_\+drv}}
+\begin{DoxyCompactList}\small\item\em The inverse spectral derivative execution interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__zero__pad}{ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+zero\+\_\+pad}}
+\begin{DoxyCompactList}\small\item\em The interface for the {\ttfamily S\+C\+H\+E\+ME} zero-\/padding execution subroutine. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__izero__pad}{ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+izero\+\_\+pad}}
+\begin{DoxyCompactList}\small\item\em The interface for the {\ttfamily S\+C\+H\+E\+ME} zero-\/padding removal subroutine. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1max__val}{ez\+\_\+parallel\+::max\+\_\+val}}
+\begin{DoxyCompactList}\small\item\em The maximum value interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. \end{DoxyCompactList}\item 
+interface \mbox{\hyperlink{interfaceez__parallel_1_1min__val}{ez\+\_\+parallel\+::min\+\_\+val}}
+\begin{DoxyCompactList}\small\item\em The minimum value interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Modules}
 \begin{DoxyCompactItemize}
 \item 
 module \mbox{\hyperlink{namespaceez__parallel}{ez\+\_\+parallel}}
-\begin{DoxyCompactList}\small\item\em The main file for the E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL module. Contains all derived datatypes and includes the files containing the module subroutines. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\doxysubsection*{Variables}
-\begin{DoxyCompactItemize}
-\item 
-integer, public \mbox{\hyperlink{namespaceez__parallel_a95a33182359edd437e95aadf9293dce4}{ez\+\_\+parallel\+::decomp\+\_\+count}}
-\begin{DoxyCompactList}\small\item\em Number of \char`\"{}unique\char`\"{} grid decompositions. \end{DoxyCompactList}\item 
-integer, public \mbox{\hyperlink{namespaceez__parallel_a5c16c79dc384827b3dba59da7e8083e0}{ez\+\_\+parallel\+::proc\+\_\+id}}
-\begin{DoxyCompactList}\small\item\em The local processor ID. \end{DoxyCompactList}\item 
-integer, public \mbox{\hyperlink{namespaceez__parallel_aaa581384cd20bbada0a4c3f3cc5765c2}{ez\+\_\+parallel\+::proc\+\_\+count}}
-\begin{DoxyCompactList}\small\item\em The total number of processors called by the user. \end{DoxyCompactList}\item 
-type(grid\+\_\+decomposition), dimension(\+:), allocatable, public \mbox{\hyperlink{namespaceez__parallel_a6659146bbf9b35d6bd2852b0e575923c}{ez\+\_\+parallel\+::grid\+\_\+decomps}}
-\begin{DoxyCompactList}\small\item\em A list of all grid decompositions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em The E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL module. Contains E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL subroutines and their interfaces. \end{DoxyCompactList}\end{DoxyCompactItemize}

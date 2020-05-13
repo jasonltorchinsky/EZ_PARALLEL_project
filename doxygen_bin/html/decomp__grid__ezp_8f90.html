@@ -73,31 +73,45 @@ $(function() {
 <div class="title">decomp_grid_ezp.f90 File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a href="decomp__grid__ezp_8f90_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions/Subroutines</h2></td></tr>
-<tr class="memitem:a25aae121c18bbdf1c593eb793e18d0d9"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#a25aae121c18bbdf1c593eb793e18d0d9">decomp_grid_ezp</a> (row_count, col_count, overlap, decomp_id)</td></tr>
-<tr class="memdesc:a25aae121c18bbdf1c593eb793e18d0d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EZ_PARALLEL grid decomposition subroutine. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines.  <a href="decomp__grid__ezp_8f90.html#a25aae121c18bbdf1c593eb793e18d0d9">More...</a><br /></td></tr>
-<tr class="separator:a25aae121c18bbdf1c593eb793e18d0d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cbc50f5cff5618e0d801aa64e54461e"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#a5cbc50f5cff5618e0d801aa64e54461e">serial</a></td></tr>
-<tr class="memdesc:a5cbc50f5cff5618e0d801aa64e54461e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The serial EZ_PARALLEL grid decomposition subroutine. When running in serial, no grid decomposition occurs. This subroutine is included for file consistency, and may be depreciated in the future.  <a href="decomp__grid__ezp_8f90.html#a5cbc50f5cff5618e0d801aa64e54461e">More...</a><br /></td></tr>
-<tr class="separator:a5cbc50f5cff5618e0d801aa64e54461e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac514d51ffda4733aaf31dda8c3d0afad"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#ac514d51ffda4733aaf31dda8c3d0afad">parallel</a> (row_count, col_count, overlap, decomp_id)</td></tr>
-<tr class="memdesc:ac514d51ffda4733aaf31dda8c3d0afad"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parallel EZ_PARALLEL grid decomposition subroutine. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines.  <a href="decomp__grid__ezp_8f90.html#ac514d51ffda4733aaf31dda8c3d0afad">More...</a><br /></td></tr>
-<tr class="separator:ac514d51ffda4733aaf31dda8c3d0afad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09f0f11cf844f9451d8a4e86340b4269"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#a09f0f11cf844f9451d8a4e86340b4269">error_handling</a> (row_count, col_count, overlap, decomp_id)</td></tr>
-<tr class="memdesc:a09f0f11cf844f9451d8a4e86340b4269"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EZ_PARALLEL grid decomposition error handling subroutine. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors:  <a href="decomp__grid__ezp_8f90.html#a09f0f11cf844f9451d8a4e86340b4269">More...</a><br /></td></tr>
-<tr class="separator:a09f0f11cf844f9451d8a4e86340b4269"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e08e078eafef58af820c2b261073aad"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#a0e08e078eafef58af820c2b261073aad">decomp_grid_dble</a> (row_count, col_count, overlap, decomp_id, grid)</td></tr>
+<tr class="memdesc:a0e08e078eafef58af820c2b261073aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EZ_PARALLEL grid decomposition subroutine for DOUBLE PRECISION grids. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines.  <a href="decomp__grid__ezp_8f90.html#a0e08e078eafef58af820c2b261073aad">More...</a><br /></td></tr>
+<tr class="separator:a0e08e078eafef58af820c2b261073aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abacfc36bee423b9f861e5fae4694f421"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#abacfc36bee423b9f861e5fae4694f421">serial_dble</a> (row_count, col_count, decomp_id)</td></tr>
+<tr class="memdesc:abacfc36bee423b9f861e5fae4694f421"><td class="mdescLeft">&#160;</td><td class="mdescRight">The serial EZ_PARALLEL grid decomposition subroutine for DOUBLE PRECISION grids. When running in serial, no grid decomposition occurs. We define the grid decompositon for usage in future subroutines.  <a href="decomp__grid__ezp_8f90.html#abacfc36bee423b9f861e5fae4694f421">More...</a><br /></td></tr>
+<tr class="separator:abacfc36bee423b9f861e5fae4694f421"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6c2a42b87b474034b6835d16022cd08"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#ad6c2a42b87b474034b6835d16022cd08">parallel_dble</a> (row_count, col_count, overlap, decomp_id)</td></tr>
+<tr class="memdesc:ad6c2a42b87b474034b6835d16022cd08"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parallel EZ_PARALLEL grid decomposition subroutine for DOUBLE PRECISION grids. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines.  <a href="decomp__grid__ezp_8f90.html#ad6c2a42b87b474034b6835d16022cd08">More...</a><br /></td></tr>
+<tr class="separator:ad6c2a42b87b474034b6835d16022cd08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad33e1e9619cf1f7eff9e723a47796eff"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#ad33e1e9619cf1f7eff9e723a47796eff">error_handling_dble</a> (row_count, col_count, overlap, decomp_id)</td></tr>
+<tr class="memdesc:ad33e1e9619cf1f7eff9e723a47796eff"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EZ_PARALLEL grid decomposition error handling subroutine. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors:  <a href="decomp__grid__ezp_8f90.html#ad33e1e9619cf1f7eff9e723a47796eff">More...</a><br /></td></tr>
+<tr class="separator:ad33e1e9619cf1f7eff9e723a47796eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbff2f398da6f557148a69d9e5d0180e"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#adbff2f398da6f557148a69d9e5d0180e">decomp_grid_dcmplx</a> (row_count, col_count, overlap, decomp_id, grid)</td></tr>
+<tr class="memdesc:adbff2f398da6f557148a69d9e5d0180e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EZ_PARALLEL grid decomposition subroutine for DOUBLE COMPLEX grids. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines.  <a href="decomp__grid__ezp_8f90.html#adbff2f398da6f557148a69d9e5d0180e">More...</a><br /></td></tr>
+<tr class="separator:adbff2f398da6f557148a69d9e5d0180e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a078ffe1900bcefc81893863060751a08"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#a078ffe1900bcefc81893863060751a08">serial_dcmplx</a> (row_count, col_count, decomp_id)</td></tr>
+<tr class="memdesc:a078ffe1900bcefc81893863060751a08"><td class="mdescLeft">&#160;</td><td class="mdescRight">The serial EZ_PARALLEL grid decomposition subroutine for DOUBLE COMPLEX grids. When running in serial, no grid decomposition occurs. We define the grid decompositon for usage in future subroutines.  <a href="decomp__grid__ezp_8f90.html#a078ffe1900bcefc81893863060751a08">More...</a><br /></td></tr>
+<tr class="separator:a078ffe1900bcefc81893863060751a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7983946380157a2178a3ef5f2527429e"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#a7983946380157a2178a3ef5f2527429e">parallel_dcmplx</a> (row_count, col_count, overlap, decomp_id)</td></tr>
+<tr class="memdesc:a7983946380157a2178a3ef5f2527429e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parallel EZ_PARALLEL grid decomposition subroutine for DOUBLE COMPLEX grids. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines.  <a href="decomp__grid__ezp_8f90.html#a7983946380157a2178a3ef5f2527429e">More...</a><br /></td></tr>
+<tr class="separator:a7983946380157a2178a3ef5f2527429e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b870539e0f2c69535db643b31bc6004"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="decomp__grid__ezp_8f90.html#a2b870539e0f2c69535db643b31bc6004">error_handling_dcmplx</a> (row_count, col_count, overlap, decomp_id)</td></tr>
+<tr class="memdesc:a2b870539e0f2c69535db643b31bc6004"><td class="mdescLeft">&#160;</td><td class="mdescRight">The EZ_PARALLEL grid decomposition error handling subroutine. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors:  <a href="decomp__grid__ezp_8f90.html#a2b870539e0f2c69535db643b31bc6004">More...</a><br /></td></tr>
+<tr class="separator:a2b870539e0f2c69535db643b31bc6004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function/Subroutine Documentation</h2>
-<a id="a25aae121c18bbdf1c593eb793e18d0d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25aae121c18bbdf1c593eb793e18d0d9">&#9670;&nbsp;</a></span>decomp_grid_ezp()</h2>
+<a id="a0e08e078eafef58af820c2b261073aad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e08e078eafef58af820c2b261073aad">&#9670;&nbsp;</a></span>decomp_grid_dble()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine decomp_grid_ezp </td>
+          <td class="memname">subroutine decomp_grid_dble </td>
           <td>(</td>
           <td class="paramtype">integer, intent(in)&#160;</td>
           <td class="paramname"><em>row_count</em>, </td>
@@ -118,7 +132,13 @@ Functions/Subroutines</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">integer, intent(in)&#160;</td>
-          <td class="paramname"><em>decomp_id</em>&#160;</td>
+          <td class="paramname"><em>decomp_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double precision, dimension(:,:), intent(in), allocatable&#160;</td>
+          <td class="paramname"><em>grid</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -128,7 +148,7 @@ Functions/Subroutines</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>The EZ_PARALLEL grid decomposition subroutine. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines. </p>
+<p>The EZ_PARALLEL grid decomposition subroutine for DOUBLE PRECISION grids. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines. </p>
 <dl class="section author"><dt>Author</dt><dd>Jason Turner, University of Wisconsin-Madison </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -136,20 +156,84 @@ Functions/Subroutines</h2></td></tr>
     <tr><td class="paramdir">[in,out]</td><td class="paramname">col_count</td><td>Number of columns in the grid, changes to number of columns in the sub-grid including overlap, so that the user's time-stepping code may remain unchanged. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">overlap</td><td>Number of extra columns needed by each sub-grid to successfully step forward in time. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">decomp_id</td><td>ID number of the grid decomposition, between 1 and the number of "unique" grid decompositions. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">grid</td><td>The grid to be allocated and decomposed, for use in identifying what datatype it is. NOTE: It must not yet be allocated. </td></tr>
   </table>
   </dd>
 </dl>
 
+<p class="definition">Definition at line <a class="el" href="decomp__grid__ezp_8f90_source.html#l00022">22</a> of file <a class="el" href="decomp__grid__ezp_8f90_source.html">decomp_grid_ezp.f90</a>.</p>
+
 </div>
 </div>
-<a id="a09f0f11cf844f9451d8a4e86340b4269"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09f0f11cf844f9451d8a4e86340b4269">&#9670;&nbsp;</a></span>error_handling()</h2>
+<a id="adbff2f398da6f557148a69d9e5d0180e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbff2f398da6f557148a69d9e5d0180e">&#9670;&nbsp;</a></span>decomp_grid_dcmplx()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine decomp_grid_ezp::error_handling </td>
+          <td class="memname">subroutine decomp_grid_dcmplx </td>
+          <td>(</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>row_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(inout)&#160;</td>
+          <td class="paramname"><em>col_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>overlap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>decomp_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double complex, dimension(:,:), intent(in), allocatable&#160;</td>
+          <td class="paramname"><em>grid</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The EZ_PARALLEL grid decomposition subroutine for DOUBLE COMPLEX grids. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines. </p>
+<dl class="section author"><dt>Author</dt><dd>Jason Turner, University of Wisconsin-Madison </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">row_count</td><td>Number of rows in the grid. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">col_count</td><td>Number of columns in the grid, changes to number of columns in the sub-grid including overlap, so that the user's time-stepping code may remain unchanged. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">overlap</td><td>Number of extra columns needed by each sub-grid to successfully step forward in time. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">decomp_id</td><td>ID number of the grid decomposition, between 1 and the number of "unique" grid decompositions. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">grid</td><td>The grid to be allocated and decomposed, for use in identifying what datatype it is. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="decomp__grid__ezp_8f90_source.html#l00400">400</a> of file <a class="el" href="decomp__grid__ezp_8f90_source.html">decomp_grid_ezp.f90</a>.</p>
+
+</div>
+</div>
+<a id="ad33e1e9619cf1f7eff9e723a47796eff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad33e1e9619cf1f7eff9e723a47796eff">&#9670;&nbsp;</a></span>error_handling_dble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine decomp_grid_dble::error_handling_dble </td>
           <td>(</td>
           <td class="paramtype">integer, intent(in)&#160;</td>
           <td class="paramname"><em>row_count</em>, </td>
@@ -221,16 +305,101 @@ is outside of (1, ..., decomp_count) </li>
   </dd>
 </dl>
 
+<p class="definition">Definition at line <a class="el" href="decomp__grid__ezp_8f90_source.html#l00294">294</a> of file <a class="el" href="decomp__grid__ezp_8f90_source.html">decomp_grid_ezp.f90</a>.</p>
+
 </div>
 </div>
-<a id="ac514d51ffda4733aaf31dda8c3d0afad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac514d51ffda4733aaf31dda8c3d0afad">&#9670;&nbsp;</a></span>parallel()</h2>
+<a id="a2b870539e0f2c69535db643b31bc6004"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b870539e0f2c69535db643b31bc6004">&#9670;&nbsp;</a></span>error_handling_dcmplx()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine decomp_grid_ezp::parallel </td>
+          <td class="memname">subroutine decomp_grid_dcmplx::error_handling_dcmplx </td>
+          <td>(</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>row_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>col_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>overlap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>decomp_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The EZ_PARALLEL grid decomposition error handling subroutine. Aborts the program if the grid or grid decomposition parameters trigger any of the following errors: </p>
+<ul>
+<li>
+row_count... <ol>
+<li>
+is not positive </li>
+</ol>
+</li>
+<li>
+col_count... <ol>
+<li>
+is not positive </li>
+<li>
+is too small to be divided among the processors, ignoring the overlap </li>
+<li>
+is too small to be divided among the processors, including overlap </li>
+</ol>
+</li>
+<li>
+overlap... <ol>
+<li>
+is negative </li>
+</ol>
+</li>
+<li>
+decomp_id... <ol>
+<li>
+is outside of (1, ..., decomp_count) </li>
+</ol>
+</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">row_count</td><td>Number of rows in the grid. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">col_count</td><td>Number of columns in the grid, changes to number of columns in the sub-grid including overlap, so that the user's time-stepping code may remain unchanged. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">overlap</td><td>Number of extra columns needed by each sub-grid to successfully step forward in time. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">decomp_id</td><td>ID number of the grid decomposition, between 1 and the number of "unique" grid decompositions. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="decomp__grid__ezp_8f90_source.html#l00672">672</a> of file <a class="el" href="decomp__grid__ezp_8f90_source.html">decomp_grid_ezp.f90</a>.</p>
+
+</div>
+</div>
+<a id="ad6c2a42b87b474034b6835d16022cd08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6c2a42b87b474034b6835d16022cd08">&#9670;&nbsp;</a></span>parallel_dble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine decomp_grid_dble::parallel_dble </td>
           <td>(</td>
           <td class="paramtype">integer, intent(in)&#160;</td>
           <td class="paramname"><em>row_count</em>, </td>
@@ -261,7 +430,7 @@ is outside of (1, ..., decomp_count) </li>
       </table>
 </div><div class="memdoc">
 
-<p>The parallel EZ_PARALLEL grid decomposition subroutine. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines. </p>
+<p>The parallel EZ_PARALLEL grid decomposition subroutine for DOUBLE PRECISION grids. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">row_count</td><td>Number of rows in the grid. </td></tr>
@@ -272,21 +441,152 @@ is outside of (1, ..., decomp_count) </li>
   </dd>
 </dl>
 
+<p class="definition">Definition at line <a class="el" href="decomp__grid__ezp_8f90_source.html#l00152">152</a> of file <a class="el" href="decomp__grid__ezp_8f90_source.html">decomp_grid_ezp.f90</a>.</p>
+
 </div>
 </div>
-<a id="a5cbc50f5cff5618e0d801aa64e54461e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5cbc50f5cff5618e0d801aa64e54461e">&#9670;&nbsp;</a></span>serial()</h2>
+<a id="a7983946380157a2178a3ef5f2527429e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7983946380157a2178a3ef5f2527429e">&#9670;&nbsp;</a></span>parallel_dcmplx()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">subroutine decomp_grid_ezp::serial</td>
+          <td class="memname">subroutine decomp_grid_dcmplx::parallel_dcmplx </td>
+          <td>(</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>row_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(inout)&#160;</td>
+          <td class="paramname"><em>col_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>overlap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>decomp_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The serial EZ_PARALLEL grid decomposition subroutine. When running in serial, no grid decomposition occurs. This subroutine is included for file consistency, and may be depreciated in the future. </p>
+<p>The parallel EZ_PARALLEL grid decomposition subroutine for DOUBLE COMPLEX grids. Given the column count of the grid, returns the column count of the sub-grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid_decomps list for use in other subroutines. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">row_count</td><td>Number of rows in the grid. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">col_count</td><td>Number of columns in the grid, changes to number of columns in the sub-grid including overlap, so that the user's time-stepping code may remain unchanged. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">overlap</td><td>Number of extra columns needed by each sub-grid to successfully step forward in time. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">decomp_id</td><td>ID number of the grid decomposition, between 1 and the number of "unique" grid decompositions. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="decomp__grid__ezp_8f90_source.html#l00530">530</a> of file <a class="el" href="decomp__grid__ezp_8f90_source.html">decomp_grid_ezp.f90</a>.</p>
+
+</div>
+</div>
+<a id="abacfc36bee423b9f861e5fae4694f421"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abacfc36bee423b9f861e5fae4694f421">&#9670;&nbsp;</a></span>serial_dble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine decomp_grid_dble::serial_dble </td>
+          <td>(</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>row_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(inout)&#160;</td>
+          <td class="paramname"><em>col_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>decomp_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The serial EZ_PARALLEL grid decomposition subroutine for DOUBLE PRECISION grids. When running in serial, no grid decomposition occurs. We define the grid decompositon for usage in future subroutines. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">row_count</td><td>Number of rows in the grid. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">col_count</td><td>Number of columns in the grid, changes to number of columns in the sub-grid including overlap, so that the user's time-stepping code may remain unchanged. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">decomp_id</td><td>ID number of the grid decomposition, between 1 and the number of "unique" grid decompositions. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="decomp__grid__ezp_8f90_source.html#l00063">63</a> of file <a class="el" href="decomp__grid__ezp_8f90_source.html">decomp_grid_ezp.f90</a>.</p>
+
+</div>
+</div>
+<a id="a078ffe1900bcefc81893863060751a08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a078ffe1900bcefc81893863060751a08">&#9670;&nbsp;</a></span>serial_dcmplx()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">subroutine decomp_grid_dcmplx::serial_dcmplx </td>
+          <td>(</td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>row_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(inout)&#160;</td>
+          <td class="paramname"><em>col_count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">integer, intent(in)&#160;</td>
+          <td class="paramname"><em>decomp_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The serial EZ_PARALLEL grid decomposition subroutine for DOUBLE COMPLEX grids. When running in serial, no grid decomposition occurs. We define the grid decompositon for usage in future subroutines. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">row_count</td><td>Number of rows in the grid. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">col_count</td><td>Number of columns in the grid, changes to number of columns in the sub-grid including overlap, so that the user's time-stepping code may remain unchanged. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">decomp_id</td><td>ID number of the grid decomposition, between 1 and the number of "unique" grid decompositions. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="decomp__grid__ezp_8f90_source.html#l00441">441</a> of file <a class="el" href="decomp__grid__ezp_8f90_source.html">decomp_grid_ezp.f90</a>.</p>
 
 </div>
 </div>

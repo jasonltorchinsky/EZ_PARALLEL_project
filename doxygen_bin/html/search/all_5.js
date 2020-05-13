@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['init_5fezp_14',['init_ezp',['../init__ezp_8f90.html#abecd6abdd1e24040276232b453ab01fc',1,'init_ezp.f90']]],
-  ['init_5fezp_2ef90_15',['init_ezp.f90',['../init__ezp_8f90.html',1,'']]]
+  ['hslabsize_74',['hslabsize',['../structez__parallel__structs_1_1scheme.html#a4c597f67016c3f6acec2bd941b75781a',1,'ez_parallel_structs::scheme']]]
 ];

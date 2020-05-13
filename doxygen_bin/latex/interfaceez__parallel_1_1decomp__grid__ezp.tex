@@ -1,0 +1,82 @@
+\hypertarget{interfaceez__parallel_1_1decomp__grid__ezp}{}\doxysection{ez\+\_\+parallel\+::decomp\+\_\+grid\+\_\+ezp Interface Reference}
+\label{interfaceez__parallel_1_1decomp__grid__ezp}\index{ez\_parallel::decomp\_grid\_ezp@{ez\_parallel::decomp\_grid\_ezp}}
+
+
+The grid decomposition interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module.  
+
+
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1decomp__grid__ezp_aa39c8cc487af9c2b11a8e4affa619326}{decomp\+\_\+grid\+\_\+dble}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id, grid)
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1decomp__grid__ezp_aee8d73184658c72b7c040b9f66eb1af1}{decomp\+\_\+grid\+\_\+dcmplx}} (row\+\_\+count, col\+\_\+count, overlap, decomp\+\_\+id, grid)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The grid decomposition interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. 
+
+Given the column count of the grid, returns the column count of the sub-\/grid, including overlap (for use of the vertical slab decomposition). Also stores the data in the grid\+\_\+decomps list for use in other subroutines. For greater detail on the grid decomposition subroutine, please see \mbox{\hyperlink{decomp__grid__ezp_8f90}{decomp\+\_\+grid\+\_\+ezp.\+f90}}. For greater detail on the {\ttfamily grid\+\_\+decomps} list, please see \mbox{\hyperlink{ez__parallel__structs_8f90}{ez\+\_\+parallel\+\_\+structs.\+f90}}. \begin{DoxyRemark}{Remarks}
+This subroutine assumes the code sets up the grid using an {\ttfamily A\+L\+L\+O\+C\+A\+TE} call, e.\+g., {\ttfamily A\+L\+L\+O\+C\+A\+T\+E(grid(row\+\_\+count,col\+\_\+count))}. Thus, to decompose the grid, this interface will simply change the value of {\ttfamily col\+\_\+count} to that of the processor\textquotesingle{}s sub-\/grid. No other edits need to be made to the original serial code in this regard. 
+
+For example, consider a grid with 8 columns to be split across 3 processors, and say the time-\/stepping scheme requires an overlap parameter of 2. Then the sub-\/grid interiors will have 3, 3, and 2 columns, respectively. Including their boundaries (the overlapping regions), the sub-\/grids will have 5, 7, and 4 columns, respectively. 
+\end{DoxyRemark}
+
+
+Definition at line 103 of file ez\+\_\+parallel.\+f90.
+
+
+
+\doxysubsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfaceez__parallel_1_1decomp__grid__ezp_aa39c8cc487af9c2b11a8e4affa619326}\label{interfaceez__parallel_1_1decomp__grid__ezp_aa39c8cc487af9c2b11a8e4affa619326}} 
+\index{ez\_parallel::decomp\_grid\_ezp@{ez\_parallel::decomp\_grid\_ezp}!decomp\_grid\_dble@{decomp\_grid\_dble}}
+\index{decomp\_grid\_dble@{decomp\_grid\_dble}!ez\_parallel::decomp\_grid\_ezp@{ez\_parallel::decomp\_grid\_ezp}}
+\doxysubsubsection{\texorpdfstring{decomp\_grid\_dble()}{decomp\_grid\_dble()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::decomp\+\_\+grid\+\_\+ezp\+::decomp\+\_\+grid\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double precision, dimension(\+:,\+:), intent(in), allocatable}]{grid }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em row\+\_\+count} & Number of rows in the grid. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+count} & Number of columns in the grid, changes to number of columns in the sub-\/grid including overlap, so that the user\textquotesingle{}s time-\/stepping code may remain unchanged. \\
+\hline
+\mbox{\texttt{ in}}  & {\em overlap} & Number of extra columns needed by each sub-\/grid to successfully step forward in time. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\mbox{\texttt{ in}}  & {\em grid} & The grid to be allocated and decomposed, for use in identifying what datatype it is. N\+O\+TE\+: It must not yet be allocated. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 115 of file ez\+\_\+parallel.\+f90.
+
+\mbox{\Hypertarget{interfaceez__parallel_1_1decomp__grid__ezp_aee8d73184658c72b7c040b9f66eb1af1}\label{interfaceez__parallel_1_1decomp__grid__ezp_aee8d73184658c72b7c040b9f66eb1af1}} 
+\index{ez\_parallel::decomp\_grid\_ezp@{ez\_parallel::decomp\_grid\_ezp}!decomp\_grid\_dcmplx@{decomp\_grid\_dcmplx}}
+\index{decomp\_grid\_dcmplx@{decomp\_grid\_dcmplx}!ez\_parallel::decomp\_grid\_ezp@{ez\_parallel::decomp\_grid\_ezp}}
+\doxysubsubsection{\texorpdfstring{decomp\_grid\_dcmplx()}{decomp\_grid\_dcmplx()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::decomp\+\_\+grid\+\_\+ezp\+::decomp\+\_\+grid\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{row\+\_\+count,  }\item[{integer, intent(inout)}]{col\+\_\+count,  }\item[{integer, intent(in)}]{overlap,  }\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double complex, dimension(\+:,\+:), intent(in), allocatable}]{grid }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em row\+\_\+count} & Number of rows in the grid. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em col\+\_\+count} & Number of columns in the grid, changes to number of columns in the sub-\/grid including overlap, so that the user\textquotesingle{}s time-\/stepping code may remain unchanged. \\
+\hline
+\mbox{\texttt{ in}}  & {\em overlap} & Number of extra columns needed by each sub-\/grid to successfully step forward in time. \\
+\hline
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\mbox{\texttt{ in}}  & {\em grid} & The grid to be allocated and decomposed, for use in identifying what datatype it is. N\+O\+TE\+: It must not yet be allocated. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 133 of file ez\+\_\+parallel.\+f90.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\mbox{\hyperlink{ez__parallel_8f90}{ez\+\_\+parallel.\+f90}}\end{DoxyCompactItemize}

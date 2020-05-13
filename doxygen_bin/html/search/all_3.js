@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['fin_5fezp_10',['fin_ezp',['../fin__ezp_8f90.html#abf622eb2969a4254b7f94e678de43c26',1,'fin_ezp.f90']]],
-  ['fin_5fezp_2ef90_11',['fin_ezp.f90',['../fin__ezp_8f90.html',1,'']]]
+  ['fft_5f1d_5f1_70',['fft_1d_1',['../namespaceez__parallel__structs.html#a1b1e3efa784e7e143e8180e33f99f6fb',1,'ez_parallel_structs']]],
+  ['fft_5f1d_5f2_71',['fft_1d_2',['../namespaceez__parallel__structs.html#aebc9b392145211e7fb84c9b3fbb50688',1,'ez_parallel_structs']]],
+  ['fft_5f2d_72',['fft_2d',['../namespaceez__parallel__structs.html#a219770ad385857ff44d70dcb5a401cfb',1,'ez_parallel_structs']]]
 ];

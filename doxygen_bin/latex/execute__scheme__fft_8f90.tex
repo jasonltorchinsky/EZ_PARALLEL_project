@@ -1,0 +1,118 @@
+\hypertarget{execute__scheme__fft_8f90}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/execute\+\_\+scheme\+\_\+fft.f90 File Reference}
+\label{execute__scheme__fft_8f90}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/execute\_scheme\_fft.f90@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/execute\_scheme\_fft.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{execute__scheme__fft_8f90_a8d92e3565022cc12b3f7231ed7d778c9}{execute\+\_\+scheme\+\_\+fft\+\_\+dble\+\_\+sbr}} (sub\+Grid, kind, sch)
+\begin{DoxyCompactList}\small\item\em The F\+FT execution subroutine (D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON). \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__fft_8f90_a12d7534583366379e4c72f3ebfb36c69}{execute\+\_\+scheme\+\_\+fft\+\_\+dble\+\_\+eh}} (kind, sch)
+\begin{DoxyCompactList}\small\item\em The error handling subroutine for the sub-\/grid boundary sharing subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__fft_8f90_a56b5f8b16c88f89f83c0a6237b832c54}{execute\+\_\+scheme\+\_\+fft\+\_\+dcmpx\+\_\+sbr}} (sub\+Grid, kind, sch)
+\begin{DoxyCompactList}\small\item\em The F\+FT execution subroutine (D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX). \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__fft_8f90_a709a5803177860ef7cc168c6b5718a03}{execute\+\_\+scheme\+\_\+fft\+\_\+dcmpx\+\_\+eh}} (kind, sch)
+\begin{DoxyCompactList}\small\item\em The error handling subroutine for the sub-\/grid boundary sharing subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{execute__scheme__fft_8f90_a12d7534583366379e4c72f3ebfb36c69}\label{execute__scheme__fft_8f90_a12d7534583366379e4c72f3ebfb36c69}} 
+\index{execute\_scheme\_fft.f90@{execute\_scheme\_fft.f90}!execute\_scheme\_fft\_dble\_eh@{execute\_scheme\_fft\_dble\_eh}}
+\index{execute\_scheme\_fft\_dble\_eh@{execute\_scheme\_fft\_dble\_eh}!execute\_scheme\_fft.f90@{execute\_scheme\_fft.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_fft\_dble\_eh()}{execute\_scheme\_fft\_dble\_eh()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+fft\+\_\+dble\+\_\+sbr\+::execute\+\_\+scheme\+\_\+fft\+\_\+dble\+\_\+eh (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{kind,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+
+The error handling subroutine for the sub-\/grid boundary sharing subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: 
+
+
+\begin{DoxyItemize}
+\item kind... 
+\begin{DoxyEnumerate}
+\item 
+\end{DoxyEnumerate}not supported 
+\item sch... 
+\begin{DoxyEnumerate}
+\item is not initialized 
+\item is not initialized for F\+F\+Ts 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+
+Definition at line 122 of file execute\+\_\+scheme\+\_\+fft.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__fft_8f90_a8d92e3565022cc12b3f7231ed7d778c9}\label{execute__scheme__fft_8f90_a8d92e3565022cc12b3f7231ed7d778c9}} 
+\index{execute\_scheme\_fft.f90@{execute\_scheme\_fft.f90}!execute\_scheme\_fft\_dble\_sbr@{execute\_scheme\_fft\_dble\_sbr}}
+\index{execute\_scheme\_fft\_dble\_sbr@{execute\_scheme\_fft\_dble\_sbr}!execute\_scheme\_fft.f90@{execute\_scheme\_fft.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_fft\_dble\_sbr()}{execute\_scheme\_fft\_dble\_sbr()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+fft\+\_\+dble\+\_\+sbr (\begin{DoxyParamCaption}\item[{double precision, dimension(0\+:,0\+:), intent(inout)}]{sub\+Grid,  }\item[{integer, intent(in)}]{kind,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+
+The F\+FT execution subroutine (D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON). 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em sub\+Grid} & The local sub-\/grid whose boundary will be shared. \\
+\hline
+\mbox{\texttt{ in}}  & {\em kind} & Type of F\+FT to execute, one of F\+F\+T\+\_\+1\+D\+\_\+1, F\+F\+T\+\_\+1\+D\+\_\+2, or F\+F\+T\+\_\+2D. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that will be used for the grid decomposition, parallel F\+F\+Ts, etc. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 13 of file execute\+\_\+scheme\+\_\+fft.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__fft_8f90_a709a5803177860ef7cc168c6b5718a03}\label{execute__scheme__fft_8f90_a709a5803177860ef7cc168c6b5718a03}} 
+\index{execute\_scheme\_fft.f90@{execute\_scheme\_fft.f90}!execute\_scheme\_fft\_dcmpx\_eh@{execute\_scheme\_fft\_dcmpx\_eh}}
+\index{execute\_scheme\_fft\_dcmpx\_eh@{execute\_scheme\_fft\_dcmpx\_eh}!execute\_scheme\_fft.f90@{execute\_scheme\_fft.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_fft\_dcmpx\_eh()}{execute\_scheme\_fft\_dcmpx\_eh()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+fft\+\_\+dcmpx\+\_\+sbr\+::execute\+\_\+scheme\+\_\+fft\+\_\+dcmpx\+\_\+eh (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{kind,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+
+The error handling subroutine for the sub-\/grid boundary sharing subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: 
+
+
+\begin{DoxyItemize}
+\item kind... 
+\begin{DoxyEnumerate}
+\item 
+\end{DoxyEnumerate}not supported 
+\item sch... 
+\begin{DoxyEnumerate}
+\item is not initialized 
+\item is not initialized for F\+F\+Ts 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+
+Definition at line 292 of file execute\+\_\+scheme\+\_\+fft.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__fft_8f90_a56b5f8b16c88f89f83c0a6237b832c54}\label{execute__scheme__fft_8f90_a56b5f8b16c88f89f83c0a6237b832c54}} 
+\index{execute\_scheme\_fft.f90@{execute\_scheme\_fft.f90}!execute\_scheme\_fft\_dcmpx\_sbr@{execute\_scheme\_fft\_dcmpx\_sbr}}
+\index{execute\_scheme\_fft\_dcmpx\_sbr@{execute\_scheme\_fft\_dcmpx\_sbr}!execute\_scheme\_fft.f90@{execute\_scheme\_fft.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_fft\_dcmpx\_sbr()}{execute\_scheme\_fft\_dcmpx\_sbr()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+fft\+\_\+dcmpx\+\_\+sbr (\begin{DoxyParamCaption}\item[{double complex, dimension(0\+:,0\+:), intent(inout)}]{sub\+Grid,  }\item[{integer, intent(in)}]{kind,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+
+The F\+FT execution subroutine (D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX). 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em sub\+Grid} & The local sub-\/grid whose boundary will be shared. \\
+\hline
+\mbox{\texttt{ in}}  & {\em kind} & Type of F\+FT to execute, one of F\+F\+T\+\_\+1\+D\+\_\+1, F\+F\+T\+\_\+1\+D\+\_\+2, or F\+F\+T\+\_\+2D. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that will be used for the grid decomposition, parallel F\+F\+Ts, etc. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 183 of file execute\+\_\+scheme\+\_\+fft.\+f90.
+

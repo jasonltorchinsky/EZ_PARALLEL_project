@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['init_5fezp_2ef90_28',['init_ezp.f90',['../init__ezp_8f90.html',1,'']]]
+  ['max_5fval_2ef90_142',['max_val.f90',['../max__val_8f90.html',1,'']]],
+  ['min_5fval_2ef90_143',['min_val.f90',['../min__val_8f90.html',1,'']]]
 ];

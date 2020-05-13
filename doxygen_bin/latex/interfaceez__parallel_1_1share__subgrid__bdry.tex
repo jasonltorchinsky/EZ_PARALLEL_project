@@ -1,0 +1,70 @@
+\hypertarget{interfaceez__parallel_1_1share__subgrid__bdry}{}\doxysection{ez\+\_\+parallel\+::share\+\_\+subgrid\+\_\+bdry Interface Reference}
+\label{interfaceez__parallel_1_1share__subgrid__bdry}\index{ez\_parallel::share\_subgrid\_bdry@{ez\_parallel::share\_subgrid\_bdry}}
+
+
+The sub-\/grid boundary communication interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1share__subgrid__bdry_ae874155acc2bdb50bd1f6b0f7c89940e}{share\+\_\+subgrid\+\_\+bdry\+\_\+dcmpx\+\_\+sbr}} (sub\+Grid, sch)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1share__subgrid__bdry_a34fd91c8696d11afd3308259788b2d79}{share\+\_\+subgrid\+\_\+bdry\+\_\+dble\+\_\+sbr}} (sub\+Grid, sch)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The sub-\/grid boundary communication interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. 
+
+Communicates the sub-\/grid boundary to neighboring sub-\/grids.
+
+For greater detail on the sub-\/grid boundary communication subroutine, see \mbox{\hyperlink{share__subgrid__bdry_8f90}{share\+\_\+subgrid\+\_\+bdry.\+f90}}. 
+
+Definition at line 153 of file ez\+\_\+parallel.\+f90.
+
+
+
+\doxysubsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfaceez__parallel_1_1share__subgrid__bdry_a34fd91c8696d11afd3308259788b2d79}\label{interfaceez__parallel_1_1share__subgrid__bdry_a34fd91c8696d11afd3308259788b2d79}} 
+\index{ez\_parallel::share\_subgrid\_bdry@{ez\_parallel::share\_subgrid\_bdry}!share\_subgrid\_bdry\_dble\_sbr@{share\_subgrid\_bdry\_dble\_sbr}}
+\index{share\_subgrid\_bdry\_dble\_sbr@{share\_subgrid\_bdry\_dble\_sbr}!ez\_parallel::share\_subgrid\_bdry@{ez\_parallel::share\_subgrid\_bdry}}
+\doxysubsubsection{\texorpdfstring{share\_subgrid\_bdry\_dble\_sbr()}{share\_subgrid\_bdry\_dble\_sbr()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::share\+\_\+subgrid\+\_\+bdry\+::share\+\_\+subgrid\+\_\+bdry\+\_\+dble\+\_\+sbr (\begin{DoxyParamCaption}\item[{double precision, dimension(\+:,\+:), intent(inout)}]{sub\+Grid,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em sub\+Grid} & The sub-\/grid belonging to the processor. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that holds grid decomposition information, etc. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 158 of file ez\+\_\+parallel.\+f90.
+
+\mbox{\Hypertarget{interfaceez__parallel_1_1share__subgrid__bdry_ae874155acc2bdb50bd1f6b0f7c89940e}\label{interfaceez__parallel_1_1share__subgrid__bdry_ae874155acc2bdb50bd1f6b0f7c89940e}} 
+\index{ez\_parallel::share\_subgrid\_bdry@{ez\_parallel::share\_subgrid\_bdry}!share\_subgrid\_bdry\_dcmpx\_sbr@{share\_subgrid\_bdry\_dcmpx\_sbr}}
+\index{share\_subgrid\_bdry\_dcmpx\_sbr@{share\_subgrid\_bdry\_dcmpx\_sbr}!ez\_parallel::share\_subgrid\_bdry@{ez\_parallel::share\_subgrid\_bdry}}
+\doxysubsubsection{\texorpdfstring{share\_subgrid\_bdry\_dcmpx\_sbr()}{share\_subgrid\_bdry\_dcmpx\_sbr()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::share\+\_\+subgrid\+\_\+bdry\+::share\+\_\+subgrid\+\_\+bdry\+\_\+dcmpx\+\_\+sbr (\begin{DoxyParamCaption}\item[{double complex, dimension(\+:,\+:), intent(inout)}]{sub\+Grid,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em sub\+Grid} & The sub-\/grid belonging to the processor. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that holds grid decomposition information, etc. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 168 of file ez\+\_\+parallel.\+f90.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\mbox{\hyperlink{ez__parallel_8f90}{ez\+\_\+parallel.\+f90}}\end{DoxyCompactItemize}

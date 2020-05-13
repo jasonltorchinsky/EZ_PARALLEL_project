@@ -1,0 +1,72 @@
+\hypertarget{interfaceez__parallel_1_1execute__scheme__ifft}{}\doxysection{ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+ifft Interface Reference}
+\label{interfaceez__parallel_1_1execute__scheme__ifft}\index{ez\_parallel::execute\_scheme\_ifft@{ez\_parallel::execute\_scheme\_ifft}}
+
+
+The inverse F\+FT execution interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module.  
+
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__ifft_a87f8e602c9c4ebc1331c41b8f2c28c33}{execute\+\_\+scheme\+\_\+ifft\+\_\+dcmpx\+\_\+sbr}} (sub\+Grid, kind, sch)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1execute__scheme__ifft_ac4bd25f5658e1560d7f50cbdc71b2f39}{execute\+\_\+scheme\+\_\+ifft\+\_\+dble\+\_\+sbr}} (sub\+Grid, kind, sch)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The inverse F\+FT execution interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. 
+
+For greater detail on the inverse F\+FT execution subroutine, see \mbox{\hyperlink{execute__scheme__ifft_8f90}{execute\+\_\+scheme\+\_\+ifft.\+f90}}. 
+
+Definition at line 213 of file ez\+\_\+parallel.\+f90.
+
+
+
+\doxysubsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfaceez__parallel_1_1execute__scheme__ifft_ac4bd25f5658e1560d7f50cbdc71b2f39}\label{interfaceez__parallel_1_1execute__scheme__ifft_ac4bd25f5658e1560d7f50cbdc71b2f39}} 
+\index{ez\_parallel::execute\_scheme\_ifft@{ez\_parallel::execute\_scheme\_ifft}!execute\_scheme\_ifft\_dble\_sbr@{execute\_scheme\_ifft\_dble\_sbr}}
+\index{execute\_scheme\_ifft\_dble\_sbr@{execute\_scheme\_ifft\_dble\_sbr}!ez\_parallel::execute\_scheme\_ifft@{ez\_parallel::execute\_scheme\_ifft}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_ifft\_dble\_sbr()}{execute\_scheme\_ifft\_dble\_sbr()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+ifft\+::execute\+\_\+scheme\+\_\+ifft\+\_\+dble\+\_\+sbr (\begin{DoxyParamCaption}\item[{double precision, dimension(\+:,\+:), intent(inout)}]{sub\+Grid,  }\item[{integer, intent(in)}]{kind,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em sub\+Grid} & The local sub-\/grid whose boundary will be shared. \\
+\hline
+\mbox{\texttt{ in}}  & {\em kind} & Type of F\+FT to execute, one of F\+F\+T\+\_\+1\+D\+\_\+1, F\+F\+T\+\_\+1\+D\+\_\+2, or F\+F\+T\+\_\+2D. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that will be used for the grid decomposition, parallel F\+F\+Ts, etc. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 220 of file ez\+\_\+parallel.\+f90.
+
+\mbox{\Hypertarget{interfaceez__parallel_1_1execute__scheme__ifft_a87f8e602c9c4ebc1331c41b8f2c28c33}\label{interfaceez__parallel_1_1execute__scheme__ifft_a87f8e602c9c4ebc1331c41b8f2c28c33}} 
+\index{ez\_parallel::execute\_scheme\_ifft@{ez\_parallel::execute\_scheme\_ifft}!execute\_scheme\_ifft\_dcmpx\_sbr@{execute\_scheme\_ifft\_dcmpx\_sbr}}
+\index{execute\_scheme\_ifft\_dcmpx\_sbr@{execute\_scheme\_ifft\_dcmpx\_sbr}!ez\_parallel::execute\_scheme\_ifft@{ez\_parallel::execute\_scheme\_ifft}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_ifft\_dcmpx\_sbr()}{execute\_scheme\_ifft\_dcmpx\_sbr()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::execute\+\_\+scheme\+\_\+ifft\+::execute\+\_\+scheme\+\_\+ifft\+\_\+dcmpx\+\_\+sbr (\begin{DoxyParamCaption}\item[{double complex, dimension(\+:,\+:), intent(inout)}]{sub\+Grid,  }\item[{integer, intent(in)}]{kind,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em sub\+Grid} & The local sub-\/grid whose boundary will be shared. \\
+\hline
+\mbox{\texttt{ in}}  & {\em kind} & Type of F\+FT to execute, one of F\+F\+T\+\_\+1\+D\+\_\+1, F\+F\+T\+\_\+1\+D\+\_\+2, or F\+F\+T\+\_\+2D. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that will be used for the grid decomposition, parallel F\+F\+Ts, etc. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 232 of file ez\+\_\+parallel.\+f90.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\mbox{\hyperlink{ez__parallel_8f90}{ez\+\_\+parallel.\+f90}}\end{DoxyCompactItemize}

@@ -1,0 +1,58 @@
+\hypertarget{interfaceez__parallel_1_1share__subgrid__boundaries__ezp}{}\doxysection{ez\+\_\+parallel\+::share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp Interface Reference}
+\label{interfaceez__parallel_1_1share__subgrid__boundaries__ezp}\index{ez\_parallel::share\_subgrid\_boundaries\_ezp@{ez\_parallel::share\_subgrid\_boundaries\_ezp}}
+
+
+The sub-\/grid boundary communication interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module.  
+
+
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1share__subgrid__boundaries__ezp_aefe1f880ee8ed536e61d895ac9bd4618}{share\+\_\+subgrid\+\_\+boundaries\+\_\+dble}} (decomp\+\_\+id, sub\+\_\+grid)
+\item 
+subroutine \mbox{\hyperlink{interfaceez__parallel_1_1share__subgrid__boundaries__ezp_a27217cd81815cc5274f2a6181502a887}{share\+\_\+subgrid\+\_\+boundaries\+\_\+dcmplx}} (decomp\+\_\+id, sub\+\_\+grid)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The sub-\/grid boundary communication interface for the {\ttfamily E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+EL} module. 
+
+For greater detail on the sub-\/grid boundary communication subroutine, please see \mbox{\hyperlink{share__subgrid__boundaries__ezp_8f90}{share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp.\+f90}}. Communicates the sub-\/grid boundary to neighboring sub-\/grids. 
+
+Definition at line 195 of file ez\+\_\+parallel.\+f90.
+
+
+
+\doxysubsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfaceez__parallel_1_1share__subgrid__boundaries__ezp_aefe1f880ee8ed536e61d895ac9bd4618}\label{interfaceez__parallel_1_1share__subgrid__boundaries__ezp_aefe1f880ee8ed536e61d895ac9bd4618}} 
+\index{ez\_parallel::share\_subgrid\_boundaries\_ezp@{ez\_parallel::share\_subgrid\_boundaries\_ezp}!share\_subgrid\_boundaries\_dble@{share\_subgrid\_boundaries\_dble}}
+\index{share\_subgrid\_boundaries\_dble@{share\_subgrid\_boundaries\_dble}!ez\_parallel::share\_subgrid\_boundaries\_ezp@{ez\_parallel::share\_subgrid\_boundaries\_ezp}}
+\doxysubsubsection{\texorpdfstring{share\_subgrid\_boundaries\_dble()}{share\_subgrid\_boundaries\_dble()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp\+::share\+\_\+subgrid\+\_\+boundaries\+\_\+dble (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double precision, dimension(\+:,\+:), intent(inout)}]{sub\+\_\+grid }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em decomp\+\_\+id} & ID number of the grid decomposition, between 1 and the number of \char`\"{}unique\char`\"{} grid decompositions. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sub\+\_\+grid} & The sub-\/grid belonging to the processor. This is stored under the original variable for the grid, e.\+g., if the serial code uses heat\+\_\+grid as the grid, then the heat\+\_\+grid should be passed to this subroutine as the sub\+\_\+grid argument. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 203 of file ez\+\_\+parallel.\+f90.
+
+\mbox{\Hypertarget{interfaceez__parallel_1_1share__subgrid__boundaries__ezp_a27217cd81815cc5274f2a6181502a887}\label{interfaceez__parallel_1_1share__subgrid__boundaries__ezp_a27217cd81815cc5274f2a6181502a887}} 
+\index{ez\_parallel::share\_subgrid\_boundaries\_ezp@{ez\_parallel::share\_subgrid\_boundaries\_ezp}!share\_subgrid\_boundaries\_dcmplx@{share\_subgrid\_boundaries\_dcmplx}}
+\index{share\_subgrid\_boundaries\_dcmplx@{share\_subgrid\_boundaries\_dcmplx}!ez\_parallel::share\_subgrid\_boundaries\_ezp@{ez\_parallel::share\_subgrid\_boundaries\_ezp}}
+\doxysubsubsection{\texorpdfstring{share\_subgrid\_boundaries\_dcmplx()}{share\_subgrid\_boundaries\_dcmplx()}}
+{\footnotesize\ttfamily subroutine ez\+\_\+parallel\+::share\+\_\+subgrid\+\_\+boundaries\+\_\+ezp\+::share\+\_\+subgrid\+\_\+boundaries\+\_\+dcmplx (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{decomp\+\_\+id,  }\item[{double complex, dimension(\+:,\+:), intent(inout)}]{sub\+\_\+grid }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line 207 of file ez\+\_\+parallel.\+f90.
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/\mbox{\hyperlink{ez__parallel_8f90}{ez\+\_\+parallel.\+f90}}\end{DoxyCompactItemize}

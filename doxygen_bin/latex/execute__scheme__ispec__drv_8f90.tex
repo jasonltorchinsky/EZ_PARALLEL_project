@@ -1,0 +1,132 @@
+\hypertarget{execute__scheme__ispec__drv_8f90}{}\doxysection{C\+:/\+Users/\+Owner/\+Education and Research/\+Graduate School/\+Parallelization Module Project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L\+\_\+project/\+E\+Z\+\_\+\+P\+A\+R\+A\+L\+L\+E\+L/execute\+\_\+scheme\+\_\+ispec\+\_\+drv.f90 File Reference}
+\label{execute__scheme__ispec__drv_8f90}\index{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/execute\_scheme\_ispec\_drv.f90@{C:/Users/Owner/Education and Research/Graduate School/Parallelization Module Project/EZ\_PARALLEL\_project/EZ\_PARALLEL/execute\_scheme\_ispec\_drv.f90}}
+\doxysubsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{execute__scheme__ispec__drv_8f90_a4a07eb95d9e610d4cf48004f372c10a4}{execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dble\+\_\+sbr}} (sub\+Grid, kind, order, sch)
+\begin{DoxyCompactList}\small\item\em The inverse spectral derivative execution subroutine (D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON). \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__ispec__drv_8f90_a79db800c2cbd3ca0f782778f81e77495}{execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dble\+\_\+eh}} (kind, order, sch)
+\begin{DoxyCompactList}\small\item\em The error handling subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__ispec__drv_8f90_afda71ebb9ae03a6a156f24460cc176c7}{execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dcmpx\+\_\+sbr}} (sub\+Grid, kind, order, sch)
+\begin{DoxyCompactList}\small\item\em The spectral derivative execution subroutine (D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX). \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{execute__scheme__ispec__drv_8f90_a9659e07ba5d29574d43f091e606c8e2b}{execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dcmpx\+\_\+eh}} (kind, order, sch)
+\begin{DoxyCompactList}\small\item\em The error handling subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{execute__scheme__ispec__drv_8f90_a79db800c2cbd3ca0f782778f81e77495}\label{execute__scheme__ispec__drv_8f90_a79db800c2cbd3ca0f782778f81e77495}} 
+\index{execute\_scheme\_ispec\_drv.f90@{execute\_scheme\_ispec\_drv.f90}!execute\_scheme\_ispec\_drv\_dble\_eh@{execute\_scheme\_ispec\_drv\_dble\_eh}}
+\index{execute\_scheme\_ispec\_drv\_dble\_eh@{execute\_scheme\_ispec\_drv\_dble\_eh}!execute\_scheme\_ispec\_drv.f90@{execute\_scheme\_ispec\_drv.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_ispec\_drv\_dble\_eh()}{execute\_scheme\_ispec\_drv\_dble\_eh()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dble\+\_\+sbr\+::execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dble\+\_\+eh (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{kind,  }\item[{integer, intent(in)}]{order,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+
+The error handling subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: 
+
+
+\begin{DoxyItemize}
+\item kind... 
+\begin{DoxyEnumerate}
+\item 
+\end{DoxyEnumerate}not supported 
+\item order... 
+\begin{DoxyEnumerate}
+\item 
+\end{DoxyEnumerate}negative 
+\item sch... 
+\begin{DoxyEnumerate}
+\item is not initialized 
+\item is not initialized for F\+F\+Ts 
+\item is not initialized for spectral derivatives 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+
+Definition at line 63 of file execute\+\_\+scheme\+\_\+ispec\+\_\+drv.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__ispec__drv_8f90_a4a07eb95d9e610d4cf48004f372c10a4}\label{execute__scheme__ispec__drv_8f90_a4a07eb95d9e610d4cf48004f372c10a4}} 
+\index{execute\_scheme\_ispec\_drv.f90@{execute\_scheme\_ispec\_drv.f90}!execute\_scheme\_ispec\_drv\_dble\_sbr@{execute\_scheme\_ispec\_drv\_dble\_sbr}}
+\index{execute\_scheme\_ispec\_drv\_dble\_sbr@{execute\_scheme\_ispec\_drv\_dble\_sbr}!execute\_scheme\_ispec\_drv.f90@{execute\_scheme\_ispec\_drv.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_ispec\_drv\_dble\_sbr()}{execute\_scheme\_ispec\_drv\_dble\_sbr()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dble\+\_\+sbr (\begin{DoxyParamCaption}\item[{double precision, dimension(0\+:,0\+:), intent(inout)}]{sub\+Grid,  }\item[{integer, intent(in)}]{kind,  }\item[{integer, intent(in)}]{order,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+
+The inverse spectral derivative execution subroutine (D\+O\+U\+B\+LE P\+R\+E\+C\+I\+S\+I\+ON). 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em sub\+Grid} & The local sub-\/grid whose boundary will be shared. \\
+\hline
+\mbox{\texttt{ in}}  & {\em kind} & Type of spectral derivative to execute, one of S\+P\+E\+C\+\_\+\+D\+R\+V\+\_\+1\+D\+\_\+1, S\+P\+E\+C\+\_\+\+D\+R\+V\+\_\+1\+D\+\_\+2. \\
+\hline
+\mbox{\texttt{ in}}  & {\em order} & Order of the spectral derivative. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that will be used for the grid decomposition, parallel F\+F\+Ts, etc. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 15 of file execute\+\_\+scheme\+\_\+ispec\+\_\+drv.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__ispec__drv_8f90_a9659e07ba5d29574d43f091e606c8e2b}\label{execute__scheme__ispec__drv_8f90_a9659e07ba5d29574d43f091e606c8e2b}} 
+\index{execute\_scheme\_ispec\_drv.f90@{execute\_scheme\_ispec\_drv.f90}!execute\_scheme\_ispec\_drv\_dcmpx\_eh@{execute\_scheme\_ispec\_drv\_dcmpx\_eh}}
+\index{execute\_scheme\_ispec\_drv\_dcmpx\_eh@{execute\_scheme\_ispec\_drv\_dcmpx\_eh}!execute\_scheme\_ispec\_drv.f90@{execute\_scheme\_ispec\_drv.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_ispec\_drv\_dcmpx\_eh()}{execute\_scheme\_ispec\_drv\_dcmpx\_eh()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dcmpx\+\_\+sbr\+::execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dcmpx\+\_\+eh (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{kind,  }\item[{integer, intent(in)}]{order,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+
+The error handling subroutine. Aborts the program if any of the input parameters satisfy any of the following conditions\+: 
+
+
+\begin{DoxyItemize}
+\item kind... 
+\begin{DoxyEnumerate}
+\item 
+\end{DoxyEnumerate}not supported 
+\item order... 
+\begin{DoxyEnumerate}
+\item 
+\end{DoxyEnumerate}negative 
+\item sch... 
+\begin{DoxyEnumerate}
+\item is not initialized 
+\item is not initialized for F\+F\+Ts 
+\item is not initialized for spectral derivatives 
+\end{DoxyEnumerate}
+\end{DoxyItemize}
+
+Definition at line 251 of file execute\+\_\+scheme\+\_\+ispec\+\_\+drv.\+f90.
+
+\mbox{\Hypertarget{execute__scheme__ispec__drv_8f90_afda71ebb9ae03a6a156f24460cc176c7}\label{execute__scheme__ispec__drv_8f90_afda71ebb9ae03a6a156f24460cc176c7}} 
+\index{execute\_scheme\_ispec\_drv.f90@{execute\_scheme\_ispec\_drv.f90}!execute\_scheme\_ispec\_drv\_dcmpx\_sbr@{execute\_scheme\_ispec\_drv\_dcmpx\_sbr}}
+\index{execute\_scheme\_ispec\_drv\_dcmpx\_sbr@{execute\_scheme\_ispec\_drv\_dcmpx\_sbr}!execute\_scheme\_ispec\_drv.f90@{execute\_scheme\_ispec\_drv.f90}}
+\doxysubsubsection{\texorpdfstring{execute\_scheme\_ispec\_drv\_dcmpx\_sbr()}{execute\_scheme\_ispec\_drv\_dcmpx\_sbr()}}
+{\footnotesize\ttfamily subroutine execute\+\_\+scheme\+\_\+ispec\+\_\+drv\+\_\+dcmpx\+\_\+sbr (\begin{DoxyParamCaption}\item[{double complex, dimension(0\+:,0\+:), intent(inout)}]{sub\+Grid,  }\item[{integer, intent(in)}]{kind,  }\item[{integer, intent(in)}]{order,  }\item[{type(scheme), intent(in)}]{sch }\end{DoxyParamCaption})}
+
+
+
+The spectral derivative execution subroutine (D\+O\+U\+B\+LE C\+O\+M\+P\+L\+EX). 
+
+\begin{DoxyAuthor}{Author}
+Jason Turner, University of Wisconsin-\/\+Madison 
+\end{DoxyAuthor}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in,out}}  & {\em sub\+Grid} & The local sub-\/grid whose boundary will be shared. \\
+\hline
+\mbox{\texttt{ in}}  & {\em kind} & Type of spectral derivative to execute, one of S\+P\+E\+C\+\_\+\+D\+R\+V\+\_\+1\+D\+\_\+1, S\+P\+E\+C\+\_\+\+D\+R\+V\+\_\+1\+D\+\_\+2. \\
+\hline
+\mbox{\texttt{ in}}  & {\em order} & Order of the spectral derivative. \\
+\hline
+\mbox{\texttt{ in}}  & {\em sch} & {\ttfamily S\+C\+H\+E\+ME} that will be used for the grid decomposition, parallel F\+F\+Ts, etc. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 142 of file execute\+\_\+scheme\+\_\+ispec\+\_\+drv.\+f90.
+

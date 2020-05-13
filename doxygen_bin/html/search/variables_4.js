@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['proc_5fcount_42',['proc_count',['../namespaceez__parallel.html#aaa581384cd20bbada0a4c3f3cc5765c2',1,'ez_parallel']]],
-  ['proc_5fid_43',['proc_id',['../namespaceez__parallel.html#a5c16c79dc384827b3dba59da7e8083e0',1,'ez_parallel']]]
+  ['hslabsize_202',['hslabsize',['../structez__parallel__structs_1_1scheme.html#a4c597f67016c3f6acec2bd941b75781a',1,'ez_parallel_structs::scheme']]]
 ];

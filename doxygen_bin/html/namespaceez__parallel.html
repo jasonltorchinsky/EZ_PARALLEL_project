@@ -64,106 +64,64 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Types</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#nested-classes">Data Types</a>  </div>
   <div class="headertitle">
 <div class="title">ez_parallel Module Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>The main file for the EZ_PARALLEL module. Contains all derived datatypes and includes the files containing the module subroutines.  
+<p>The EZ_PARALLEL module. Contains EZ_PARALLEL subroutines and their interfaces.  
 <a href="namespaceez__parallel.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Data Types</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">type &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structez__parallel_1_1grid__decomposition.html">grid_decomposition</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The GRID_DECOMPOSITION derived datatype. It contains all information about the grid and the sub-grid decomposition of the grid.  <a href="structez__parallel_1_1grid__decomposition.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1create__scheme.html">create_scheme</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interface for the <code>SCHEME</code> creation subroutine.  <a href="interfaceez__parallel_1_1create__scheme.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a95a33182359edd437e95aadf9293dce4"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceez__parallel.html#a95a33182359edd437e95aadf9293dce4">decomp_count</a></td></tr>
-<tr class="memdesc:a95a33182359edd437e95aadf9293dce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of "unique" grid decompositions.  <a href="namespaceez__parallel.html#a95a33182359edd437e95aadf9293dce4">More...</a><br /></td></tr>
-<tr class="separator:a95a33182359edd437e95aadf9293dce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c16c79dc384827b3dba59da7e8083e0"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceez__parallel.html#a5c16c79dc384827b3dba59da7e8083e0">proc_id</a></td></tr>
-<tr class="memdesc:a5c16c79dc384827b3dba59da7e8083e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The local processor ID.  <a href="namespaceez__parallel.html#a5c16c79dc384827b3dba59da7e8083e0">More...</a><br /></td></tr>
-<tr class="separator:a5c16c79dc384827b3dba59da7e8083e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa581384cd20bbada0a4c3f3cc5765c2"><td class="memItemLeft" align="right" valign="top">integer, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceez__parallel.html#aaa581384cd20bbada0a4c3f3cc5765c2">proc_count</a></td></tr>
-<tr class="memdesc:aaa581384cd20bbada0a4c3f3cc5765c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The total number of processors called by the user.  <a href="namespaceez__parallel.html#aaa581384cd20bbada0a4c3f3cc5765c2">More...</a><br /></td></tr>
-<tr class="separator:aaa581384cd20bbada0a4c3f3cc5765c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6659146bbf9b35d6bd2852b0e575923c"><td class="memItemLeft" align="right" valign="top">type(<a class="el" href="structez__parallel_1_1grid__decomposition.html">grid_decomposition</a>), dimension(:), allocatable, public&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceez__parallel.html#a6659146bbf9b35d6bd2852b0e575923c">grid_decomps</a></td></tr>
-<tr class="memdesc:a6659146bbf9b35d6bd2852b0e575923c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of all grid decompositions.  <a href="namespaceez__parallel.html#a6659146bbf9b35d6bd2852b0e575923c">More...</a><br /></td></tr>
-<tr class="separator:a6659146bbf9b35d6bd2852b0e575923c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1create__scheme__fft.html">create_scheme_fft</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interface for the <code>SCHEME</code> FFT initialization subroutine.  <a href="interfaceez__parallel_1_1create__scheme__fft.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1create__scheme__spec__drv.html">create_scheme_spec_drv</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interface for the <code>SCHEME</code> spectral derivative initialization subroutine.  <a href="interfaceez__parallel_1_1create__scheme__spec__drv.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1create__scheme__zero__pad.html">create_scheme_zero_pad</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interface for the <code>SCHEME</code> zero-padding initializtion subroutine.  <a href="interfaceez__parallel_1_1create__scheme__zero__pad.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1destroy__scheme.html">destroy_scheme</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interface for the <code>SCHEME</code> destruction subroutine.  <a href="interfaceez__parallel_1_1destroy__scheme.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1execute__scheme__fft.html">execute_scheme_fft</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The FFT execution interface for the <code>EZ_PARALLEL</code> module.  <a href="interfaceez__parallel_1_1execute__scheme__fft.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1execute__scheme__ifft.html">execute_scheme_ifft</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inverse FFT execution interface for the <code>EZ_PARALLEL</code> module.  <a href="interfaceez__parallel_1_1execute__scheme__ifft.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1execute__scheme__ispec__drv.html">execute_scheme_ispec_drv</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inverse spectral derivative execution interface for the <code>EZ_PARALLEL</code> module.  <a href="interfaceez__parallel_1_1execute__scheme__ispec__drv.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1execute__scheme__izero__pad.html">execute_scheme_izero_pad</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interface for the <code>SCHEME</code> zero-padding removal subroutine.  <a href="interfaceez__parallel_1_1execute__scheme__izero__pad.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1execute__scheme__spec__drv.html">execute_scheme_spec_drv</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The spectral derivative execution interface for the <code>EZ_PARALLEL</code> module.  <a href="interfaceez__parallel_1_1execute__scheme__spec__drv.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1execute__scheme__zero__pad.html">execute_scheme_zero_pad</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interface for the <code>SCHEME</code> zero-padding execution subroutine.  <a href="interfaceez__parallel_1_1execute__scheme__zero__pad.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1max__val.html">max_val</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum value interface for the <code>EZ_PARALLEL</code> module.  <a href="interfaceez__parallel_1_1max__val.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1min__val.html">min_val</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The minimum value interface for the <code>EZ_PARALLEL</code> module.  <a href="interfaceez__parallel_1_1min__val.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceez__parallel_1_1share__subgrid__bdry.html">share_subgrid_bdry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sub-grid boundary communication interface for the <code>EZ_PARALLEL</code> module.  <a href="interfaceez__parallel_1_1share__subgrid__bdry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The main file for the EZ_PARALLEL module. Contains all derived datatypes and includes the files containing the module subroutines. </p>
+<div class="textblock"><p>The EZ_PARALLEL module. Contains EZ_PARALLEL subroutines and their interfaces. </p>
 <dl class="section author"><dt>Author</dt><dd>Jason Turner </dd></dl>
-</div><h2 class="groupheader">Variable Documentation</h2>
-<a id="a95a33182359edd437e95aadf9293dce4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95a33182359edd437e95aadf9293dce4">&#9670;&nbsp;</a></span>decomp_count</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">integer, public ez_parallel::decomp_count</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Number of "unique" grid decompositions. </p>
-
-</div>
-</div>
-<a id="a6659146bbf9b35d6bd2852b0e575923c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6659146bbf9b35d6bd2852b0e575923c">&#9670;&nbsp;</a></span>grid_decomps</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">type(<a class="el" href="structez__parallel_1_1grid__decomposition.html">grid_decomposition</a>), dimension(:), allocatable, public ez_parallel::grid_decomps</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A list of all grid decompositions. </p>
-
-</div>
-</div>
-<a id="aaa581384cd20bbada0a4c3f3cc5765c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa581384cd20bbada0a4c3f3cc5765c2">&#9670;&nbsp;</a></span>proc_count</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">integer, public ez_parallel::proc_count</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The total number of processors called by the user. </p>
-
-</div>
-</div>
-<a id="a5c16c79dc384827b3dba59da7e8083e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5c16c79dc384827b3dba59da7e8083e0">&#9670;&nbsp;</a></span>proc_id</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">integer, public ez_parallel::proc_id</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>The local processor ID. </p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

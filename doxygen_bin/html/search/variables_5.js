@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['row_5fcount_5fg_44',['row_count_g',['../structez__parallel_1_1grid__decomposition.html#aa091135664c2e411d38969f4f8e5a5d4',1,'ez_parallel::grid_decomposition']]],
-  ['row_5fdecomp_45',['row_decomp',['../structez__parallel_1_1grid__decomposition.html#ac430e5a9776f8e32aef386900dd35955',1,'ez_parallel::grid_decomposition']]]
+  ['initfft_203',['initfft',['../structez__parallel__structs_1_1scheme.html#a76711a2abf64383d69d26bc67541746d',1,'ez_parallel_structs::scheme']]],
+  ['initscheme_204',['initscheme',['../structez__parallel__structs_1_1scheme.html#ae93449c0e69593f82db3d5592f61a313',1,'ez_parallel_structs::scheme']]],
+  ['initspecdrv_205',['initspecdrv',['../structez__parallel__structs_1_1scheme.html#a1ee650d32d22976f6a86fd059abbbf09',1,'ez_parallel_structs::scheme']]]
 ];

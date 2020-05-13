@@ -13,7 +13,7 @@
 !> Jason Turner
 ! DESCRIPTION:
 !> \brief The EZ_PARALLEL structures module.
-!> Contains all EZ_PARALLEL derived datatypes and global variables.
+!> Contains all EZ_PARALLEL derived datatypes.
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MODULE EZ_PARALLEL_STRUCTS
@@ -22,36 +22,88 @@ MODULE EZ_PARALLEL_STRUCTS
 
   PRIVATE
 
-  !> @class GRID_DECOMPOSITTION.
-  !! The GRID_DECOMPOSITION derived datatype contains all information about
-  !! the grid and the sub-grid decomposition of the grid.
-  TYPE, PUBLIC :: GRID_DECOMPOSITION
-     INTEGER :: decomp_id !< ID number of the grid decomposition, between 1 and
-     !! the total number of "unique" grid decompositions.
-     INTEGER :: row_count_g !< Number of rows in the grid.
-     INTEGER :: col_count_g !< Number of columns in the grid.
-     INTEGER :: overlap !< Number of extra columns needed by each sub-grid to
+  !> @class SCHEME.
+  !! The <tt>SCHEME</tt> derived datatype contains all information about
+  !! the grid and the sub-grid decomposition of the grid, as well as information
+  !! needed for FFTs.
+  TYPE, PUBLIC :: SCHEME
+     ! Grid/Global variables.
+     INTEGER :: gridSize(0:1) !< Size in each dimension of the grid.
+     DOUBLE PRECISION :: colSpc !< Physical spacing between columns of the grid.
+     INTEGER :: comm !< Communicator that holds the grid.
+     INTEGER :: commSize !< Number of processes in the MPI communicator.
+     INTEGER :: datatype !< Datatype of the array.
+     INTEGER :: ovlp !< Number of extra columns needed by each sub-grid to
      !! successfully step forward in time.
-     INTEGER, ALLOCATABLE :: row_decomp(:) !< Number of rows in each sub-grid
+     INTEGER, ALLOCATABLE :: rowDcmpSizes(:) !< Number of rows in each sub-grid
      !! of the horizontal-slab decomposition, excluding overlap.
-     INTEGER, ALLOCATABLE :: col_decomp(:) !< Number of columns in each
+     INTEGER, ALLOCATABLE :: colDcmpSizes(:) !< Number of columns in each
      !! sub-grid of the vertical-slab decomposition, excluding overlap.
-     INTEGER, ALLOCATABLE :: col_decomp_ovlp(:) !< Number of columns in each
+     INTEGER, ALLOCATABLE :: colDcmpSizesOvlp(:) !< Number of columns in each
      !! sub-grid of the vertical slab decomposition, including overlap.
-     INTEGER :: SEND_BOUNDARIES(2) !< MPI derived datatype for sending
-     !! sub-grid boundaries to neightboring sub-grids (1 = left, 2 = right).
-     INTEGER :: RECV_BOUNDARIES(2) !< MPI derived datatype for recieving
-     !! sub-grid boundaries from neightboring sub-grids (1 = left, 2 = right).
-  END TYPE GRID_DECOMPOSITION
 
-  ! Global variable declarations
-  INTEGER, PUBLIC :: decomp_count !< Number of "unique" grid decompositions.
-  INTEGER, PUBLIC :: proc_id !< The local processor ID.
-  INTEGER, PUBLIC :: proc_count !< The total number of processors called by the
-  !! user.
-  TYPE(GRID_DECOMPOSITION), ALLOCATABLE, PUBLIC :: grid_decomps(:) !< A list of all
-  !! grid decompositions.
+     ! Sub-grid/Local variables.
+     INTEGER :: procID !< Processor ID.
+     INTEGER :: hSlabSize(0:1) !< Sizes in each dimension of the sub-grid in
+     !! the horizontal-slab decomposition of the global array.
+     INTEGER :: vSlabSize(0:1) !< Sizes in each dimension of the sub-grid in
+     !! the vertical-slab decomposition of the global array, excluding overlap.
+     INTEGER :: vSlabSizeOvlp(0:1) !< Sizes in each dimension of the sub-grid in
+     !! the vertical-slab decomposition of the global array, including overlap.
+     INTEGER :: vSlabInt(0:1) !< Column indices of the interior of the vertical
+     !! slab.
+     DOUBLE PRECISION :: colRef !< The physical position of the reference point
+     !! in the dimension along the rows (corresponding to a column).
+     INTEGER :: SEND_BOUNDARIES(0:1) !< MPI derived datatype for sending
+     !! sub-grid boundaries to neightboring sub-grids (0 = left, 1 = right).
+     INTEGER :: RECV_BOUNDARIES(0:1) !< MPI derived datatype for recieving
+     !! sub-grid boundaries from neightboring sub-grids (0 = left, 1 = right).
 
+     ! Additional variables for FFTs.
+     DOUBLE PRECISION, ALLOCATABLE :: WSAVE1(:) !< Holds initialization info
+     !! for DFFTPACK 1-D FFTS along first dimension.
+     DOUBLE PRECISION, ALLOCATABLE :: WSAVE2(:) !< Holds initialization info
+     !! for DFFTPACK 1-D FFTS along second dimension.
+     DOUBLE PRECISION :: norm_1D_1 !< The normalization coefficient for possible
+     !! 1-D FFTs along the first dimension.
+     DOUBLE PRECISION :: norm_1D_2 !< The normalization coefficient for possible
+     !! 1-D FFTs along the second dimension.
+     DOUBLE PRECISION :: norm_2D !< The normalization coefficient for
+     !! possible 2D FFTs.
+     INTEGER, ALLOCATABLE :: SUBARRAYS(:,:) !< Holds the datatypes necessary to
+     !! perform the transposition.
+     INTEGER, ALLOCATABLE :: counts(:), displs(:) !< Arrays for use in global
+
+     ! Additional variables for spectral derivatives.
+     DOUBLE COMPLEX, ALLOCATABLE :: wvNmbr1(:) !< Holds coefficients for spectral
+     !! derivative along the first dimension.
+     DOUBLE COMPLEX, ALLOCATABLE :: wvNmbr2(:) !< Holds coefficients for spectral
+     !! derivative along the second dimension.
+
+     ! Error handling variables.
+     LOGICAL :: initScheme = .FALSE. !< Checks if <tt>SCHEME</tt> was created
+     !! already.
+     LOGICAL :: initFFT = .FALSE. !< Checks if FFTs for <tt>SCHEME</tt> were
+     !! initialized already.
+     LOGICAL :: initSpecDrv = .FALSE. !< Checks if spectral derivates for
+     !! <tt>SCHEME</tt> were initialized already.
+  END TYPE SCHEME
+
+  PUBLIC :: FFT_1D_1
+  INTEGER, PARAMETER :: FFT_1D_1 = 51 !< Flag to mark execution of 1D FFTs along
+  !! the first dimension.
+  PUBLIC :: FFT_1D_2
+  INTEGER, PARAMETER :: FFT_1D_2 = 46 !< Flag to mark execution of 1D FFTs along
+  !! the second dimension.
+  PUBLIC :: FFT_2D
+  INTEGER, PARAMETER :: FFT_2D = 95 !< Flag to mark execution of 2D FFTs.
+
+  PUBLIC :: SPEC_DRV_1D_1
+  INTEGER, PARAMETER :: SPEC_DRV_1D_1 = 23 !< Flag to mark execution of 1D
+  !! spectral derivatives along the first dimension.
+  PUBLIC :: SPEC_DRV_1D_2
+  INTEGER, PARAMETER :: SPEC_DRV_1D_2 = 78 !< Flag to mark execution of 1D
+  !! spectral derivatives along the second dimension.
 
   
 END MODULE EZ_PARALLEL_STRUCTS
