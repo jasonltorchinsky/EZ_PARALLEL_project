@@ -10,6 +10,10 @@
 #    The -c commands compile without linking every source file. The -o commands
 #    link all of the object files.
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Filename separator character.
+SEP = /
+
 # Command-Line System Options: Linux, Windows.
 CMD = Linux
 # FC options: mpifort, gfortran (with msmpi).
@@ -18,20 +22,20 @@ FC = gfortran
 # Executable name.
 TRGT = stoch_heat_solver_serial.exe
 # .f files.
-SRCS = $(wildcard *.f)
+SRCS = $(wildcard *.f90)
 # .o files.
-OBJS = $(patsubst %.f, %.o, $(SRCS))
+OBJS = $(patsubst %.f90, %.o, $(SRCS))
 # .mod files.
-MODS = $(patsubst %.f, %.mod, $(SRCS))
+MODS = $(patsubst %.f90, %.mod, $(SRCS))
 
 # Set the compiler flags, dependent on the compiler.
 ifeq ($(FC), gfortran)
   # Compiler flags.
-  FCFLAGS = -ffree-form
-  
+  FCFLAGS = -O3 -Wall
+
 else ifeq ($(FC), mpifort)
   # Compiler flags.
-  FCFLAGS = -ffree-form
+  FCFLAGS = -O3 -Wall
 endif
 
 # Makes the executable.
@@ -39,19 +43,19 @@ $(TRGT): $(OBJS)                # Make executable.
 	$(FC) $(OBJS) -o $(TRGT) $(FCFLAGS)
 
 # Make main.o.
-main.o: main.f time_stepper.o output.o initialize.o
+main.o: main.f90 time_stepper.o output.o initialize.o
 	$(FC) -c $< $(FCFLAGS)
 
 # Make time_stepper.o.
-time_stepper.o: time_stepper.f output.o initialize.o
+time_stepper.o: time_stepper.f90 output.o initialize.o
 	$(FC) -c $< $(FCFLAGS)
 
 # Make output.o.
-output.o: output.f initialize.o
+output.o: output.f90 initialize.o
 	$(FC) -c $< $(FCFLAGS)
 
-# Compile all independent .f files. 
-%.o: %.f
+# Compile all independent .f90 files. 
+%.o: %.f90
 	$(FC) -c $< $(FCFLAGS)
 
 

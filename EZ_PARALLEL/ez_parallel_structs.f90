@@ -12,8 +12,8 @@
 !> @author
 !> Jason Turner
 ! DESCRIPTION:
-!> \brief The EZ_PARALLEL structures module.
-!> Contains all EZ_PARALLEL derived datatypes.
+!> \brief The <tt>EZ_PARALLEL</tt> structures module.
+!> Contains all <tt>EZ_PARALLEL</tt> derived datatypes.
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MODULE EZ_PARALLEL_STRUCTS

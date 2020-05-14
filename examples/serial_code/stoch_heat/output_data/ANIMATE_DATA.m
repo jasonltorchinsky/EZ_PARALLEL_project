@@ -22,8 +22,9 @@ while k <= file_count
     h = pcolor(all_data(:,:,k));
     set(h, 'EdgeColor', 'none');
     colorbar;
-    caxis([60 70]);
-    title(int2str(k-1));
+    colormap(gray);
+    caxis([65 67.5]);
+    title(int2str(output_freq*(k-1)));
     pause(.1);
     k = k + 1;
     if k == file_count

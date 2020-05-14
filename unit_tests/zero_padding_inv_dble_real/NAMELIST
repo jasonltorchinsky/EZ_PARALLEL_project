@@ -1,9 +1,0 @@
-&test_params
-dim1_len = 5
-dim2_len = 7
-overlap = 0
-dim1_ref = 0.0
-dim2_ref = 0.0
-dim1_spc = 1.0
-dim2_spc = 1.0
-/

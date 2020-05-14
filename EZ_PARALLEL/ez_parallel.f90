@@ -12,8 +12,8 @@
 !> @author
 !> Jason Turner
 !
-!> \brief The EZ_PARALLEL module.
-!> Contains EZ_PARALLEL subroutines and their interfaces.
+!> \brief The <tt>EZ_PARALLEL</tt> module.
+!> Contains <tt>EZ_PARALLEL</tt> subroutines and their interfaces.
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MODULE EZ_PARALLEL

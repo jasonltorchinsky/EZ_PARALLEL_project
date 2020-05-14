@@ -16,3 +16,6 @@
 
 # Miscellaneous files.
 *~
+
+# Ignore doxygen files
+*/doxygen_bin
