@@ -29,8 +29,8 @@ SUBROUTINE MIN_VAL_SBR(subGrid, minValue, sch)
 
   minValueTemp = MINVAL(subGrid)
 
-  CALL MPI_ALLREDUCE(minValueTemp, minValue, 1, sch%datatype, MPI_MIN, sch%comm, &
-       ierror)
+  CALL MPI_ALLREDUCE(minValueTemp, minValue, 1, MPI_DOUBLE_PRECISION, MPI_MIN, &
+       sch%comm, ierror)
 
 
 CONTAINS

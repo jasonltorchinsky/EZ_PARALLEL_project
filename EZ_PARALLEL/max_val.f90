@@ -29,8 +29,8 @@ SUBROUTINE MAX_VAL_SBR(subGrid, maxValue, sch)
 
   maxValueTemp = MAXVAL(subGrid)
 
-  CALL MPI_ALLREDUCE(maxValueTemp, maxValue, 1, sch%datatype, MPI_MAX, sch%comm, &
-       ierror)
+  CALL MPI_ALLREDUCE(maxValueTemp, maxValue, 1, MPI_DOUBLE_PRECISION, MPI_MAX, &
+       sch%comm, ierror)
 
 
 CONTAINS

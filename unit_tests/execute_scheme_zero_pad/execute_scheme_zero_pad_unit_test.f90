@@ -28,15 +28,15 @@ PROGRAM EXECUTE_SCHEME_ZERO_PAD_UNIT_TEST
   INCLUDE 'real_types.h'
 
   REAL(dp), PARAMETER :: pi_dp = 4.0_dp * ATAN(1.0_dp)
-  INTEGER(qb) :: rowCount = 5
-  INTEGER(qb) :: colCount = 4
+  INTEGER(qb) :: rowCount = 64
+  INTEGER(qb) :: colCount = 64
   REAL(dp) :: colSpc
   REAL(dp) :: colRef = 0.0
   REAL(dp) :: rowSpc
   REAL(dp) :: rowRef = 0.0
   INTEGER(qb) :: comm = MPI_COMM_WORLD
   INTEGER(qb) :: mpiDatatype = MPI_DOUBLE_COMPLEX
-  INTEGER(qb) :: ovlp = 1
+  INTEGER(qb) :: ovlp = 0
   INTEGER(qb) :: minWvNmbr
   COMPLEX(dp), ALLOCATABLE :: arr(:,:)
   COMPLEX(dp), ALLOCATABLE :: arrZP(:,:)

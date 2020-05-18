@@ -39,6 +39,7 @@ MODULE EZ_PARALLEL
   PUBLIC :: EXECUTE_SCHEME_IZERO_PAD
   PUBLIC :: MAX_VAL
   PUBLIC :: MIN_VAL
+  PUBLIC :: CREATE_SPEC_DRV
 
 
   ! Interface blocks for each of the EZ_PARALLEL subroutines.
@@ -79,6 +80,7 @@ MODULE EZ_PARALLEL
   !> For greater detail on the <tt>SCHEME</tt> datatype, see
   !! ez_parallel_structs.f90.
   INTERFACE CREATE_SCHEME_FFT
+     !> @param[inout] sch <tt>SCHEME</tt> to initialize for FFTs.
      SUBROUTINE CREATE_SCHEME_FFT_SBR(sch)
        USE MPI
        USE EZ_PARALLEL_STRUCTS
@@ -92,11 +94,13 @@ MODULE EZ_PARALLEL
   !
   !> The <tt>CREATE_SCHEME_SPEC_DERV</tt> subroutine initializes a
   !! <tt>SCHEME</tt> for future spectral derivates.
-  !> For greater detail on the <tt>SCHEME</tt> spectral derivative initialization
-  !! subroutine, see create_scheme_spec_drv.f90.
+  !> For greater detail on the <tt>SCHEME</tt> spectral derivative
+  !! initialization subroutine, see create_scheme_spec_drv.f90.
   !> For greater detail on the <tt>SCHEME</tt> datatype, see
   !! ez_parallel_structs.f90.
   INTERFACE CREATE_SCHEME_SPEC_DRV
+     !> @param[inout] sch <tt>SCHEME</tt> to initialize for spectral
+     !! derivatives.
      SUBROUTINE CREATE_SCHEME_SPEC_DRV_SBR(sch)
        USE MPI
        USE EZ_PARALLEL_STRUCTS
@@ -425,6 +429,33 @@ MODULE EZ_PARALLEL
        TYPE(SCHEME), INTENT(IN) :: sch
      END SUBROUTINE MIN_VAL_SBR
   END INTERFACE MIN_VAL
+
+  !> \public
+  !> @brief The interface for the spectral derivative array creation
+  !! subroutine.
+  !
+  !> The <tt>CREATE_SPEC_DERV</tt> subroutine fills in an array for future
+  !! spectral derivatives.
+  !> For greater detail on the spectral derivative array creation
+  !! subroutine, see create_spec_drv.f90.
+  !> For greater detail on the <tt>SCHEME</tt> datatype, see
+  !! ez_parallel_structs.f90.
+  INTERFACE CREATE_SPEC_DRV
+     !> @param[in] order1 Order of the derivative in the first direction.
+     !> @param[in] order2 Order of the derivative in the second dimension.
+     !> @param[inout] sch <tt>SCHEME</tt> to initialize for spectral
+     !! derivatives.
+     !> @param[in] sch <tt>SCHEME</tt> that holds information for grid
+     !! decomposition, etc.
+     SUBROUTINE CREATE_SPEC_DRV_SBR(order1,order2,specDrv,sch)
+       USE MPI
+       USE EZ_PARALLEL_STRUCTS
+       INTEGER, INTENT(IN) :: order1
+       INTEGER, INTENT(IN) :: order2
+       DOUBLE COMPLEX, ALLOCATABLE, INTENT(INOUT) :: specDrv(:,:)
+       TYPE(SCHEME), INTENT(IN) :: sch
+     END SUBROUTINE CREATE_SPEC_DRV_SBR
+  END INTERFACE CREATE_SPEC_DRV
   
 END MODULE EZ_PARALLEL
 
@@ -442,3 +473,4 @@ INCLUDE 'execute_scheme_zero_pad.f90'
 INCLUDE 'execute_scheme_izero_pad.f90'
 INCLUDE 'max_val.f90'
 INCLUDE 'min_val.f90'
+INCLUDE 'create_spec_drv.f90'

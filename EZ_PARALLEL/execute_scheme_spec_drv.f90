@@ -172,6 +172,13 @@ SUBROUTINE EXECUTE_SCHEME_SPEC_DRV_DCMPX_SBR(subGrid, kind, order, sch)
      END IF
 
      wvNmbrs = wvNmbrs**(DBLE(order))
+
+     ! Get rid of floating point artifacts.
+     IF (MOD(order, 2) .EQ. 0) THEN
+        wvNmbrs = DBLE(wvNmbrs)
+     ELSE
+        wvNmbrs = CMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs))
+     END IF
         
      DO j = sch%vSlabInt(0), sch%vSlabInt(1)
         subGrid(:,j) = subGrid(:,j) * wvNmbrs
@@ -183,16 +190,23 @@ SUBROUTINE EXECUTE_SCHEME_SPEC_DRV_DCMPX_SBR(subGrid, kind, order, sch)
 
      ALLOCATE(wvNmbrs(0:sch%vSlabSizeOvlp(1)-1))
      wvNmbrs = sch%wvNmbr2
-     ! If gridSize(0) even and derivative order odd, zero out highest wavenumber.
-     IF ((MOD(sch%gridSize(0),2) .EQ. 0) .AND. (MOD(order,2) .EQ. 1)) THEN
+     ! If gridSize(1) even and derivative order odd, zero out highest wavenumber.
+     IF ((MOD(sch%gridSize(1),2) .EQ. 0) .AND. (MOD(order,2) .EQ. 1)) THEN
         DO i = 0, sch%vSlabSizeOvlp(1)-1
-           IF (wvNmbrs(i) .EQ. sch%gridSize(1)/2) THEN
+           IF (ABS(wvNmbrs(i)) .EQ. sch%gridSize(1)/2) THEN
               wvNmbrs(i) = 0.0
            END IF
         END DO
      END IF
 
      wvNmbrs = wvNmbrs**(DBLE(order))
+
+     ! Get rid of floating point artifacts.
+     IF (MOD(order, 2) .EQ. 0) THEN
+        wvNmbrs = DBLE(wvNmbrs)
+     ELSE
+        wvNmbrs = CMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs))
+     END IF
         
      DO j = sch%vSlabInt(0), sch%vSlabInt(1)
         subGrid(:,j) = subGrid(:,j) * wvNmbrs(j)

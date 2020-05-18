@@ -13,7 +13,7 @@
 !> Jason Turner
 ! DESCRIPTION:
 !> \brief The <tt>EZ_PARALLEL</tt> structures module.
-!> Contains all <tt>EZ_PARALLEL</tt> derived datatypes.
+!> Contains all <tt>EZ_PARALLEL</tt> derived datatypes and global parameters.
 !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MODULE EZ_PARALLEL_STRUCTS
