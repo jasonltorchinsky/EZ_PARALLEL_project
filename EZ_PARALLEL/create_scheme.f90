@@ -126,8 +126,8 @@ SUBROUTINE CREATE_SCHEME_SBR(rowCount, colCount, colSpc, colRef, comm, &
      colRef = sch%colRef
   END IF
 
-  ! If only one processor or ovlp = 0, we don't create boundary datatypes.
-  IF ((sch%commSize .NE. 1) .OR. (sch%ovlp .NE. 0)) THEN
+  ! If only one processor and ovlp = 0, we don't create boundary datatypes.
+  IF ((sch%commSize .GT. 1) .AND. (sch%ovlp .GT. 0)) THEN
      ! Set SEND boundary datatypes.
      CALL MPI_TYPE_CREATE_SUBARRAY(2, sch%vSlabSizeOvlp, &
           (/sch%vSlabSizeOvlp(0), sch%ovlp/), (/0, sch%ovlp/), &
