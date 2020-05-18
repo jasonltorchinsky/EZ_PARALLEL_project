@@ -25,7 +25,6 @@ SUBROUTINE DESTROY_SCHEME_SBR(sch)
   sch%gridSize = -1
   sch%colSpc = -1
   sch%datatype = -1
-  sch%ovlp = -1
   sch%norm_1D_1 = -1
   sch%norm_1D_2 = -1
   sch%norm_2D = -1
@@ -44,10 +43,12 @@ SUBROUTINE DESTROY_SCHEME_SBR(sch)
   sch%vSlabSizeOvlp = -1
 
   ! Destroy the boundary communication datatypes.
-  CALL MPI_TYPE_FREE(sch%SEND_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_FREE(sch%SEND_BOUNDARIES(1), ierror)
-  CALL MPI_TYPE_FREE(sch%RECV_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_FREE(sch%RECV_BOUNDARIES(1), ierror)
+  IF ((sch%ovlp .NE. 0) .OR. (sch%commSize .EQ. 1)) THEN
+     CALL MPI_TYPE_FREE(sch%SEND_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_FREE(sch%SEND_BOUNDARIES(1), ierror)
+     CALL MPI_TYPE_FREE(sch%RECV_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_FREE(sch%RECV_BOUNDARIES(1), ierror)
+  END IF
 
   ! If FFTs were initialized, destroy those as well.
   IF (sch%initFFT) THEN
@@ -68,6 +69,7 @@ SUBROUTINE DESTROY_SCHEME_SBR(sch)
 
   ! Set last variables to dummy values.
   sch%commSize = -1
+  sch%ovlp = -1
   
   ! Set sch as destroyed.
   sch%initScheme = .FALSE.

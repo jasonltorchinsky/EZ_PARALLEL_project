@@ -11,8 +11,14 @@
 #    link all of the object files.
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Filename separator character.
+SEP = /
+
 # Path to EZ_PARALLEL module.
-EZPPTH = ../../EZ_PARALLEL
+EZPPTH = ..$(SEP)..$(SEP)EZ_PARALLEL
+
+# Path to DFFTPACK
+DFFTPTH = ..$(SEP)..$(SEP)EZ_PARALLEL$(SEP)DFFTPACK
 
 # Command-Line System Options: Linux, Windows.
 CMD = Linux
@@ -21,10 +27,10 @@ FC = gfortran
 
 # Executable name.
 TRGT = create_scheme_unit_test.exe
-# .f files.
+# .f90 files.
 SRCS = $(wildcard *.f90)
 # .o files.
-OBJS = $(patsubst %.f90, %.o, $(SRCS)) $(EZPPTH)/ez_parallel.o $(EZPPTH)/ez_parallel_structs.o
+OBJS = $(patsubst %.f90, %.o, $(SRCS)) $(EZPPTH)$(SEP)ez_parallel.o $(EZPPTH)$(SEP)ez_parallel_structs.o
 # .mod files.
 MODS = $(patsubst %.f90, %.mod, $(SRCS))
 
@@ -37,21 +43,21 @@ ifeq ($(FC), gfortran)
   # Compiler flags.
   FCFLAGS = -g
   # Include file search path, e.g., C:\lib\mpi\include.
-  INCPTHS = $(EZPPTH) $(MPIPTHINC)
+  INCPTHS = $(EZPPTH) $(MPIPTHINC) $(DFFTPTH)
   # Library search path, e.g., C:\lib\mpi\lib.
-  INCLIBS =  $(MPIPTHLIB) 
+  INCLIBS =  $(MPIPTHLIB) $(DFFTPTH)
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
-  LIBNAMES = msmpi
+  LIBNAMES = msmpi dfftpack
 
 else ifeq ($(FC), mpifort)
   # Compiler flags.
   FCFLAGS = -g
   # Include file search paths, e.g., \usr\include\.
-  INCPTHS = $(EZPPTH)
+  INCPTHS = $(EZPPTH) $(DFFTPTH)
   # Library search path, e.g., ..\..\EZ_PARALLEL.
-  INCLIBS = 
+  INCLIBS = $(DFFTPTH)
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
-  LIBNAMES =
+  LIBNAMES = DFFTPACK
 endif
 
 # Add appropriate prefixes to include file search paths, library search paths,

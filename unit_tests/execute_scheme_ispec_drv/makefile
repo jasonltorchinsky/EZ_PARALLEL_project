@@ -26,8 +26,8 @@ CMD = Linux
 FC = gfortran
 
 # Executable name.
-TRGT = execute_scheme_ispec_drv_unit_test.exe
-# .f files.
+TRGT = execute_scheme_ispec_derv_unit_test.exe
+# .f90 files.
 SRCS = $(wildcard *.f90)
 # .o files.
 OBJS = $(patsubst %.f90, %.o, $(SRCS)) $(EZPPTH)$(SEP)ez_parallel.o $(EZPPTH)$(SEP)ez_parallel_structs.o
@@ -57,7 +57,7 @@ else ifeq ($(FC), mpifort)
   # Library search path, e.g., ..\..\EZ_PARALLEL.
   INCLIBS = $(DFFTPTH)
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
-  LIBNAMES = dfftpack
+  LIBNAMES = DFFTPACK
 endif
 
 # Add appropriate prefixes to include file search paths, library search paths,
