@@ -42,8 +42,9 @@ SUBROUTINE DESTROY_SCHEME_SBR(sch)
   sch%vSlabSize = -1
   sch%vSlabSizeOvlp = -1
 
-  ! Destroy the boundary communication datatypes.
-  IF ((sch%ovlp .NE. 0) .OR. (sch%commSize .EQ. 1)) THEN
+  ! Destroy the boundary communication datatypes if they were created
+  ! (non-zero overlap, more than one processor).
+  IF ((sch%ovlp .NE. 0) .OR. (sch%commSize .NE. 1)) THEN
      CALL MPI_TYPE_FREE(sch%SEND_BOUNDARIES(0), ierror)
      CALL MPI_TYPE_FREE(sch%SEND_BOUNDARIES(1), ierror)
      CALL MPI_TYPE_FREE(sch%RECV_BOUNDARIES(0), ierror)
