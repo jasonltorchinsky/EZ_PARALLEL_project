@@ -25,7 +25,7 @@ SUBROUTINE SHARE_SUBGRID_BDRY_DBLE_SBR(subGrid, sch)
   CALL SHARE_SUBGRID_BDRY_DBLE_EH(sch)
 
   ! If only one processor or ovlp 0, we skip all communication.
-  IF ((sch%commSize .EQ. 1) .OR. (sch%ovlp .EQ. 0))THEN
+  IF ((sch%commSize .EQ. 1) .OR. (sch%ovlp .EQ. 0)) THEN
      GOTO 100
   END IF
 

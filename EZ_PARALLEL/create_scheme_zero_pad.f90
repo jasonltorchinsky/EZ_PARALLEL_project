@@ -96,26 +96,28 @@ SUBROUTINE CREATE_SCHEME_ZERO_PAD_DBLE_SBR(sch, schZP)
   END IF
 
   ! Set SEND boundary datatypes.
-  CALL MPI_TYPE_CREATE_SUBARRAY(2, schZP%vSlabSizeOvlp, &
-       (/schZP%vSlabSizeOvlp(0), schZP%ovlp/), (/0, schZP%ovlp/), &
-       MPI_ORDER_FORTRAN, schZP%datatype, schZP%SEND_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_CREATE_SUBARRAY(2, schZP%vSlabSizeOvlp, &
-       (/schZP%vSlabSizeOvlp(0), schZP%ovlp/), &
-       (/0, schZP%vSlabSizeOvlp(1)-2*schZP%ovlp/), MPI_ORDER_FORTRAN, &
-       schZP%datatype, schZP%SEND_BOUNDARIES(1), ierror)
-  CALL MPI_TYPE_COMMIT(schZP%SEND_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_COMMIT(schZP%SEND_BOUNDARIES(1), ierror)
+  IF ((schZP%commSize .GT. 1) .AND. (schZP%ovlp .GT. 0)) THEN
+     CALL MPI_TYPE_CREATE_SUBARRAY(2, schZP%vSlabSizeOvlp, &
+          (/schZP%vSlabSizeOvlp(0), schZP%ovlp/), (/0, schZP%ovlp/), &
+          MPI_ORDER_FORTRAN, schZP%datatype, schZP%SEND_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_CREATE_SUBARRAY(2, schZP%vSlabSizeOvlp, &
+          (/schZP%vSlabSizeOvlp(0), schZP%ovlp/), &
+          (/0, schZP%vSlabSizeOvlp(1)-2*schZP%ovlp/), MPI_ORDER_FORTRAN, &
+          schZP%datatype, schZP%SEND_BOUNDARIES(1), ierror)
+     CALL MPI_TYPE_COMMIT(schZP%SEND_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_COMMIT(schZP%SEND_BOUNDARIES(1), ierror)
 
-  ! Set RECV boundary datatypes.
-  CALL MPI_TYPE_CREATE_SUBARRAY(2, schZP%vSlabSizeOvlp, &
-       (/schZP%vSlabSizeOvlp(0), schZP%ovlp/), (/0, 0/), &
-       MPI_ORDER_FORTRAN, schZP%datatype, schZP%RECV_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_CREATE_SUBARRAY(2, schZP%vSlabSizeOvlp, &
-       (/schZP%vSlabSizeOvlp(0), schZP%ovlp/), &
-       (/0, schZP%vSlabSizeOvlp(1)-schZP%ovlp/), MPI_ORDER_FORTRAN, &
-       schZP%datatype, schZP%RECV_BOUNDARIES(1), ierror)
-  CALL MPI_TYPE_COMMIT(schZP%RECV_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_COMMIT(schZP%RECV_BOUNDARIES(1), ierror)
+     ! Set RECV boundary datatypes.
+     CALL MPI_TYPE_CREATE_SUBARRAY(2, schZP%vSlabSizeOvlp, &
+          (/schZP%vSlabSizeOvlp(0), schZP%ovlp/), (/0, 0/), &
+          MPI_ORDER_FORTRAN, schZP%datatype, schZP%RECV_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_CREATE_SUBARRAY(2, schZP%vSlabSizeOvlp, &
+          (/schZP%vSlabSizeOvlp(0), schZP%ovlp/), &
+          (/0, schZP%vSlabSizeOvlp(1)-schZP%ovlp/), MPI_ORDER_FORTRAN, &
+          schZP%datatype, schZP%RECV_BOUNDARIES(1), ierror)
+     CALL MPI_TYPE_COMMIT(schZP%RECV_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_COMMIT(schZP%RECV_BOUNDARIES(1), ierror)
+  END IF
 
   ! Set schZP as created.
   schZP%initScheme = .TRUE.
