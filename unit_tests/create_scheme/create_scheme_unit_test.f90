@@ -27,8 +27,8 @@ PROGRAM CREATE_SCHEME_UNIT_TEST
   INCLUDE 'integer_types.h'
   INCLUDE 'real_types.h'
 
-  INTEGER(qb) :: rowCount = 5
-  INTEGER(qb) :: colCount = 8
+  INTEGER(qb) :: rowCount = 64
+  INTEGER(qb) :: colCount = 64
   REAL(dp) :: colSpc = 0.1
   REAL(dp) :: colRef = 0
   INTEGER(qb) :: comm = MPI_COMM_WORLD

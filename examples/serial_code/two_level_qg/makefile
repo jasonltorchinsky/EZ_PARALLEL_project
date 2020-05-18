@@ -24,7 +24,7 @@ FC = gfortran
 
 # Executable name.
 TRGT = two_level_qg_solver_serial.exe
-# .f files.
+# .f90 files.
 SRCS = $(wildcard *.f90)
 # .o files.
 OBJS = $(patsubst %.f90, %.o, $(SRCS))

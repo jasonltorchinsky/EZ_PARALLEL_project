@@ -21,7 +21,7 @@ FC = gfortran
 
 # Executable name.
 TRGT = stoch_heat_solver_serial.exe
-# .f files.
+# .f90 files.
 SRCS = $(wildcard *.f90)
 # .o files.
 OBJS = $(patsubst %.f90, %.o, $(SRCS))
