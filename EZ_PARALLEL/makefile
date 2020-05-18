@@ -70,15 +70,15 @@ ez_parallel_structs.o: ez_parallel_structs.f90
 # Clean deletes everything besides source code.
 clean:
 ifeq ($(CMD), Windows)
-	del *.o ./DFFTPACK/*.o *.a
+	del *.o 
 else ifeq ($(CMD), Linux)
-	rm -rf *.o ./DFFTPACK/*.o *.a
+	rm -rf *.o 
 endif
 
 # Tidy deletes all .o files, keeping the .a file.
 tidy:
 ifeq ($(CMD), Windows)
-	del *.o ./DFFTPACK/*.o
+	del *.o 
 else ifeq ($(CMD), Linux)
-	rm -rf *.o ./DFFTPACK/*.o
+	rm -rf *.o 
 endif

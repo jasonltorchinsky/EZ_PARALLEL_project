@@ -126,27 +126,31 @@ SUBROUTINE CREATE_SCHEME_SBR(rowCount, colCount, colSpc, colRef, comm, &
      colRef = sch%colRef
   END IF
 
-  ! Set SEND boundary datatypes.
-  CALL MPI_TYPE_CREATE_SUBARRAY(2, sch%vSlabSizeOvlp, &
-       (/sch%vSlabSizeOvlp(0), sch%ovlp/), (/0, sch%ovlp/), &
-       MPI_ORDER_FORTRAN, sch%datatype, sch%SEND_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_CREATE_SUBARRAY(2, sch%vSlabSizeOvlp, &
-       (/sch%vSlabSizeOvlp(0), sch%ovlp/), &
-       (/0, sch%vSlabSizeOvlp(1)-2*sch%ovlp/), MPI_ORDER_FORTRAN, &
-       sch%datatype, sch%SEND_BOUNDARIES(1), ierror)
-  CALL MPI_TYPE_COMMIT(sch%SEND_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_COMMIT(sch%SEND_BOUNDARIES(1), ierror)
+  ! If only one processor or ovlp = 0, we don't create boundary datatypes.
+  IF ((sch%commSize .EQ. 1) .OR. (sch%ovlp .NE. 0)) THEN
+     ! Set SEND boundary datatypes.
+     CALL MPI_TYPE_CREATE_SUBARRAY(2, sch%vSlabSizeOvlp, &
+          (/sch%vSlabSizeOvlp(0), sch%ovlp/), (/0, sch%ovlp/), &
+          MPI_ORDER_FORTRAN, sch%datatype, sch%SEND_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_CREATE_SUBARRAY(2, sch%vSlabSizeOvlp, &
+          (/sch%vSlabSizeOvlp(0), sch%ovlp/), &
+          (/0, sch%vSlabSizeOvlp(1)-2*sch%ovlp/), MPI_ORDER_FORTRAN, &
+          sch%datatype, sch%SEND_BOUNDARIES(1), ierror)
+     CALL MPI_TYPE_COMMIT(sch%SEND_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_COMMIT(sch%SEND_BOUNDARIES(1), ierror)
 
-  ! Set RECV boundary datatypes.
-  CALL MPI_TYPE_CREATE_SUBARRAY(2, sch%vSlabSizeOvlp, &
-       (/sch%vSlabSizeOvlp(0), sch%ovlp/), (/0, 0/), &
-       MPI_ORDER_FORTRAN, sch%datatype, sch%RECV_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_CREATE_SUBARRAY(2, sch%vSlabSizeOvlp, &
-       (/sch%vSlabSizeOvlp(0), sch%ovlp/), &
-       (/0, sch%vSlabSizeOvlp(1)-sch%ovlp/), MPI_ORDER_FORTRAN, &
-       sch%datatype, sch%RECV_BOUNDARIES(1), ierror)
-  CALL MPI_TYPE_COMMIT(sch%RECV_BOUNDARIES(0), ierror)
-  CALL MPI_TYPE_COMMIT(sch%RECV_BOUNDARIES(1), ierror)
+     ! Set RECV boundary datatypes.
+     CALL MPI_TYPE_CREATE_SUBARRAY(2, sch%vSlabSizeOvlp, &
+          (/sch%vSlabSizeOvlp(0), sch%ovlp/), (/0, 0/), &
+          MPI_ORDER_FORTRAN, sch%datatype, sch%RECV_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_CREATE_SUBARRAY(2, sch%vSlabSizeOvlp, &
+          (/sch%vSlabSizeOvlp(0), sch%ovlp/), &
+          (/0, sch%vSlabSizeOvlp(1)-sch%ovlp/), MPI_ORDER_FORTRAN, &
+          sch%datatype, sch%RECV_BOUNDARIES(1), ierror)
+     CALL MPI_TYPE_COMMIT(sch%RECV_BOUNDARIES(0), ierror)
+     CALL MPI_TYPE_COMMIT(sch%RECV_BOUNDARIES(1), ierror)
+  END IF
+
 
   ! Set sch as created.
   sch%initScheme = .TRUE.

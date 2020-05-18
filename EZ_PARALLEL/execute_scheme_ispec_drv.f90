@@ -185,7 +185,7 @@ SUBROUTINE EXECUTE_SCHEME_ISPEC_DRV_DCMPX_SBR(subGrid, kind, order, sch)
      IF (MOD(order, 2) .EQ. 0) THEN
         wvNmbrs = DBLE(wvNmbrs)
      ELSE
-        wvNmbrs = CMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs))
+        wvNmbrs = DCMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs))
      END IF
         
      DO j = sch%vSlabInt(0), sch%vSlabInt(1)
@@ -221,7 +221,7 @@ SUBROUTINE EXECUTE_SCHEME_ISPEC_DRV_DCMPX_SBR(subGrid, kind, order, sch)
      IF (MOD(order, 2) .EQ. 0) THEN
         wvNmbrs = DBLE(wvNmbrs)
      ELSE
-        wvNmbrs = CMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs))
+        wvNmbrs = DCMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs))
      END IF
      
         

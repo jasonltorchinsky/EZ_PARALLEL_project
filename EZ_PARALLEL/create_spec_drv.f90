@@ -48,7 +48,7 @@ SUBROUTINE CREATE_SPEC_DRV_SBR(order1, order2, specDrv, sch)
      IF (MOD(order1, 2) .EQ. 0) THEN
         wvNmbrs1 = DBLE(wvNmbrs1)
      ELSE
-        wvNmbrs1 = CMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs1))
+        wvNmbrs1 = DCMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs1))
      END IF
      
   END IF
@@ -74,7 +74,7 @@ SUBROUTINE CREATE_SPEC_DRV_SBR(order1, order2, specDrv, sch)
      IF (MOD(order2, 2) .EQ. 0) THEN
         wvNmbrs2 = DBLE(wvNmbrs2)
      ELSE
-        wvNmbrs2 = CMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs2))
+        wvNmbrs2 = DCMPLX(0.0, DBLE((0.0, -1.0)*wvNmbrs2))
      END IF
   END IF
 
