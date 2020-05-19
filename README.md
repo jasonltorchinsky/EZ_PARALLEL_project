@@ -1,50 +1,146 @@
-# EZ_PARALLEL: A Fortran 95 Library for Simplifying Parallelizing 2D Finite Difference Codes
+# Background
 
-## Background
+`EZ_PARALLEL` is a double-precision `MPI` module for Fortran created to help simplify the processes of parallelizing serial 2-D finite difference and spectral codes, by including pre-made subroutines for grid decomposition, adjacent sub-grid communication, and more. We cannot guarantee that this library will yield the most optimal results, but our hope is that people without the time to learn and/or experience with MPI can use this library to improve the scope of their work without many changes to their initial serial code.
 
-EZ_PARALLEL is a library for Fortran 95 created to help simplify the processes of parallelizing serial finite difference codes, by including pre-made subroutines for grid decomposition, adjacent subgrid communication, and more. We cannot guarantee that this library will yield the most optimal results, but our hope is that people without the time to learn and/or experience with MPI can use this library to improve the scope of their work.
+`EZ_PARALLEL` was developed by Jason Turner under the guidance of Samuel Stechmann at the University of Wisconsin-Madison. The [distribution](https://github.com/jasonlturner/EZ_PARALLEL_project) contains [`DFFTPACK`](https://www.netlib.org/fftpack/dp.tgz), a double-precision clone of the popular fast Fourier transform (FFT) library [`FFTPACK`](https://www.netlib.org/fftpack/), on which `EZ_PARALLEL` depends. 
 
-EZ_PARALLEL was developed by Jason Turner under the guidance of Samuel Stechmann at the University of Wisconsin-Madison. 
+# Introduction
 
-## How Does EZ_PARALLEL Work?
+Similarly to the `plan`s of [`FFTW`](http://www.fftw.org/), `EZ_PARALLEL` is centered around a data structure called a `scheme` which contains information about the grid, grid-decomposition, FFT initialization, and more. A `scheme` can be created for a grid and used repeadtly through a code for multiple grids through use of the `CREATE_SCHEME` subroutine. For documentation detailing the various interfaces and subroutines, see the `doxygen_bin` subdirectory of the distribution.
 
-EZ\_PARALLEL acts as an interface between the user and MPI to make the user's experience with MPI simpler. As with any interface of this nature, it cannot do everything a user might hope for. When writing a parallel code with MPI, each processor will execute the entire code. This can present an issue in some areas of serial codes, such as outputting data since the output file name will need to be different for each processor. (Otherwise, each processor will keep overwriting the same output files!) Although we aim to make this library as general as possible, there are some ways in which the serial code must function in order for this library to be used. 
+For the purpose of explaining the library in a concise manner, we will use a prototypical example of a serial finite difference code with the following structure:
 
-Generally, we expect the flow of a serial finite difference code to be as follows:
 1. Initialize simulations parameters, e.g., the size of the array containing the domain (with allocating memory to that array), setting physical constants, etc.
-1. Initializing the domain grid. This includes allocating memory to the array containing the domain and setting the initial condition.
-1. Step forward in time. This includes calculating each subsequent time step and outputting the domain grid to a file.
+2. Initialize the domain grid. This includes allocating memory to the array containing the domain and setting the initial condition.
+3. Step forward in time. This includes calculating each subsequent time step and outputting the domain grid to a file.
 
-This is not to say that every code must be in the format to use EZ\_PARALLEL, but it is the basic form that we expect any basic serial code to be in. We will explain the more specific requirements in the context of the relevant EZ\_PARALLEL subroutines below:
+This is not to say that every code must be in this format to use `EZ_PARALLEL`, but it is the basic form that is used in the examples in the [distribution](https://github.com/jasonlturner/EZ_PARALLEL_project).
 
-### Memory Allocation for the Domain Array
+# Scheme Creation
 
-The GRID\_DECOMP subroutine takes in the domain size, say (x\_len, y\_len), and assigns to those values a subdomain size based on the original domain size, number of processors, and the number of grid points each subdomain would need to borrow from its adjacent subdomains. Note, each subdomain retains the same x\_len value as the domain, which may present difficulties for very skewed domains.
+To use `EZ_PARALLEL`, the user must include the lines `USE EZ_PARALLEL_STRUCTS` and `USE EZ_PARALLEL` before the `IMPLICIT NONE` statment, in addition to initializing `MPI` before any calls to `EZ_PARALLEL` subroutines.
 
-We shall explain how GRID\_DECOMPOSITION works using a simple example. The requirement for the serial code is stated explicitly at the end of this subsection. Let's say we have a domain of size (total\_x\_len, total\_y\_len) = (9, 11) to be divided among three processors: processor 0, processor 1, and processor 2. First, we give each processor a y\_len of FLOOR(total\_y\_len/proc\_count), where proc\_count is the total number of processors. However, these subdomains do not cover the entire domain (each processor has y\_len = 3).
+`scheme` initialization comes in three parts, each of which requires the former is completed. There is an additional `scheme` creation subroutine, which may be considered as a fourth part:
+1. `create_scheme` is the general `scheme` creation subroutine, enabling grid decomposition and sub-grid boundary communication.
+2. `create_scheme_fft` enables a `scheme` to be used in performing FFTs.
+3. `create_scheme_spec_drv` enables a `scheme` to be used in performing spectral derivatives.
+4. `create_scheme_zero_pad` creates a new `scheme` based on a previous `scheme` for a zero-padded version of the grid using the [3/2s-rule](http://www.math.jhu.edu/~feilu/notes/DealiasingFFT.pdf) for de-aliasing FFTs.
 
-To resolve this, we add 1 to the y\_len of each processor with ID less than MODULO(total\_y\_len, proc\_count). In this case, processors 0 and 1 have y\_len = 4, while processor 2 still has y\_len = 3. Geometrically, we consider processor 0 to contain the bottom-most rows and the final processor (the one with the greatest ID, in this case 2) to contain the top-most rows. Processor 1 will be immediately above processor 0, processor 2 will be immediately above processor 1, and so forth.
+The first three of these are used to create a `scheme` in its entirity, if necessary for the application. The fourth creates a `scheme` for a zero-padded version of a grid associated with the original `scheme`.
 
-Now, let U<sub>i,j</sub><sup>n+1</sup> denote the numerical solution at time t<sub>n+1</sub> and point (x<sub>i</sub>, y<sub>j</sub>). Any numerical scheme will require points U<sub>i+p,j+q</sub><sup>n+k</sup> to calculate U<sub>i,j</sub><sup>n+1</sup> (p, q, k being integers). The subgrids may not contain the necessary points to calculate the value of U<sub>i,j</sub><sup>n+1</sup> at each point in the subgrid, and may need to borrow some points from its neighbors. For our example, let's say we may calculate U<sub>i,j</sub><sup>n+1</sup> using U<sub>i+1,j</sub><sup>n</sup>, U<sub>i-1,j</sub><sup>n</sup>, U<sub>i,j+1</sub><sup>n</sup>, U<sub>i,j-1</sub><sup>n</sup>, and U<sub>i,j</sub><sup>n</sup>.
+A user can call the various members of a `scheme`, which is useful when parallelizing their serial code. The base members of a `scheme` (intialized with `create_scheme`) are:
+	- `gridSize(0:1)`: The size in each dimension of the grid.
+	- `colSpc`: The physical spacing between columns of the grid.
+	- `comm`: The `MPI` communicator on which the grid resides.
+	- `commSize`: The number of processes in `comm`.
+	- `datatype`: The `MPI` datatype of the grid, one of `MPI_DOUBLE_PRECISION` or `MPI_DOUBLE_COMPLEX`.
+	- `ovlp`: The overlap parameter of the finite difference method, i.e., the number of points on one side of a grid point needed to execute a method.
+	- `rowDcmpSizes(0:commSize-1)`: The number of rows in each sub-grid of the horizontal-slab decomposition, excluding overlap.
+	- `colDcmpSizes(0:commSize-1)`: The number of columns in each sub-grid of the vertical-slab decomposition, excluding overlap.
+	- `colDcmpSizesOvlp(0:commSize-1)`: The number of columns in each sub-grid of the vertical-slab decomposition, including overlap.
+  - `procID`: Rank of the local process in `comm`.
+  - `hSlabSize(0:1)`: The size of the local sub-grid in the horizontal-slab decomposition, excluding overlap.
+  - `vSlabSize(0:1)`: The size of the local sub-grid in the vertical-slab decomposition, excluding overlap.
+  - `vSlabSizeOvlp(0:1)`: The size of the local sub-grid in the vertical-slab decomposition, including overlap.
+  - `vSlabInt(0:1)`: The column indices of the interior of the local sub-grid in the vertical-slab decomposition.
+  - `colRef`: The physical position of the local sub-grid reference point along the row.
+  - `SEND_BOUNDARIES(0:1)`: `MPI` derived datatype corresponding to the interior parts of the local sub-grid that would be sent to neighboring sub-grids during a sub-grid boundary sharing communication.
+  - `RECV_BOUNDARIES(0:1)`: `MPI` derived datatype corresponding to the boundary of the local sub-grid that would be recieved from neighboring sub-grids during a sub-grid boundary sharing communication.
+  
+The members of a `scheme` used for FFTs (initialized with `create_scheme_fft`) are:
+	- `WSAVE1(gridSize(0))`: The array used in FFTs along the first dimension of the grid.
+	- `WSAVE2(gridSize(1))`: The array used in FFTs along the second dimension of the grid.
+	- `norm_1d_1`: The normalization coefficient for 1-D FFTs along the first dimension.
+	- `norm_1d_2`: The normalization coefficient for 1-D FFTs along the second dimension.
+	- `norm_2d`: The normalization coefficient for 2-D FFTs.
+	- `SUBARRAYS(commSize)`: `MPI` `subarray`s used for the global redistribution of the grid in 2-D FFTs, as described [here](https://arxiv.org/pdf/1804.09536.pdf).
+	- `counts(commSize)`: An array used in `MPI_ALLTOALLW` call in the global redistribution.
+	- `displs(commSize)`: An array used in `MPI_ALLTOALLW` call in the global redistribution.
 
-Processor 0 contains the points (x<sub>i</sub>, y<sub>j</sub>) for 1 &le; i &le; 9, 1 &le; j &le; 4. To calculate U<sub>i,4</sub><sup>n</sup>, processor 0 will need the value of the numerical solution at (x<sub>i</sub>, y<sub>5</sub>), which is stored on processor 1. To address this, we add 1 to the value of y\_len of processor 0 to store the values U<sub>i,5</sub><sup>n</sup> obtained from processor 1. Likewise, we add 1 to the value of y\_len of processor 2 to store the values of U<sub>i,8</sub><sup>n</sup> from processor 1.
+The members of a `scheme` used for spectral derivatives (initialized using `create_scheme_spec_drv`) are:
+	- `wvNmbr1(vSlabSizeOvlp(0))`: The wavenumbers along the first dimension of the grid, e.g., `0, ..., gridSize(0)/2, -gridSize(0)/2, ..., -1` for `gridSize(0)` even and `0, ..., gridSize(0)/2, -(gridSize(0)-1)/2, ..., -1` for `gridSize(0)` odd.
+	- `wvNmbr2(vSlabSizeOvlp(1))`: The wavenumbers along the second dimension of the grid corresponding to the local sub-grid.
+	
+# Sub-Grid Boundary Sharing and Scheme Execution Subroutines
 
-We will need to add 2 to the value of y\_len for processor 1, since it must store the values U<sub>i,4</sub><sup>n</sup> from processor 0 and U<sub>i,9</sub><sup>n</sup> from processor 2.
+Each local sub-grid consists of a vertical slab of the original grid, including an additional boundary region which contains the points from the interior of neighboring sub-grids needed to perform a time-step. To share sub-grid boundaries is to exchange information with neighboring sub-grids as to update the local sub-grid's boundary region(s). To share sub-grid boundaries, one simply needs to make a call to the `SHARE_SUBGRID_BDRY` subroutine with appropriate arguments.
 
-More generally, we say that this numerical scheme has an _overlap_ of 1. For exterior subgrids (that with processor ID 0 and that with the largest processor ID), we must add the overlap value to y\_len to accomodate for the points they must borrow from adjacent subdomains. For interior subgrids (all others), we must add twice the overlap value to y\_len to accomodate for the points they must borrow from their neighbors. We call the points each processor must borrow the _overlap points for the subdomain of that processor_, and all other points in the subdomain of the processor the _interior points for the subdomain of that processor_.
+There are several `scheme` execution subroutines, which perform FFTs, spectral derivatives, and zero-padding:
+	- `EXECUTE_SCHEME_FFT` and `EXECUTE_SCHEME_IFFT`: The subroutines for performing FFTs and inverse FFTs on both `DOUBLE PRECISION` and `DOUBLE COMPLEX` grids. FFTs and not normalized, while inverse FFTs are normalized. There are three kinds of FFTs implemented, specified by the `kind` argument (note, the `kind` argument works for both FFTs and inverse FFTs):
+	  + `FFT_1D_1`: 1-D FFT along the first dimension of the grid.
+	  + `FFT_1D_2`: 1-D FFT along the second dimension of the grid.
+	  + `FFT_2D`: 2-D FFT.
+	- `EXECUTE_SCHEME_SPEC_DRV` and `EXECUTE_SCHEME_ISPEC_DRV`: The subroutines for performing spectral derivatives and inverse spectral derivatives on `DOUBLE COMPLEX` grids (the functionality for `DOUBLE PRECISION` grids has yet to be implemented). Note that the `subGrid` argument should already be in spectral space when calling this subroutine. There are two kinds of spectral derivatives implemented, specified by the `kind` argument (note, the `kind` argument works for both spectral derivatives and inverse spectral derivatives):
+	  + `SPEC_DRV_1D_1`: 1-D spectral derivative along the first dimension.
+	  + `SPEC_DRV_1D_2`: 1-D spectral derivative along the second dimension.
+	Alternatively, one may use the `CREATE_SPEC_DRV` to generate an array to perform the appropriate spectral derivative through standard multiplication. This is recommended if there are numerous spectral derivatives needed, if spectral derivatives are needed along both dimensions, or if the spectral derivative operator needs to be changed for the specific purpose.
+	- `EXECUTE_SCHEME_ZERO_PAD` and `EXECUTE_SCHEME_IZERO_PAD`: The zero-padding subroutines for `DOUBLE PRECISION` and `DOUBLE COMPLEX` grids. These require a `scheme` for both the original grid and the zero-padded grid.
 
-To complete the example, processor 0 has y\_len = 5, processor 1 has y\_len = 6, and processor 2 has y\_len = 4.
+# Destroying Schemes
 
-Therefore, the array used to store the domain grid in the serial code must be allocatable, and must be allocated using two parameters. The two parameters will be adjusted by GRID\_DECOMP so that the appropriate-sized arrays are allocated for each processor.
+A `scheme` may be destoryed by calling the `DESTROY_SCHEME` subroutine, which deallocates all arrays and sets many of the other members of the `scheme` to null values. Note that it does not change the `procID` member so that the user may use it following the destruction to specify which processes should execute `PRINT` statements (among other uses).
 
-### Setting the Initial Condition and Dirichlet Boundary Conditions
+# Additional Subroutines
 
-There are many ways to set an initial condition in a code: using the values from a specific function, reading a state from an input file, generating random noise, and more. Since each processor in a parallel code attempts to execute the entire code, the serial subroutines for setting the initial condition generally do not translate well to each subdomain.
+`EZ_PARALLEL` also includes subroutines for finding the maximum and minimum values of a `DOUBLE PRECISION` grid (`MAX_VAL` and `MIN_VAL`, respectively), which may be useful in adaptive time-stepping methods (among other uses).
 
-Unfortunately, EZ\_PARALLEL does not contain a subroutine for reading an initial condition from a file. However, it can support setting the initial condition for each subdomain using an initial condition function.
+# Notes on Usage
 
-The serial code must have a reference point (located in the bottom-left corner of the domain) to set its initial condition, as well as uniform grid spacing. The INDENTIFY\_REF\_POINT subroutine of the EZ\_PARALLEL library will identify the location of the reference point in space for each subdomain, and change that processor's value of (x\_ref, y\_ref) accordingly.
+## Initializing Sub-Grids
 
-Continuiung from our previous example, say this refence point is (x\_ref, y\_ref) = (0, 0), the grid spacing is dx in the x-direction and dy in the y-direction. Since the bottom-left point of the subdomain for processor 0 is also the bottom-left point of the domain, processor 0 has (x\_ref, y\_ref). The bottom-left point of the subdomain for processor 1 corresponds to the point (x<sub>0</sub>, y<sub>4</sub>) = (0, 4\*dy). Thus, we set (x\_ref, y\_ref) = (0, 4\*dy) for processor 1. To complete the example, we set (x\_ref, y\_ref) = (0, 8\*dy) for processor 2.
+The `CREATE_SCHEME` subroutine returns the column count and column reference position (assuming a constant column spacing) of the sub-grid, easing the update from serial code to parallel code. For example, if the serial code initializes the grid using
+```
+ALLOCATE(grid(0:rowCount-1,0:colCount-1))
+DO j = 0, colCount-1
+   DO i = 0, rowCount-1
+      grid(i,j) = INITIAL_CONDITION(rowRef + i*rowSpc,colRef + j*colSpc)
+   END DO
+END DO
+```
+then initializing the sub-grid using `EZ_PARALLEL` would require
+```
+CALL CREATE_SCHEME(rowCount,colCount,colSpc,colRef,comm,mpiDatatype,ovlp,sch)
+ALLOCATE(grid(0:rowCount-1,0:colCount-1))
+DO j = 0, colCount-1
+   DO i = 0, rowCount-1
+      grid(i,j) = INITIAL_CONDITION(rowRef + i*rowSpc,colRef + j*colSpc)
+   END DO
+END DO
+```
+If the serial code uses Dirichlet boundary conditions such as
+```
+grid(0,:) = 0.0
+grid(rowCount-1,:) = 0.0
+grid(:,0) = 0.0
+grid(:,colCount-1) = 0.0
+```
+then the parallel code would simply require one call the `SHARE_SUBGRID_BDRY` afterward
+```
+grid(0,:) = 0.0
+grid(rowCount-1,:) = 0.0
+grid(:,0) = 0.0
+grid(:,colCount-1) = 0.0
+CALL SHARE_SUBGRID_BDRY(grid,sch)
+```
+Note that the time-stepping routine would require an overlap of at least 1.
 
-Setting Dirichlet boundary conditions provides a very similiar difficulty to setting the initial condition. Since each processor calls the entire code, the boundary of each subdomain will have Dirichlet boundary conditions (meaning that interior points of the domain are assigned Dirichlet conditions!). However, since the boundary of each subdomain contained in the overlap points, we may simply call SHARE\_SUBGRID\_BOUNDARIES after each time we set the Dirichlet boundary conditions to ammend this issue.
+## Writing Output Files
+
+When writing output files, one must take caution to give each processor a unique output file name. For example, if the serial code chooses and output file name using
+```
+WRITE(fileName,'(A,I0.8,A)') 'out_', timestep, '.csv'
+```
+then each processor will attempt to write to the same file. This may be resolved by using the `procID` member of the `scheme`, which is unique to each processor
+```
+WRITE(fileName,'(A,I0.8,A,I0.3,A)') 'out_', step, '_', sch%procID, '.csv'
+```
+
+## Usage in 1-D and 3-D  Codes
+
+Although we have not used `EZ_PARALLEL` for anything besides 2-D codes, it is theoretically possible to use `EZ_PARALLEL` for 1-D and 3-D codes by allocating 1-D arrays as 2-D arrays with a second dimension of size 1 or by calling 2-D slices of 3-D arrays, as long as one only needs 1-D or 2-D FFTs. 
+
+For example, the two-level quasigeostrophic (QG) example code utilizes `EZ_PARALLEL` on a 3-D array, consisting of two levels. Since we never require FFTs or spectral derivatives between levels, we simply call the `EZ_PARALLEL` subroutines with 2-D slices of the 3-D array.
+
+# Contact Information
+
+If you have any comments, questions, concerns, or ideas about this module, please contact Jason Turner at jlturner5@wisc.edu.

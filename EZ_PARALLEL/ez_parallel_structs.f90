@@ -73,6 +73,7 @@ MODULE EZ_PARALLEL_STRUCTS
      INTEGER, ALLOCATABLE :: SUBARRAYS(:,:) !< Holds the datatypes necessary to
      !! perform the transposition.
      INTEGER, ALLOCATABLE :: counts(:), displs(:) !< Arrays for use in global
+     !! redistributiuon.
 
      ! Additional variables for spectral derivatives.
      DOUBLE COMPLEX, ALLOCATABLE :: wvNmbr1(:) !< Holds coefficients for spectral

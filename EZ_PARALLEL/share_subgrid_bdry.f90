@@ -26,7 +26,7 @@ SUBROUTINE SHARE_SUBGRID_BDRY_DBLE_SBR(subGrid, sch)
 
   ! If only one processor or ovlp 0, we skip all communication.
   IF ((sch%commSize .EQ. 1) .OR. (sch%ovlp .EQ. 0)) THEN
-     GOTO 100
+     GOTO 1001
   END IF
 
   ! First sub-grid only SEND/RECV to/from one neighbor.
@@ -86,7 +86,7 @@ SUBROUTINE SHARE_SUBGRID_BDRY_DBLE_SBR(subGrid, sch)
        END IF
     END IF
 
-    100 CONTINUE
+1001 CONTINUE
 
 CONTAINS
 
