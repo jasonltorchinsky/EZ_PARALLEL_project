@@ -8,7 +8,7 @@
 
 Similarly to the `plan`s of [`FFTW`](http://www.fftw.org/), `EZ_PARALLEL` is centered around a data structure called a `scheme` which contains information about the grid, grid-decomposition, FFT initialization, and more. A `scheme` can be created for a grid and used repeadtly through a code for multiple grids through use of the `CREATE_SCHEME` subroutine. For documentation detailing the various interfaces and subroutines, see the `doxygen_bin` subdirectory of the distribution.
 
-For the purpose of explaining the library in a concise manner, we will use a prototypical example of a serial finite difference code with the following structure:
+For the purpose of explaining the module in a concise manner, we will use a prototypical example of a serial finite difference code with the following structure:
 
 1. Initialize simulations parameters, e.g., the size of the array containing the domain (with allocating memory to that array), setting physical constants, etc.
 2. Initialize the domain grid. This includes allocating memory to the array containing the domain and setting the initial condition.
