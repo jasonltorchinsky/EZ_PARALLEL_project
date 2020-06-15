@@ -3,6 +3,21 @@
 !> @brief
 !> The inverse FFT execution subroutine (DOUBLE PRECISION).
 !
+! This file is part of EZ_PARALLEL.
+!
+! EZ_PARALLEL is free software: you can redistribute it and/or modify
+! it under the terms of the GNU General Public License as published by
+! the Free Software Foundation, either version 3 of the License, or
+! (at your option) any later version.
+!
+! EZ_PARALLEL is distributed in the hope that it will be useful,
+! but WITHOUT ANY WARRANTY; without even the implied warranty of
+! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+! GNU General Public License for more details.
+!
+! You should have received a copy of the GNU General Public License
+! along with EZ_PARALLEL.  If not, see <https://www.gnu.org/licenses/>.
+!
 !> @param[inout] subGrid The local sub-grid.
 !> @param[in] kind Type of FFT to execute, one of FFT_1D_1, FFT_1D_2, or FFT_2D.
 !> @param[in] sch <tt>SCHEME</tt> that will be used for the grid
