@@ -135,10 +135,6 @@ CONTAINS
                & 0.0_dp, dp)
        END DO
     END DO
-
-    !> ADDED TO PARALLEL.
-    CALL SHARE_SUBGRID_BDRY(physPotVortGrid(:,:,1), sch)
-    CALL SHARE_SUBGRID_BDRY(physPotVortGrid(:,:,2), sch)
     
   END SUBROUTINE INITIALIZE_GRID
 
