@@ -113,6 +113,8 @@ SUBROUTINE EXECUTE_SCHEME_ZERO_PAD_DBLE_SBR(arr, sch, arrZP, schZP)
   ! Deallocate locally allocated arrays.
   DEALLOCATE(arrZP1)
   DEALLOCATE(arrZP1T)
+  DEALLOCATE(arrZPT)
+  DEALLOCATE(SUBARRAYS)
 
 CONTAINS
 
