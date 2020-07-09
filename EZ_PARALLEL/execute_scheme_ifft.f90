@@ -264,6 +264,10 @@ SUBROUTINE EXECUTE_SCHEME_IFFT_DCMPX_SBR(subGrid, kind, sch)
      subGridInt = sch%norm_1D_2 * subGridInt
 
      subGrid(:,sch%vSlabInt(0): sch%vSlabInt(1)) = subGridInt
+
+     ! ALWAYS deallocate allocated arrays.
+     DEALLOCATE(subGridInt)
+     DEALLOCATE(subGridInt_T)
      
 
   CASE(FFT_2D)
@@ -295,6 +299,10 @@ SUBROUTINE EXECUTE_SCHEME_IFFT_DCMPX_SBR(subGrid, kind, sch)
      subGridInt = sch%norm_2D * subGridInt
 
      subGrid(:,sch%vSlabInt(0): sch%vSlabInt(1)) = subGridInt
+
+     ! ALWAYS deallocate allocated arrays.
+     DEALLOCATE(subGridInt)
+     DEALLOCATE(subGridInt_T)
 
   CASE DEFAULT ! Should never be hit, should be caught by error handling.
      IF (sch%procID .EQ. 0) THEN
