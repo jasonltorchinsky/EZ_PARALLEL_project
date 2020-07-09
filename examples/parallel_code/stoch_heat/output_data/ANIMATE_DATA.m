@@ -1,35 +1,38 @@
-function ANIMATE_DATA(dim1_len, dim2_len, file_count, output_freq)
+function ANIMATE_DATA(numPts, numSteps, outputFreq, dt)
 % Creates an animation of the output data.
-%   ARGUMENTS: - dim1_len, dim2_len: The dimensions of the grid in the
-%   Fortran code. Note that MATLAB is row-major and not column major, so
-%   dim1_len is the length along the second index and vice-versa in MATLAB.
-%   - num_files: The number of output files.
-%   - output_freq: The output frequency of the simulation.
+%   ARGUMENTS: - numPts: Number of lattice points in one direction.
+%   - numSteps: Number of time-steps executed.
+%   - outputFreq: The output frequency of the simulation.
+%   - dt: Time-step size
 
 % We will store all of the output in a single array, and call them for when
 % we plot them.
-all_data = zeros(dim2_len, dim1_len , file_count);
+fileCount = floor(numSteps/outputFreq)+1;
+all_data = zeros(numPts, numPts, fileCount);
 % Fill in all_data.
-for k = 0:file_count-1
-    csv_file_name=sprintf('out_%08d.csv', output_freq*k);
-    csvdata = csvread(csv_file_name);
-    all_data(:,:,k+1) = csvdata(:,1:dim1_len);
+for k = 0:fileCount-1
+    csvFileName=sprintf('out_%08d.csv', outputFreq*k);
+    csvdata = csvread(csvFileName);
+    all_data(:,:,k+1) = csvdata(:,1:numPts);
 end
 
 % Animate the plot by rewriting it repeatedly.
 k = 1;
-while k <= file_count
+while k <= fileCount
     h = pcolor(all_data(:,:,k));
     set(h, 'EdgeColor', 'none');
     colorbar;
-    colormap(gray);
-    caxis([65 67.5]);
-    title(int2str(output_freq*(k-1)));
+    %colormap(gray);
+    label = ["Column-Integrated Water Vapor: ", 
+        num2str(outputFreq*(k-1)*dt,'%03.3f')];
+    title(join(label));
     pause(.1);
+    saveas(h,sprintf('out_%08d.png', outputFreq*(k-1)));
     k = k + 1;
-    if k == file_count
-        k = 1;
-    end
+    %if k == fileCount
+    %    k = 1;
+    %end
 end
+
 end
 

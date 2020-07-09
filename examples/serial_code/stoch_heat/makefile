@@ -14,6 +14,9 @@
 # Filename separator character.
 SEP = /
 
+# Path to EZDFFTPACK library.
+EZDFFTPTH = .$(SEP)ezdfftpack
+
 # Command-Line System Options: Linux, Windows.
 CMD = Linux
 # FC options: mpifort, gfortran (with msmpi).
@@ -31,32 +34,50 @@ MODS = $(patsubst %.f90, %.mod, $(SRCS))
 # Set the compiler flags, dependent on the compiler.
 ifeq ($(FC), gfortran)
   # Compiler flags.
-  FCFLAGS = -O3 -Wall
+  FCFLAGS = -O3 -Wall -g
+  # Include file search path, e.g., C:\lib\mpi\include.
+  INCPTHS = $(EZDFFTPTH) 
+  # Library search path, e.g., C:\lib\mpi\lib.
+  INCLIBS = $(EZDFFTPTH)
+  # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
+  LIBNAMES = EZDFFTPACK 
 
 else ifeq ($(FC), mpifort)
   # Compiler flags.
   FCFLAGS = -O3 -Wall
+  # Include file search path, e.g., C:\lib\mpi\include.
+  INCPTHS = $(EZDFFTPTH) 
+  # Library search path, e.g., C:\lib\mpi\lib.
+  INCLIBS = $(EZDFFTPTH)
+  # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
+  LIBNAMES = EZDFFTPACK 
 endif
+
+# Add appropriate prefixes to include file search paths, library search paths,
+# and include libraries.
+INCFLAGS = $(addprefix -I,$(INCPTHS))
+INCLIBFLAGS = $(addprefix -L,$(INCLIBS))
+LKLIBFLAGS = $(addprefix -l,$(LIBNAMES))
 
 # Makes the executable.
 $(TRGT): $(OBJS)                # Make executable.
-	$(FC) $(OBJS) -o $(TRGT) $(FCFLAGS)
+	$(FC) $(OBJS) -o $(TRGT) $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 # Make main.o.
 main.o: main.f90 time_stepper.o output.o initialize.o
-	$(FC) -c $< $(FCFLAGS)
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 # Make time_stepper.o.
 time_stepper.o: time_stepper.f90 output.o initialize.o
-	$(FC) -c $< $(FCFLAGS)
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 # Make output.o.
 output.o: output.f90 initialize.o
-	$(FC) -c $< $(FCFLAGS)
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 # Compile all independent .f90 files. 
 %.o: %.f90
-	$(FC) -c $< $(FCFLAGS)
+	$(FC) -c $< $(INCFLAGS) $(INCLIBFLAGS) $(LKLIBFLAGS) $(FCFLAGS)
 
 
 .PHONY : clean tidy

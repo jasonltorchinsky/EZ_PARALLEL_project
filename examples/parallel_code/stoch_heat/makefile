@@ -15,7 +15,7 @@
 SEP = /
 
 # Path to EZ_PARALLEL module.
-EZPPTH = ..$(SEP)..$(SEP)..$(SEP)EZ_PARALLEL
+EZPPTH = ..$(SEP)..$(SEP)EZ_PARALLEL
 
 # Path to DFFTPACK
 DFFTPTH = $(EZPPTH)$(SEP)DFFTPACK
@@ -41,7 +41,7 @@ ifeq ($(FC), gfortran)
   # Path to msmpi lib.
   MPIPTHLIB = $(MSMPI_LIB64)
   # Compiler flags.
-  FCFLAGS = -g
+  FCFLAGS = -g -O3 -Wall
   # Include file search path, e.g., C:\lib\mpi\include.
   INCPTHS = $(EZPPTH) $(MPIPTHINC) $(DFFTPTH)
   # Library search path, e.g., C:\lib\mpi\lib.

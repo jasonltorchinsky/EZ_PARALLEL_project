@@ -30,7 +30,7 @@ PROGRAM STOCH_HEAT_SOLVER_PARALLEL
   CALL MAIN
   CALL CPU_TIME(endTime)
 
-  WRITE(*,"(A,F10.5,A)") "Execution time: ", endTime - startTime, "."
+  WRITE(*,"(A,F16.8,A)") "Execution time: ", endTime - startTime, "."
   WRITE(*,*) "STOCH_HEAT_SOLVER_PARALLEL execution complete. ", &
        "Normal termination..."
 
@@ -49,7 +49,7 @@ CONTAINS
     USE MPI !< ADDED TO PARALLEL.
     USE EZ_PARALLEL_STRUCTS !< ADDED TO PARALLEL.
     USE EZ_PARALLEL !< ADDED TO PARALLEL.
-    
+
     IMPLICIT NONE
 
     INTEGER(qb) :: ierror !< Integer parameter for Fortran MPI calls.

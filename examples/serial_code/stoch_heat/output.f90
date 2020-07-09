@@ -54,9 +54,9 @@ CONTAINS
 
     OPEN(100,file=fileName,form='formatted')
 
-    DO j = 0, yLen-1
-       DO i = 0, xLen-1
-          WRITE(100,'(E32.16,A,1x)',ADVANCE='NO') tempGrid(i,j,stepParity), ','
+    DO j = 0, numPts-1
+       DO i = 0, numPts-1
+          WRITE(100,'(E32.16,A,1x)',ADVANCE='NO') colWtrVpr(i,j,stepParity), ','
        END DO
        WRITE(100,'(1x)')
     END DO

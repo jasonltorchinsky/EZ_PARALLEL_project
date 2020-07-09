@@ -51,17 +51,16 @@ CONTAINS
     INTEGER(qb), INTENT(IN) :: step
     INTEGER(qb), INTENT(IN) :: stepParity
     INTEGER(qb) :: i, j !< Counters for DO loops.
-    CHARACTER(LEN=34) :: fileName !< Filename for output data. CHANGED FOR
-    !! PARALLEL.
+    CHARACTER(LEN=34) :: fileName !< Filename for output data. CHANGED FOR PARALLEL.
 
     WRITE(fileName,'(A,I0.8,A,I0.3,A)') './output_data/out_', step, '_', &
          sch%procID, '.csv' !< CHANGED FOR PARALLEL.
 
     OPEN(100,file=fileName,form='formatted')
 
-    DO j = 0, yLen-1
-       DO i = 0, xLen-1
-          WRITE(100,'(E32.16,A,1x)',ADVANCE='NO') tempGrid(i,j,stepParity), ','
+    DO j = 0, numPtsY-1 !< CHANGED FOR PARALLEL.
+       DO i = 0, numPts-1
+          WRITE(100,'(E32.16,A,1x)',ADVANCE='NO') colWtrVpr(i,j,stepParity), ','
        END DO
        WRITE(100,'(1x)')
     END DO
