@@ -115,7 +115,7 @@ CONTAINS
     ! Get a random number for the Gaussian white noise.
     CALL RANDOM_NUMBER(whiteNoise1)
     CALL RANDOM_NUMBER(whiteNoise2)
-    whiteNoise1 = stochMag * SQRT(dt / (dx * dy))* SQRT(-2.0_dp * LOG(whiteNoise1)) * COS(2.0_dp * pi_dp * whiteNoise2) 
+    whiteNoise1 = stochMag * SQRT(dt)* SQRT(-2.0_dp * LOG(whiteNoise1)) * COS(2.0_dp * pi_dp * whiteNoise2) 
     !< Gaussian white noise using Box-Muller transform.
 
     ! Update the step parity.

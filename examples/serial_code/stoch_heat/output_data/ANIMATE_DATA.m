@@ -21,8 +21,9 @@ k = 1;
 while k <= fileCount
     h = pcolor(all_data(:,:,k));
     set(h, 'EdgeColor', 'none');
-    colorbar;
-    %colormap(gray);
+    %colorbar;
+    caxis([65.99 66.01]);
+    colormap(gray);
     label = ["Column-Integrated Water Vapor: ", 
         num2str(outputFreq*(k-1)*dt,'%03.3f')];
     title(join(label));
