@@ -15,7 +15,7 @@
 SEP = /
 
 # Path to EZ_PARALLEL module.
-EZPPTH = ..$(SEP)..$(SEP)EZ_PARALLEL
+EZPPTH = ..$(SEP)..$(SEP)..$(SEP)EZ_PARALLEL
 
 # Path to DFFTPACK
 DFFTPTH = $(EZPPTH)$(SEP)DFFTPACK
