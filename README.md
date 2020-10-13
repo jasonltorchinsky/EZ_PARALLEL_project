@@ -188,7 +188,7 @@ Compiling the included examples works similarly. Example codes include a serial 
 
 # Documentation
 
-The documentation for `EZ_PARALLEL` was generated using [Doxygen](https://www.doxygen.nl/index.html), and may be found in the `EZ_PARALLEL_project/doxygen_bin/html` subdirectory as a series of `.html` files. Open the `index.html` file with you favorite web browser to navigate it.
+The documentation for `EZ_PARALLEL` was generated using [Doxygen](https://www.doxygen.nl/index.html), and may be found in the `EZ_PARALLEL_project/doxygen_bin/html` subdirectory as a series of `.html` files. Open the `index.html` file with your favorite web browser to navigate it.
 
 # Contact Information
 
