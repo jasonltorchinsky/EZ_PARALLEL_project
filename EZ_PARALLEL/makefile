@@ -16,10 +16,13 @@
 
 MOD = EZ_PARALLEL
 
+# Filename separator character.
+SEP = /
+
 # Command-Line System options: Linux, Windows.
 CMD = Linux
-# FC options: mpifort, gfortran.
-FC = gfortran
+# FC options: mpifort, gfortran (with MSMPI).
+FC = mpifort
 
 # Set the compiler flags, dependent on the compiler.
 ifeq ($(FC), gfortran)
@@ -30,9 +33,9 @@ ifeq ($(FC), gfortran)
   # Compiler flags.
   FCFLAGS = -g -Wall
   # Include file search path, e.g., C:/lib/mpi/include.
-  INCPTHS = $(MPIPTHINC) ./DFFTPACK
+  INCPTHS = $(MPIPTHINC) .$(SEP)DFFTPACK
   # Library search path, e.g., C:/lib/mpi/lib.
-  INCLIBS = $(MPIPTHLIB) ./DFFTPACK
+  INCLIBS = $(MPIPTHLIB) .$(SEP)DFFTPACK
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
   LIBNAMES = msmpi DFFTPACK
 
@@ -40,9 +43,9 @@ else ifeq ($(FC), mpifort)
   # Compiler flags.
   FCFLAGS = 
   # Include file search paths, e.g., /usr/include/.
-  INCPTHS = ./DFFTPACK
+  INCPTHS = .$(SEP)DFFTPACK
   # Library search path, e.g., ../../EZ_PARALLEL.
-  INCLIBS = ./DFFTPACK
+  INCLIBS = .$(SEP)DFFTPACK
   # Link with specific libraries (.a or .so files), e.g. EZ_PARALLEL.
   LIBNAMES = DFFTPACK
 endif

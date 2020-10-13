@@ -23,7 +23,7 @@ DFFTPTH = ..$(SEP)..$(SEP)EZ_PARALLEL$(SEP)DFFTPACK
 # Command-Line System Options: Linux, Windows.
 CMD = Linux
 # FC options: mpifort, gfortran (with msmpi).
-FC = gfortran
+FC = mpifort
 
 # Executable name.
 TRGT = execute_scheme_fft_unit_test.exe

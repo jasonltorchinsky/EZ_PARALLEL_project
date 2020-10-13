@@ -141,6 +141,55 @@ Although we have not used `EZ_PARALLEL` for anything besides 2-D codes, it is th
 
 For example, the two-level quasigeostrophic (QG) example code utilizes `EZ_PARALLEL` on a 3-D array, consisting of two levels. Since we never require FFTs or spectral derivatives between levels, we simply call the `EZ_PARALLEL` subroutines with 2-D slices of the 3-D array.
 
+# Compilation and Testing
+
+This repository contains code for the `EZ_PARALLEL` library, the pre-requisite library `DFFTPACK`, and a variety of unit tests and examples. For ease of compilation, each of these has its own Makefile which can be utilized by a variety of make utilities, although it has only been tested with the GNU make tool.
+
+## Compiling `EZ_PARALLEL`
+
+To compile `EZ_PARALLEL`, you must first compile `DFFTPACK`. To compile DFFTPACK, navigate to the `EZ_PARALLEL_project/EZ_PARALLEL/DFFTPACK` subdirectory and open the included `Makefile`. 
+
+Within this Makefile are two primary variables, `CMD` and `FC`. The `CMD` variable configures the command prompt command style for the `make clean` and `make tidy` commands. If you navigate to other directories using the `cd` command, set `CMD` to Linux,and if you navigate to other directories using the `dir` command , set `CMD` to Windows. Other options for `CMD` are not yet supported. The `FC` variable controls the compiler. If you use `gfortran` to compile Fortran applications, set `FC` to gfortran, and if you use `mpifort` to compile Fortran applications, set `FC` to `mpifort`.
+
+Once you have set the variables `CMD` and `FC` to their proper values for your system, run the commands
+```
+make clean
+make
+```
+to compile and link the `DFFTPACK` library. Specifically, the archive file `libDFFTPACK.a` is generated.
+
+Once you have created `libDFFTPACK.a`, navigate to the `EZ_PARALLEL_project/EZ_PARALLEL` subdirectory and open the included `makefile`. Configure the `CMD` and `FC` variables as before. In addition to these variables, you will need to configure the `SEP` variable, which is the separator charater for path names. If your operating system uses `/` in its file paths, set `SEP` to /, and if your opeating system uses `\`, set `SEP` to \.
+
+Further, if you are using `MSMPI` to use `MPI` on a windows system, you will need to set the environment variables `MSMPI_INC` and `MSMPI_LIB64` to their appropriate directories. For example, with `MSMPI` installed to `C:\lib\mpi`, the appropriate `MSMPI_INC` path is `C:\lib\mpi\inc` and `MSMPI_LIB64` is `C:\lib\mpi\lib`.
+
+Once you have set the variables `CMD`, `FC`, and `SEP` to their proper values for your system, run the commands
+```
+make clean
+make
+```
+to compile and link the `EZ_PARALLEL` library. Specifically, the object file `ez_parallel.o` is generated. This is the object file you should link your applications to.
+
+## Compiling and Running Unit Tests and Examples
+
+Once you have compiled and generated `ez_parallel.o`, you are ready to compile and run the included examples and unit tests.
+
+To compile a unit test, first navigate to the `EZ_PARALLEL_project/unit_tests` subdirectory. In this subdirectory, you will find a variety of unit tests, one for each of the subroutines in the `EZ_PARALLEL` library. For our example, we will compile and run the `execute_scheme_fft` unit test. Navigate to the `EZ_PARALLEL_project/unit_tests/execute_scheme_fft` subdirectory, and open the included `makefile`.
+
+As with compiling `DFFTPACK` and `EZ_PARALLEL`, set the variables `CMD`, `FC` and `SEP` to the appropriate values for your system. Additionally, the variable `EZPPTH` should be the relative path from the `makefile` to the file `ez_parallel.o` and the variable `DFFTPTH` should be the relative path from the `makefile` to the file `libDFFTPACK.a`. For the directory tree of this repository, we have `EZPPTH = ..$(SEP)..$(SEP)EZ_PARALLEL` (which is the `EZ_PARALLEL_project/EZ_PARALLEL` subdirectory) and `DFFTPTH = ..$(SEP)..$(SEP)EZ_PARALLEL$(SEP)DFFTPACK` (which is the `EZ_PARALLEL_project/EZ_PARALLEL/DFFTPACK` subdirectory).
+
+Once you have set the variables `CMD`, `FC`, `SEP`, `EZPPTH`, and `DFFTPTH` to their proper values for your system, run the commands 
+```
+make clean
+make
+```
+to compile the executable `execute_scheme_fft_unit_test.exe` and link it to the `EZ_PARALLEL` and `DFTPACK` libraries. You may then run the executable in the same way you would run any `MPI` application on your system,. e.g., with `mpiexec -np 4 execute_scheme_fft_unit_test.exe` or `mpirun -np 4 execute_scheme_fft_unit_test.exe`. By default, this unit test Fourier transforms a 64-by-64 grid. By changing values in the `execute_scheme_fft_unit_test.f90` source file, you may change the size of the grid, or even the datatype of the grid (both `REAL(dp)` and `COMPLEX(dp)` work).
+
+Compiling the included examples works similarly. Example codes include a serial and parallel stochastic heat equation solver and two-level quasigeostrophic equation solver, and they may both be found in the `EZ_PARALLEL_project/examples` subdirectory.
+
+# Documentation
+
+The documentation for `EZ_PARALLEL` was generated using [Doxygen](https://www.doxygen.nl/index.html), and may be found in the `EZ_PARALLEL_project/doxygen_bin/html` subdirectory as a series of `.html` files. Open the `index.html` file with you favorite web browser to navigate it.
+
 # Contact Information
 
 If you have any comments, questions, concerns, or ideas about this module, please contact Jason Turner at jlturner5@wisc.edu.
