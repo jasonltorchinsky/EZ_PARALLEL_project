@@ -184,7 +184,11 @@ make
 ```
 to compile the executable `execute_scheme_fft_unit_test.exe` and link it to the `EZ_PARALLEL` and `DFTPACK` libraries. You may then run the executable in the same way you would run any `MPI` application on your system,. e.g., with `mpiexec -np 4 execute_scheme_fft_unit_test.exe` or `mpirun -np 4 execute_scheme_fft_unit_test.exe`. By default, this unit test Fourier transforms a 64-by-64 grid. By changing values in the `execute_scheme_fft_unit_test.f90` source file, you may change the size of the grid, or even the datatype of the grid (both `REAL(dp)` and `COMPLEX(dp)` work).
 
-Compiling the included examples works similarly. Example codes include a serial and parallel stochastic heat equation solver and two-level quasigeostrophic equation solver, and they may both be found in the `EZ_PARALLEL_project/examples` subdirectory.
+Compiling the included examples works similarly. Example codes include a serial and parallel stochastic heat equation solver and two-level quasigeostrophic equation solver, and they may both be found in the `EZ_PARALLEL_project/examples` subdirectory. However, before compiling and linking the source code of the examples, you may need to change the name of the files they output. To explain, we use the seriel stochastic heat equation code as an example. In the `EZ_PARALLEL_project/examples/serial_code/stoch_heat` subdirectory, open the `output.f90` source file. On line 53, we create a string that holds the file name
+```fortran
+WRITE(fileName,'(A,I0.8,A)') './output_data/out_', step, '.csv'
+```
+Depending on your system, you may need to change the / to \. Additionally, you will need ensure that the subdirectory `EZ_PARALLEL_project/examples/serial_code/stoch_heat/output_data` exists.
 
 # Documentation
 
