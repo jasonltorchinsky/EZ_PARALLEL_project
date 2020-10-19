@@ -204,8 +204,13 @@ This program is free software: you can redistribute it and/or modify it under th
 # Citation Information
 
 Authors: Jason L. Turner, Samuel Stechmann
+
 Title: EZ Parallel 1.0
+
 URL: https://github.com/jasonlturner/EZ_PARALLEL_project/releases/tag/v1.0
+
 DOI: 10.5281/zenodo.4107203
+
 Month: October
+
 Year: 2020
