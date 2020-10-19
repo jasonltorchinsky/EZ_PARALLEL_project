@@ -200,3 +200,12 @@ If you have any comments, questions, concerns, or ideas about this module, pleas
 
 # License Information
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+# Citation Information
+
+Authors: Jason L. Turner, Samuel Stechmann
+Title: EZ Parallel 1.0
+URL: https://github.com/jasonlturner/EZ_PARALLEL_project/releases/tag/v1.0
+DOI: 10.5281/zenodo.4107203
+Month: October
+Year: 2020
